@@ -11,6 +11,7 @@ import okhttp3.sse.EventSource;
 import okhttp3.sse.EventSources;
 import org.jetbrains.annotations.NotNull;
 
+import java.net.Proxy;
 import java.util.List;
 
 /**
@@ -22,17 +23,37 @@ import java.util.List;
 @AllArgsConstructor
 public class Configuration {
 
+    /**
+     * api 服务提供者
+     */
     private ApiServer apiServer;
 
+    /**
+     * api 请求客户端
+     */
     private OkHttpClient okHttpClient;
 
+    /**
+     * api Key 集合
+     */
     @NotNull
     private List<String> keyList;
 
+    /**
+     * 请求地址
+     */
     @NotNull
     private String apiHost;
 
+    /**
+     * 获取key的策略
+     */
     private KeyStrategy keyStrategy;
+
+    /**
+     * 代理信息
+     */
+    private Proxy proxy;
 
     public EventSource.Factory createRequestFactory() {
         return EventSources.createFactory(okHttpClient);

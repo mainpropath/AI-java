@@ -13,8 +13,6 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
-import java.net.InetSocketAddress;
-import java.net.Proxy;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -28,10 +26,9 @@ public class DefaultOpenAiSessionFactory implements OpenAiSessionFactory {
     /**
      * 获取 httpClient
      *
-     * @param proxy 代理信息
      * @return 客户端
      */
-    public OkHttpClient createHttpClient(Proxy proxy) {
+    public OkHttpClient createHttpClient() {
         // 1. 日志配置
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
         httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.NONE);
@@ -44,8 +41,8 @@ public class DefaultOpenAiSessionFactory implements OpenAiSessionFactory {
                 .writeTimeout(450, TimeUnit.SECONDS)
                 .readTimeout(450, TimeUnit.SECONDS);
         // 3. 检查是否需要代理
-        if (proxy != null) {
-            builder.proxy(proxy);
+        if (configuration.getProxy() != null) {
+            builder.proxy(configuration.getProxy());
         }
         return builder.build();
     }
@@ -67,7 +64,7 @@ public class DefaultOpenAiSessionFactory implements OpenAiSessionFactory {
 
     @Override
     public DefaultAggregationSession openAggregationSession() {
-        OkHttpClient okHttpClient = createHttpClient(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("127.0.0.1", 7890)));
+        OkHttpClient okHttpClient = createHttpClient();
         configuration.setOkHttpClient(okHttpClient);
         configuration.setApiServer(createOpenAiApi(okHttpClient));
         return new DefaultAggregationSession(configuration);
