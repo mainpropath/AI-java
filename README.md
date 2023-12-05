@@ -26,6 +26,44 @@
 
 ![image-20231205204355776](doc/img/image-20231205204355776.png) 
 
+项目结构如下
+
+```java
+├─main
+│  ├─java
+│  │  └─com
+│  │      └─ai
+│  │          └─openAi
+│  │              ├─achieve
+│  │              │  ├─defaults
+│  │              │  │  ├─session
+│  │              │  │  └─strategy
+│  │              │  └─standard
+│  │              │      ├─api
+│  │              │      ├─interfaceSession
+│  │              │      └─interfaceStrategy
+│  │              ├─common
+│  │              │  └─exception
+│  │              ├─endPoint
+│  │              │  ├─audio
+│  │              │  ├─chat
+│  │              │  ├─embeddings
+│  │              │  ├─files
+│  │              │  ├─fineTuning
+│  │              │  ├─images
+│  │              │  ├─models
+│  │              │  └─moderations
+│  │              └─interceptor
+│  └─resources
+└─test
+    └─java
+        └─com
+            └─ai
+                └─openAi
+```
+
+
+
 首先创建sessionFactory，可通过sessionFactory获取不同场景下的会话窗口。
 
 ```java
