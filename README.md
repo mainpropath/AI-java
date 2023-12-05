@@ -88,4 +88,4 @@ chatCompletionResponse.getChoices().forEach(e -> {
 
 更多示例请参考测试目录下各个场景的测试用例。[测试用例文件路径](https://github.com/mainpropath/AI-java/tree/master/src/test/java/com/ai/openAi)
 
-**欢迎向本项目提需求~~~**
+**欢迎向本项目提需求，欢迎star~~~**
