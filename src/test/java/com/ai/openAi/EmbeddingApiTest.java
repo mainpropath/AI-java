@@ -1,12 +1,12 @@
 package com.ai.openAi;
 
-import com.ai.openAi.achieve.defaults.strategy.FirstKeyStrategy;
-import com.ai.openAi.endPoint.embeddings.req.EmbeddingCompletionRequest;
-import com.ai.openAi.endPoint.embeddings.resp.EmbeddingCompletionResponse;
 import com.ai.openAi.achieve.Configuration;
 import com.ai.openAi.achieve.defaults.session.DefaultOpenAiSessionFactory;
+import com.ai.openAi.achieve.defaults.strategy.FirstKeyStrategy;
 import com.ai.openAi.achieve.standard.OpenAiSessionFactory;
 import com.ai.openAi.achieve.standard.interfaceSession.AggregationSession;
+import com.ai.openAi.endPoint.embeddings.req.EmbeddingCompletionRequest;
+import com.ai.openAi.endPoint.embeddings.resp.EmbeddingCompletionResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,6 +44,9 @@ public class EmbeddingApiTest {
         this.aggregationSession = factory.openAggregationSession();
     }
 
+    /**
+     * 测试单个文本
+     */
     @Test
     public void test_embedding() {
         EmbeddingCompletionResponse embeddingCompletionResponse = aggregationSession.getEmbeddingSession().embeddingCompletions(NULL, NULL, NULL, "你好");
@@ -51,6 +54,9 @@ public class EmbeddingApiTest {
     }
 
 
+    /**
+     * 测试多个文本嵌入
+     */
     @Test
     public void test_embedding_list() {
         List<String> inputList = new ArrayList<>();

@@ -1,14 +1,14 @@
 package com.ai.openAi;
 
+import com.ai.openAi.achieve.Configuration;
+import com.ai.openAi.achieve.defaults.session.DefaultOpenAiSessionFactory;
 import com.ai.openAi.achieve.defaults.strategy.FirstKeyStrategy;
+import com.ai.openAi.achieve.standard.OpenAiSessionFactory;
+import com.ai.openAi.achieve.standard.interfaceSession.AggregationSession;
 import com.ai.openAi.endPoint.images.ImageObject;
 import com.ai.openAi.endPoint.images.req.CreateImageRequest;
 import com.ai.openAi.endPoint.images.req.ImageEditRequest;
 import com.ai.openAi.endPoint.images.req.ImageVariationRequest;
-import com.ai.openAi.achieve.Configuration;
-import com.ai.openAi.achieve.defaults.session.DefaultOpenAiSessionFactory;
-import com.ai.openAi.achieve.standard.OpenAiSessionFactory;
-import com.ai.openAi.achieve.standard.interfaceSession.AggregationSession;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
@@ -60,8 +60,8 @@ public class ImageApiTest {
      */
     @Test
     public void test_edit_image() {
-        File file = new File("src/main/resources/image_edit_original.png");
-        ImageEditRequest imageEditRequest = ImageEditRequest.BuildBaseImageEditRequest("加上一些人在场景当中行走");
+        File file = new File("doc/test/test_edit_image.png");
+        ImageEditRequest imageEditRequest = ImageEditRequest.BuildBaseImageEditRequest("给小熊的背后加上一只梅花鹿。");
         List<ImageObject> imageObjectList = aggregationSession.getImageSession().editImageCompletions(NULL, NULL, NULL, file, null, imageEditRequest);
         log.info("测试结果：{}", imageObjectList);
     }
@@ -71,7 +71,7 @@ public class ImageApiTest {
      */
     @Test
     public void test_variation_image() {
-        File file = new File("src/main/resources/image_edit_original.png");
+        File file = new File("doc/test/test_edit_image.png");
         ImageVariationRequest imageVariationRequest = ImageVariationRequest.builder().build();
         List<ImageObject> imageObjectList = aggregationSession.getImageSession().variationImageCompletions(NULL, NULL, NULL, file, imageVariationRequest);
         log.info("测试结果：{}", imageObjectList);

@@ -1,15 +1,15 @@
 package com.ai.openAi;
 
+import com.ai.openAi.achieve.Configuration;
+import com.ai.openAi.achieve.defaults.session.DefaultOpenAiSessionFactory;
 import com.ai.openAi.achieve.defaults.strategy.FirstKeyStrategy;
+import com.ai.openAi.achieve.standard.OpenAiSessionFactory;
+import com.ai.openAi.achieve.standard.interfaceSession.AggregationSession;
 import com.ai.openAi.common.CommonListResponse;
 import com.ai.openAi.endPoint.fineTuning.FineTuningEvent;
 import com.ai.openAi.endPoint.fineTuning.req.FineTuningRequest;
 import com.ai.openAi.endPoint.fineTuning.req.ListFineTuningRequest;
 import com.ai.openAi.endPoint.fineTuning.resp.FineTuningResponse;
-import com.ai.openAi.achieve.Configuration;
-import com.ai.openAi.achieve.defaults.session.DefaultOpenAiSessionFactory;
-import com.ai.openAi.achieve.standard.OpenAiSessionFactory;
-import com.ai.openAi.achieve.standard.interfaceSession.AggregationSession;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
@@ -45,6 +45,9 @@ public class FineTuningApiTest {
         this.aggregationSession = factory.openAggregationSession();
     }
 
+    /**
+     * 测试创建微调
+     */
     @Test
     public void test_create_fine_tuning() {
         FineTuningRequest fineTuningRequest = FineTuningRequest.builder().trainingFile("file-BK7bzQj3FfZFXr7DbL6xJwfo").build();
@@ -52,6 +55,9 @@ public class FineTuningApiTest {
         log.info("返回结果：{}", fineTuningResponse);
     }
 
+    /**
+     * 测试列出微调作业
+     */
     @Test
     public void test_list_fine_tuning_1() {
         ListFineTuningRequest listFineTuningRequest = ListFineTuningRequest.builder().build();
@@ -59,24 +65,36 @@ public class FineTuningApiTest {
         log.info("返回结果：{}", fineTuneJobListFineTuningResponse);
     }
 
+    /**
+     * 测试列出微调作业
+     */
     @Test
     public void test_list_fine_tuning_2() {
         CommonListResponse<FineTuningResponse> fineTuneJobListFineTuningResponse = aggregationSession.getFineTuningSession().listFineTuningJobsCompletions(NULL, NULL, NULL, null, null);
         log.info("返回结果：{}", fineTuneJobListFineTuningResponse);
     }
 
+    /**
+     * 测试检索微调作业
+     */
     @Test
     public void test_retrieve_fine_tuning() {
         FineTuningResponse fineTuningResponse = aggregationSession.getFineTuningSession().retrieveFineTuningJobCompletions(NULL, NULL, NULL, "ft-AF1WoRqd3aJAHsqc9NY7iL8F");
         log.info("返回结果：{}", fineTuningResponse);
     }
 
+    /**
+     * 测试关闭微调作业
+     */
     @Test
     public void test_cancel_fine_tuning() {
         FineTuningResponse fineTuningResponse = aggregationSession.getFineTuningSession().cancelFineTuningJobCompletions(NULL, NULL, NULL, "ft-AF1WoRqd3aJAHsqc9NY7iL8F");
         log.info("返回结果：{}", fineTuningResponse);
     }
 
+    /**
+     * 测试列出微调事件
+     */
     @Test
     public void test_list_fine_tuning_events() {
         CommonListResponse<FineTuningEvent> fineTuningEventListFineTuningResponse = aggregationSession.getFineTuningSession().listFineTuningEventsCompletions(NULL, NULL, NULL, "ftjob-abc123");

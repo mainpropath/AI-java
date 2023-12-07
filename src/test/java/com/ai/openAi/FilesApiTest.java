@@ -1,12 +1,12 @@
 package com.ai.openAi;
 
-import com.ai.openAi.achieve.defaults.strategy.FirstKeyStrategy;
-import com.ai.openAi.endPoint.files.FileObject;
-import com.ai.openAi.endPoint.files.resp.DeleteFileResponse;
 import com.ai.openAi.achieve.Configuration;
 import com.ai.openAi.achieve.defaults.session.DefaultOpenAiSessionFactory;
+import com.ai.openAi.achieve.defaults.strategy.FirstKeyStrategy;
 import com.ai.openAi.achieve.standard.OpenAiSessionFactory;
 import com.ai.openAi.achieve.standard.interfaceSession.AggregationSession;
+import com.ai.openAi.endPoint.files.FileObject;
+import com.ai.openAi.endPoint.files.resp.DeleteFileResponse;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.ResponseBody;
 import org.junit.Before;

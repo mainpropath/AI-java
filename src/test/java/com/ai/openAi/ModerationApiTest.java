@@ -42,6 +42,9 @@ public class ModerationApiTest {
         this.aggregationSession = factory.openAggregationSession();
     }
 
+    /**
+     * 测试审核
+     */
     @Test
     public void test_moderation() {
         ModerationRequest moderationRequest = ModerationRequest.BuildBaseModerationRequest("你好");

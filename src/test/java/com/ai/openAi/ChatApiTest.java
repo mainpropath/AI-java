@@ -12,7 +12,6 @@ import com.ai.openAi.endPoint.chat.req.QaCompletionRequest;
 import com.ai.openAi.endPoint.chat.resp.ChatCompletionResponse;
 import com.ai.openAi.endPoint.chat.resp.QaCompletionResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Response;
 import okhttp3.sse.EventSource;
@@ -20,12 +19,12 @@ import okhttp3.sse.EventSourceListener;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 
 import static com.ai.openAi.common.Constants.NULL;
@@ -59,10 +58,10 @@ public class ChatApiTest {
      * 测试简单问答，相当于只有一轮问答。
      */
     @Test
-    public void test_qa_completions() throws IOException {
+    public void test_qa_completions() {
         QaCompletionRequest qaCompletionRequest = QaCompletionRequest.buildBaseQaCompletionRequest("9*7=");
         QaCompletionResponse qaCompletionResponse = aggregationSession.getChatSession().qaCompletions(NULL, NULL, NULL, qaCompletionRequest);
-        log.info("测试结果：{}", new ObjectMapper().writeValueAsString(qaCompletionResponse));
+        log.info("测试结果：{}", qaCompletionResponse);
     }
 
     /**
@@ -70,7 +69,11 @@ public class ChatApiTest {
      */
     @Test
     public void test_qa_completions_stream() throws InterruptedException, JsonProcessingException {
-        QaCompletionRequest qaCompletionRequest = QaCompletionRequest.builder().prompt("讲一个笑话").stream(true).build();
+
+        QaCompletionRequest qaCompletionRequest = QaCompletionRequest.builder()
+                .prompt("讲一个笑话")
+                .stream(true) // 设置流式返回
+                .build();
         // 监听器监听返回的结果
         aggregationSession.getChatSession().qaCompletions(NULL, NULL, NULL, qaCompletionRequest, new EventSourceListener() {
             @Override
@@ -84,7 +87,7 @@ public class ChatApiTest {
             }
         });
         // 阻塞等待
-        Thread.sleep(100000);
+        new CountDownLatch(1).await();
     }
 
     /**
@@ -129,7 +132,7 @@ public class ChatApiTest {
             }
         });
         // 阻塞等待
-        Thread.sleep(100000);
+        new CountDownLatch(1).await();
     }
 
     /**

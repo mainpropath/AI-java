@@ -20,6 +20,7 @@ import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.util.Arrays;
+import java.util.concurrent.CountDownLatch;
 
 import static com.ai.openAi.common.Constants.NULL;
 
@@ -41,6 +42,7 @@ public class AudioApiTest {
         configuration.setKeyList(Arrays.asList("填入你的API Key"));
         // 4. 设置请求时 key 的使用策略，默认实现了：随机获取 和 固定第一个Key 两种方式。
         configuration.setKeyStrategy(new FirstKeyStrategy());
+//        configuration.setKeyStrategy(new RandomKeyStrategy());
         // 5. 设置代理，若不需要可不设置
         configuration.setProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("127.0.0.1", 7890)));
         // 6. 创建 session 工厂，制造不同场景的 session
@@ -60,7 +62,7 @@ public class AudioApiTest {
                 .voice(TtsCompletionRequest.Voice.alloy.getVoiceName())// 设置声音的样式
                 .build();
         // 回传文件存放的路径
-        File file = new File("src/main/resources/test.mp3");
+        File file = new File("doc/test/test_tts.mp3");
         // 添加回调函数，发送请求
         aggregationSession.getAudioSession().ttsCompletions(NULL, NULL, NULL, ttsCompletionRequest, new Callback<ResponseBody>() {
                     @Override
@@ -89,7 +91,7 @@ public class AudioApiTest {
                 }
         );
         // 阻塞等待
-        Thread.sleep(100000);
+        new CountDownLatch(1).await();
     }
 
     /**
@@ -97,10 +99,9 @@ public class AudioApiTest {
      */
     @Test
     public void test_stt() {
-        SttCompletionRequest sttCompletionRequest = SttCompletionRequest
-                .builder()
-                .file(new File("src/main/resources/test.mp3"))
-                .build();
+        // 音频文件存放路径
+        File file = new File("doc/test/test_tts.mp3");
+        SttCompletionRequest sttCompletionRequest = SttCompletionRequest.builder().file(file).build();
         SttCompletionResponse sttCompletionResponse = this.aggregationSession.getAudioSession().sttCompletions(NULL, NULL, NULL, sttCompletionRequest);
         log.info("测试结果：{}", sttCompletionResponse);
     }
@@ -110,10 +111,9 @@ public class AudioApiTest {
      */
     @Test
     public void test_translation() {
-        SttCompletionRequest sttCompletionRequest = SttCompletionRequest
-                .builder()
-                .file(new File("src/main/resources/test.mp3"))
-                .build();
+        // 音频文件存放路径
+        File file = new File("doc/test/test_tts.mp3");
+        SttCompletionRequest sttCompletionRequest = SttCompletionRequest.builder().file(file).build();
         SttCompletionResponse sttCompletionResponse = this.aggregationSession.getAudioSession().translationCompletions(NULL, NULL, NULL, sttCompletionRequest);
         log.info("测试结果：{}", sttCompletionResponse);
     }

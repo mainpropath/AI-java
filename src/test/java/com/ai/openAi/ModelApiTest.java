@@ -1,12 +1,12 @@
 package com.ai.openAi;
 
-import com.ai.openAi.achieve.defaults.strategy.FirstKeyStrategy;
-import com.ai.openAi.endPoint.models.ModelObject;
-import com.ai.openAi.endPoint.models.resp.DeleteFineTuneModelResponse;
 import com.ai.openAi.achieve.Configuration;
 import com.ai.openAi.achieve.defaults.session.DefaultOpenAiSessionFactory;
+import com.ai.openAi.achieve.defaults.strategy.FirstKeyStrategy;
 import com.ai.openAi.achieve.standard.OpenAiSessionFactory;
 import com.ai.openAi.achieve.standard.interfaceSession.AggregationSession;
+import com.ai.openAi.endPoint.models.ModelObject;
+import com.ai.openAi.endPoint.models.resp.DeleteFineTuneModelResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
@@ -60,7 +60,6 @@ public class ModelApiTest {
         ModelObject modelObject = aggregationSession.getModelSession().retrieveModelCompletions(NULL, NULL, NULL, "gpt-3.5-turbo-instruct");
         log.info("返回结果：{}", modelObject);
     }
-
 
     /**
      * 测试删除微调模型接口
