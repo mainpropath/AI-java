@@ -1,10 +1,10 @@
-## **目录**
+## 目录
 
-[项目背景](##项目背景)
-[安装](##安装)
-[使用方式](##使用方式)
-[示例](##示例)
-[更新记录](##更新记录)
+- [**项目背景**](##项目背景)
+- [**安装**](##安装)
+- [**使用方式**](##使用方式)
+- [**示例**](##示例)
+- [**更新记录**](##更新记录)
 
 ## **项目背景**
 
@@ -22,13 +22,13 @@
 
 通过这个ChatGPT API SDK项目，我们旨在简化ChatGPT模型的使用，加快Java开发者在不同应用场景中集成聊天机器人功能的速度。
 
-## 安装
+## **安装**
 
 下载项目到本地，将项目 install 到本地 maven 仓库。
 
 ![image-20231205204603312](doc/img/image-20231205204603312.png)
 
-## 使用方式
+## **使用方式**
 
 **本项目目前实现了官方文档下 endpoints 各个板块全部的接口。**
 
@@ -133,7 +133,7 @@ AggregationSession aggregationSession=factory.openAggregationSession();
         aggregationSession.getEmbeddingSession();
 ```
 
-## 示例
+## **示例**
 
 示例相关的测试图片和语言文件在 doc/test 目录下。
 
@@ -213,7 +213,7 @@ public void onFailure(Call<ResponseBody> call,Throwable t){
 
 更多示例请参考测试目录下各个场景的测试用例。[测试用例文件路径](https://github.com/mainpropath/AI-java/tree/master/src/test/java/com/ai/openAi)
 
-## 更新记录
+## **更新记录**
 
 2023-12-8：支持图片对话和函数对话
 
