@@ -75,10 +75,7 @@ public class ChatApiTest {
      */
     @Test
     public void test_qa_completions_stream() throws InterruptedException, JsonProcessingException {
-
-        QaCompletionRequest qaCompletionRequest = QaCompletionRequest.builder()
-                .prompt("讲一个笑话")
-                .stream(true) // 设置流式返回
+        QaCompletionRequest qaCompletionRequest = QaCompletionRequest.builder().prompt("讲一个笑话").stream(true) // 设置流式返回
                 .build();
         // 监听器监听返回的结果
         aggregationSession.getChatSession().qaCompletions(NULL, NULL, NULL, qaCompletionRequest, new EventSourceListener() {
@@ -135,19 +132,11 @@ public class ChatApiTest {
         properties.putOpt("location", location);
         properties.putOpt("unit", unit);
         // 定义 parameters
-        Parameters parameters = Parameters.builder().type("object")
-                .properties(properties)
-                .required(Arrays.asList("location"))
-                .build();
+        Parameters parameters = Parameters.builder().type("object").properties(properties).required(Arrays.asList("location")).build();
         // 构造函数信息
-        ToolFunction toolFunction = ToolFunction.builder()
-                .name("get_current_weather")
-                .description("Get the current weather in a given location")
-                .parameters(parameters).build();
+        ToolFunction toolFunction = ToolFunction.builder().name("get_current_weather").description("Get the current weather in a given location").parameters(parameters).build();
         // 构造工具
-        Tool tool = Tool.builder()
-                .type(Tool.Type.FUNCTION.getName())
-                .function(toolFunction).build();
+        Tool tool = Tool.builder().type(Tool.Type.FUNCTION.getName()).function(toolFunction).build();
         // 构造请求参数
         FuncChatCompletionRequest funcChatCompletionRequest = FuncChatCompletionRequest.BuildFuncChatCompletionRequest("What is the weather like in Boston?");
         funcChatCompletionRequest.setTools(Arrays.asList(tool));
@@ -180,11 +169,8 @@ public class ChatApiTest {
     @Test
     public void test_chat_completions_stream() throws InterruptedException, JsonProcessingException {
         // 建造者模式构造参数
-        DefaultChatCompletionRequest defaultChatCompletionRequest = DefaultChatCompletionRequest.builder()
-                .stream(true)// 开启流式返回
-                .messages(Collections.singletonList(DefaultMessage.builder().role(Constants.Role.USER.getRoleName()).content("1+1=").build()))
-                .model(BaseChatCompletionRequest.Model.GPT_3_5_TURBO.getModuleName())
-                .build();
+        DefaultChatCompletionRequest defaultChatCompletionRequest = DefaultChatCompletionRequest.builder().stream(true)// 开启流式返回
+                .messages(Collections.singletonList(DefaultMessage.builder().role(Constants.Role.USER.getRoleName()).content("1+1=").build())).model(BaseChatCompletionRequest.Model.GPT_3_5_TURBO.getModuleName()).build();
 
         aggregationSession.getChatSession().chatCompletions(NULL, NULL, NULL, defaultChatCompletionRequest, new EventSourceListener() {
             @Override
@@ -207,12 +193,7 @@ public class ChatApiTest {
     @Test
     public void test_chat_completions_future() throws JsonProcessingException, InterruptedException, ExecutionException {
         // 构造请求参数
-        DefaultChatCompletionRequest defaultChatCompletionRequest = DefaultChatCompletionRequest
-                .builder()
-                .stream(true)
-                .messages(Collections.singletonList(DefaultMessage.builder().role(Constants.Role.USER.getRoleName()).content("1+1=").build()))
-                .model(BaseChatCompletionRequest.Model.GPT_3_5_TURBO.getModuleName())
-                .build();
+        DefaultChatCompletionRequest defaultChatCompletionRequest = DefaultChatCompletionRequest.builder().stream(true).messages(Collections.singletonList(DefaultMessage.builder().role(Constants.Role.USER.getRoleName()).content("1+1=").build())).model(BaseChatCompletionRequest.Model.GPT_3_5_TURBO.getModuleName()).build();
         // 等待结果
         CompletableFuture<String> future = aggregationSession.getChatSession().chatCompletionsFuture(NULL, NULL, NULL, defaultChatCompletionRequest);
         log.info("测试结果：{}", future.get());
