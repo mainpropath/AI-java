@@ -1,16 +1,21 @@
 package com.ai.openAi;
 
+import cn.hutool.json.JSONObject;
 import com.ai.openAi.achieve.Configuration;
 import com.ai.openAi.achieve.defaults.DefaultOpenAiSessionFactory;
 import com.ai.openAi.achieve.defaults.strategy.FirstKeyStrategy;
 import com.ai.openAi.achieve.standard.OpenAiSessionFactory;
 import com.ai.openAi.achieve.standard.interfaceSession.AggregationSession;
 import com.ai.openAi.common.Constants;
-import com.ai.openAi.endPoint.chat.Message;
-import com.ai.openAi.endPoint.chat.req.ChatCompletionRequest;
-import com.ai.openAi.endPoint.chat.req.QaCompletionRequest;
+import com.ai.openAi.endPoint.chat.Parameters;
+import com.ai.openAi.endPoint.chat.msg.Content;
+import com.ai.openAi.endPoint.chat.msg.DefaultMessage;
+import com.ai.openAi.endPoint.chat.msg.ImgMessage;
+import com.ai.openAi.endPoint.chat.req.*;
 import com.ai.openAi.endPoint.chat.resp.ChatCompletionResponse;
 import com.ai.openAi.endPoint.chat.resp.QaCompletionResponse;
+import com.ai.openAi.endPoint.chat.tools.Tool;
+import com.ai.openAi.endPoint.chat.tools.ToolFunction;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Response;
@@ -92,19 +97,19 @@ public class ChatApiTest {
     }
 
     /**
-     * 测试聊天对话，及多轮对话。
+     * 测试多轮对话
      */
     @Test
     public void test_chat_completions() {
         // 创建参数，上下文对话。
         // 第一次的问题
-        ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest.BuildBaseChatCompletionRequest("1+1=");
+        DefaultChatCompletionRequest defaultChatCompletionRequest = DefaultChatCompletionRequest.BuildDefaultChatCompletionRequest("1+1=");
         // 第一次的回复
-        chatCompletionRequest.getMessages().add(Message.builder().role(Constants.Role.ASSISTANT.getRoleName()).content("2").build());
+        defaultChatCompletionRequest.addMessage(Constants.Role.ASSISTANT.getRoleName(), "2");
         // 第二次的问题
-        chatCompletionRequest.getMessages().add(Message.builder().role(Constants.Role.USER.getRoleName()).content("2+2=").build());
+        defaultChatCompletionRequest.addMessage(Constants.Role.USER.getRoleName(), "2+2=");
         // 询问第二次的问题的结果
-        ChatCompletionResponse chatCompletionResponse = aggregationSession.getChatSession().chatCompletions(NULL, NULL, NULL, chatCompletionRequest);
+        ChatCompletionResponse chatCompletionResponse = aggregationSession.getChatSession().chatCompletions(NULL, NULL, NULL, defaultChatCompletionRequest);
         // 解析结果
         chatCompletionResponse.getChoices().forEach(e -> {
             log.info("测试结果：{}", e.getMessage());
@@ -112,16 +117,76 @@ public class ChatApiTest {
     }
 
     /**
+     * 测试函数对话，创建一个函数获取天气信息
+     * 下面的请求参数根据官方案例转换而来
+     */
+    @Test
+    public void test_func_chat_completions() {
+        // 定义第一个属性，地址信息
+        JSONObject location = new JSONObject();
+        location.putOpt("type", "string");
+        location.putOpt("description", "The city and state, e.g. San Francisco, CA");
+        // 定义第二个属性，时间信息
+        JSONObject unit = new JSONObject();
+        unit.putOpt("type", "string");
+        unit.putOpt("enum", Arrays.asList("celsius", "fahrenheit"));
+        // 定义 properties，及将函数属性组合起来
+        JSONObject properties = new JSONObject();
+        properties.putOpt("location", location);
+        properties.putOpt("unit", unit);
+        // 定义 parameters
+        Parameters parameters = Parameters.builder().type("object")
+                .properties(properties)
+                .required(Arrays.asList("location"))
+                .build();
+        // 构造函数信息
+        ToolFunction toolFunction = ToolFunction.builder()
+                .name("get_current_weather")
+                .description("Get the current weather in a given location")
+                .parameters(parameters).build();
+        // 构造工具
+        Tool tool = Tool.builder()
+                .type(Tool.Type.FUNCTION.getName())
+                .function(toolFunction).build();
+        // 构造请求参数
+        FuncChatCompletionRequest funcChatCompletionRequest = FuncChatCompletionRequest.BuildFuncChatCompletionRequest("What is the weather like in Boston?");
+        funcChatCompletionRequest.setTools(Arrays.asList(tool));
+        funcChatCompletionRequest.setToolChoice("auto");
+        // 获取请求结果
+        ChatCompletionResponse chatCompletionResponse = aggregationSession.getChatSession().chatCompletions(NULL, NULL, NULL, funcChatCompletionRequest);
+        log.info("测试结果：{}", chatCompletionResponse);
+    }
+
+    /**
+     * 测试图片对话
+     */
+    @Test
+    public void test_img_chat_completions() {
+        // 构造对话内容
+        Content textContent = Content.BuildTextContent("这张图片当中有什么？");
+        Content imgContent = Content.BuildImageUrlContent("https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg");
+        // 构造 msg 内容
+        ImgMessage imgMessage = ImgMessage.builder().role(Constants.Role.USER.getRoleName()).content(Arrays.asList(textContent, imgContent)).build();
+        // 构造请求参数，chatGPT 4 支持图片对话
+        ImgChatCompletionRequest imgChatCompletionRequest = ImgChatCompletionRequest.builder().model(BaseChatCompletionRequest.Model.GPT_4_VISION_PREVIEW.getModuleName()).messages(Arrays.asList(imgMessage)).build();
+        // 获取结果
+        ChatCompletionResponse chatCompletionResponse = aggregationSession.getChatSession().chatCompletions(NULL, NULL, NULL, imgChatCompletionRequest);
+        log.info("测试结果：{}", chatCompletionResponse);
+    }
+
+    /**
      * 测试聊天对话，流式返回结果。
      */
     @Test
     public void test_chat_completions_stream() throws InterruptedException, JsonProcessingException {
-        ChatCompletionRequest chatCompletion = ChatCompletionRequest.builder().stream(true)
-                .messages(Collections.singletonList(Message.builder().role(Constants.Role.USER.getRoleName()).content("1+1=").build()))
-                .model(ChatCompletionRequest.Model.GPT_3_5_TURBO.getModuleName())
+        // 建造者模式构造参数
+        DefaultChatCompletionRequest defaultChatCompletionRequest = DefaultChatCompletionRequest.builder()
+                .stream(true)// 开启流式返回
+                .messages(Collections.singletonList(DefaultMessage.builder().role(Constants.Role.USER.getRoleName()).content("1+1=").build()))
+                .model(BaseChatCompletionRequest.Model.GPT_3_5_TURBO.getModuleName())
                 .build();
 
-        aggregationSession.getChatSession().chatCompletions(NULL, NULL, NULL, chatCompletion, new EventSourceListener() {
+        aggregationSession.getChatSession().chatCompletions(NULL, NULL, NULL, defaultChatCompletionRequest, new EventSourceListener() {
             @Override
             public void onEvent(EventSource eventSource, String id, String type, String data) {
                 log.info("测试结果 id:{} type:{} data:{}", id, type, data);
@@ -142,14 +207,14 @@ public class ChatApiTest {
     @Test
     public void test_chat_completions_future() throws JsonProcessingException, InterruptedException, ExecutionException {
         // 构造请求参数
-        ChatCompletionRequest chatCompletion = ChatCompletionRequest
+        DefaultChatCompletionRequest defaultChatCompletionRequest = DefaultChatCompletionRequest
                 .builder()
                 .stream(true)
-                .messages(Collections.singletonList(Message.builder().role(Constants.Role.USER.getRoleName()).content("1+1=").build()))
-                .model(ChatCompletionRequest.Model.GPT_3_5_TURBO.getModuleName())
+                .messages(Collections.singletonList(DefaultMessage.builder().role(Constants.Role.USER.getRoleName()).content("1+1=").build()))
+                .model(BaseChatCompletionRequest.Model.GPT_3_5_TURBO.getModuleName())
                 .build();
         // 等待结果
-        CompletableFuture<String> future = aggregationSession.getChatSession().chatCompletionsFuture(NULL, NULL, NULL, chatCompletion);
+        CompletableFuture<String> future = aggregationSession.getChatSession().chatCompletionsFuture(NULL, NULL, NULL, defaultChatCompletionRequest);
         log.info("测试结果：{}", future.get());
     }
 

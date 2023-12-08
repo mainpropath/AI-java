@@ -1,12 +1,14 @@
 package com.ai.openAi.achieve.standard.api;
 
+import com.ai.openAi.common.CommonListResponse;
 import com.ai.openAi.endPoint.audio.req.TtsCompletionRequest;
 import com.ai.openAi.endPoint.audio.resp.SttCompletionResponse;
-import com.ai.openAi.endPoint.chat.req.ChatCompletionRequest;
+import com.ai.openAi.endPoint.chat.req.DefaultChatCompletionRequest;
+import com.ai.openAi.endPoint.chat.req.FuncChatCompletionRequest;
+import com.ai.openAi.endPoint.chat.req.ImgChatCompletionRequest;
 import com.ai.openAi.endPoint.chat.req.QaCompletionRequest;
 import com.ai.openAi.endPoint.chat.resp.ChatCompletionResponse;
 import com.ai.openAi.endPoint.chat.resp.QaCompletionResponse;
-import com.ai.openAi.common.CommonListResponse;
 import com.ai.openAi.endPoint.embeddings.req.EmbeddingCompletionRequest;
 import com.ai.openAi.endPoint.embeddings.resp.EmbeddingCompletionResponse;
 import com.ai.openAi.endPoint.files.FileObject;
@@ -49,16 +51,40 @@ public interface ApiServer {
     Single<QaCompletionResponse> createQaCompletion(@Header(API_HOST) String apiHostByUser, @Header(API_KEY) String apiKeyByUser, @Header(URL) String apiUrlByUser, @Body QaCompletionRequest qaCompletionRequest);
 
     /**
-     * 对话聊天接口
+     * 普通对话聊天接口
      *
-     * @param apiHostByUser         用户自定义 host
-     * @param apiKeyByUser          用户自定义密钥
-     * @param apiUrlByUser          用户自定义请求地址
-     * @param chatCompletionRequest 用户自定义封装的请求参数
+     * @param apiHostByUser                用户自定义 host
+     * @param apiKeyByUser                 用户自定义密钥
+     * @param apiUrlByUser                 用户自定义请求地址
+     * @param defaultChatCompletionRequest 用户自定义封装的请求参数
      * @return 请求结果
      */
     @POST("/v1/chat/completions")
-    Single<ChatCompletionResponse> createChatCompletion(@Header(API_HOST) String apiHostByUser, @Header(API_KEY) String apiKeyByUser, @Header(URL) String apiUrlByUser, @Body ChatCompletionRequest chatCompletionRequest);
+    Single<ChatCompletionResponse> createChatCompletion(@Header(API_HOST) String apiHostByUser, @Header(API_KEY) String apiKeyByUser, @Header(URL) String apiUrlByUser, @Body DefaultChatCompletionRequest defaultChatCompletionRequest);
+
+    /**
+     * 图片对话聊天接口
+     *
+     * @param apiHostByUser            用户自定义 host
+     * @param apiKeyByUser             用户自定义密钥
+     * @param apiUrlByUser             用户自定义请求地址
+     * @param imgChatCompletionRequest 用户自定义封装的请求参数
+     * @return 请求结果
+     */
+    @POST("/v1/chat/completions")
+    Single<ChatCompletionResponse> createChatCompletion(@Header(API_HOST) String apiHostByUser, @Header(API_KEY) String apiKeyByUser, @Header(URL) String apiUrlByUser, @Body ImgChatCompletionRequest imgChatCompletionRequest);
+
+    /**
+     * 函数对话聊天接口
+     *
+     * @param apiHostByUser             用户自定义 host
+     * @param apiKeyByUser              用户自定义密钥
+     * @param apiUrlByUser              用户自定义请求地址
+     * @param funcChatCompletionRequest 用户自定义封装的请求参数
+     * @return 请求结果
+     */
+    @POST("/v1/chat/completions")
+    Single<ChatCompletionResponse> createChatCompletion(@Header(API_HOST) String apiHostByUser, @Header(API_KEY) String apiKeyByUser, @Header(URL) String apiUrlByUser, @Body FuncChatCompletionRequest funcChatCompletionRequest);
 
 
     /**
@@ -117,9 +143,9 @@ public interface ApiServer {
     /**
      * 创建微调作业
      *
-     * @param apiHostByUser           用户自定义 host
-     * @param apiKeyByUser            用户自定义密钥
-     * @param apiUrlByUser            用户自定义请求地址
+     * @param apiHostByUser     用户自定义 host
+     * @param apiKeyByUser      用户自定义密钥
+     * @param apiUrlByUser      用户自定义请求地址
      * @param fineTuningRequest 请求参数
      * @return 请求结果
      */

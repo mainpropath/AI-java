@@ -111,13 +111,13 @@ aggregationSession.getEmbeddingSession();
 ```java
 // 创建参数，上下文对话。
 // 第一次的问题
-ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest.BuildBaseChatCompletionRequest("1+1=");
+ChatCompletionRequest baseChatCompletionRequest = ChatCompletionRequest.BuildBaseChatCompletionRequest("1+1=");
 // 第一次的回复
-chatCompletionRequest.getMessages().add(Message.builder().role(Constants.Role.ASSISTANT.getRoleName()).content("2").build());
+baseChatCompletionRequest.getMessages().add(Message.builder().role(Constants.Role.ASSISTANT.getRoleName()).content("2").build());
 // 第二次的问题
-chatCompletionRequest.getMessages().add(Message.builder().role(Constants.Role.USER.getRoleName()).content("2+2=").build());
+baseChatCompletionRequest.getMessages().add(Message.builder().role(Constants.Role.USER.getRoleName()).content("2+2=").build());
 // 询问第二次的问题的结果
-ChatCompletionResponse chatCompletionResponse = aggregationSession.getChatSession().chatCompletions(NULL, NULL, NULL, chatCompletionRequest);
+ChatCompletionResponse chatCompletionResponse = aggregationSession.getChatSession().chatCompletions(NULL, NULL, NULL, baseChatCompletionRequest);
 // 解析结果
 chatCompletionResponse.getChoices().forEach(e -> {
     log.info("测试结果：{}", e.getMessage());

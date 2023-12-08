@@ -1,5 +1,7 @@
 package com.ai.openAi.endPoint.chat;
 
+import com.ai.openAi.endPoint.chat.msg.BaseMessage;
+import com.ai.openAi.endPoint.chat.msg.DefaultMessage;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
@@ -16,12 +18,12 @@ public class ChatChoice implements Serializable {
     /**
      * stream = true时，由流式模型响应生成的聊天完成增量
      */
-    private Message delta;
+    private DefaultMessage delta;
 
     /**
      * stream = false时，模型生成的聊天完成消息
      */
-    private Message message;
+    private DefaultMessage message;
 
     /**
      * 模型停止生成令牌的原因

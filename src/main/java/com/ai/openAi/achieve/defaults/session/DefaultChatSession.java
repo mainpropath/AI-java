@@ -2,16 +2,18 @@ package com.ai.openAi.achieve.defaults.session;
 
 
 import cn.hutool.http.ContentType;
-import com.ai.openAi.endPoint.chat.ChatChoice;
-import com.ai.openAi.endPoint.chat.Message;
-import com.ai.openAi.endPoint.chat.req.ChatCompletionRequest;
-import com.ai.openAi.endPoint.chat.req.QaCompletionRequest;
-import com.ai.openAi.endPoint.chat.resp.ChatCompletionResponse;
-import com.ai.openAi.endPoint.chat.resp.QaCompletionResponse;
-import com.ai.openAi.common.Constants;
 import com.ai.openAi.achieve.Configuration;
 import com.ai.openAi.achieve.standard.api.ApiServer;
 import com.ai.openAi.achieve.standard.interfaceSession.ChatSession;
+import com.ai.openAi.common.Constants;
+import com.ai.openAi.endPoint.chat.ChatChoice;
+import com.ai.openAi.endPoint.chat.msg.DefaultMessage;
+import com.ai.openAi.endPoint.chat.req.DefaultChatCompletionRequest;
+import com.ai.openAi.endPoint.chat.req.FuncChatCompletionRequest;
+import com.ai.openAi.endPoint.chat.req.ImgChatCompletionRequest;
+import com.ai.openAi.endPoint.chat.req.QaCompletionRequest;
+import com.ai.openAi.endPoint.chat.resp.ChatCompletionResponse;
+import com.ai.openAi.endPoint.chat.resp.QaCompletionResponse;
 import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -69,27 +71,37 @@ public class DefaultChatSession implements ChatSession {
     }
 
     @Override
-    public ChatCompletionResponse chatCompletions(String apiHostByUser, String apiKeyByUser, String apiUrlByUser, ChatCompletionRequest chatCompletionRequest) {
-        return this.apiServer.createChatCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, chatCompletionRequest).blockingGet();
+    public ChatCompletionResponse chatCompletions(String apiHostByUser, String apiKeyByUser, String apiUrlByUser, DefaultChatCompletionRequest defaultChatCompletionRequest) {
+        return this.apiServer.createChatCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, defaultChatCompletionRequest).blockingGet();
     }
 
     @Override
-    public EventSource chatCompletions(String apiHostByUser, String apiKeyByUser, String apiUrlByUser, ChatCompletionRequest chatCompletionRequest, EventSourceListener eventSourceListener) throws JsonProcessingException {
+    public ChatCompletionResponse chatCompletions(String apiHostByUser, String apiKeyByUser, String apiUrlByUser, ImgChatCompletionRequest imgChatCompletionRequest) {
+        return this.apiServer.createChatCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, imgChatCompletionRequest).blockingGet();
+    }
+
+    @Override
+    public ChatCompletionResponse chatCompletions(String apiHostByUser, String apiKeyByUser, String apiUrlByUser, FuncChatCompletionRequest funcChatCompletionRequest) {
+        return this.apiServer.createChatCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, funcChatCompletionRequest).blockingGet();
+    }
+
+    @Override
+    public EventSource chatCompletions(String apiHostByUser, String apiKeyByUser, String apiUrlByUser, DefaultChatCompletionRequest defaultChatCompletionRequest, EventSourceListener eventSourceListener) throws JsonProcessingException {
         Request request = new Request.Builder()
                 .addHeader(API_HOST, apiHostByUser)
                 .addHeader(API_KEY, apiKeyByUser)
                 .addHeader(URL, apiUrlByUser)
                 .url(configuration.getApiHost().concat(ApiUrl.v1_chat_completions.getCode()))
-                .post(RequestBody.create(MediaType.parse(ContentType.JSON.getValue()), new ObjectMapper().writeValueAsString(chatCompletionRequest)))
+                .post(RequestBody.create(MediaType.parse(ContentType.JSON.getValue()), new ObjectMapper().writeValueAsString(defaultChatCompletionRequest)))
                 .build();
         return factory.newEventSource(request, eventSourceListener);
     }
 
     @Override
-    public CompletableFuture<String> chatCompletionsFuture(String apiHostByUser, String apiKeyByUser, String apiUrlByUser, ChatCompletionRequest chatCompletionRequest) throws JsonProcessingException {
+    public CompletableFuture<String> chatCompletionsFuture(String apiHostByUser, String apiKeyByUser, String apiUrlByUser, DefaultChatCompletionRequest defaultChatCompletionRequest) throws JsonProcessingException {
         CompletableFuture<String> future = new CompletableFuture<>();
         StringBuffer dataBuffer = new StringBuffer();
-        chatCompletions(apiHostByUser, apiKeyByUser, apiUrlByUser, chatCompletionRequest, new EventSourceListener() {
+        chatCompletions(apiHostByUser, apiKeyByUser, apiUrlByUser, defaultChatCompletionRequest, new EventSourceListener() {
             @Override
             public void onEvent(EventSource eventSource, String id, String type, String data) {
                 if ("[DONE]".equalsIgnoreCase(data)) {
@@ -99,7 +111,7 @@ public class DefaultChatSession implements ChatSession {
                 ChatCompletionResponse chatCompletionResponse = JSON.parseObject(data, ChatCompletionResponse.class);
                 List<ChatChoice> choices = chatCompletionResponse.getChoices();
                 for (ChatChoice chatChoice : choices) {
-                    Message delta = chatChoice.getDelta();
+                    DefaultMessage delta = chatChoice.getDelta();
                     if (Constants.Role.ASSISTANT.getRoleName().equals(delta.getRole())) continue;
                     // 应答完成
                     String finishReason = chatChoice.getFinishReason();

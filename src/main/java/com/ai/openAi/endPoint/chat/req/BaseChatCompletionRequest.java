@@ -1,29 +1,21 @@
 package com.ai.openAi.endPoint.chat.req;
 
-import com.ai.openAi.endPoint.chat.Message;
-import com.ai.openAi.common.Constants;
+import com.ai.openAi.endPoint.chat.ResponseFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 @Data
-@Builder
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChatCompletionRequest implements Serializable {
-
-    /**
-     * 构成对话的消息列表
-     */
-    @NonNull
-    private List<Message> messages;
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class BaseChatCompletionRequest implements Serializable {
 
     /**
      * 要使用的模型的 ID
@@ -63,15 +55,18 @@ public class ChatCompletionRequest implements Serializable {
     private double presencePenalty;
 
     /**
+     * 指定模型必须输出的格式的对象。
+     */
+    @JsonProperty("response_format")
+    private ResponseFormat responseFormat;
+
+    private Integer seed;
+
+    /**
      * 停止输出标识，默认值为 null
      * 最多 4 个序列，API 将停止生成更多令牌
      */
     private List<String> stop;
-
-    /**
-     * 是否为流式输出，默认值为 false
-     */
-    private boolean stream;
 
     /**
      * 使用什么采样温度，介于 0 和 2 之间，默认值为 1
@@ -84,49 +79,18 @@ public class ChatCompletionRequest implements Serializable {
      * 温度采样的替代方法，称为核采样，其中模型考虑具有top_p概率质量的标记的结果。因此，0.1 表示仅考虑包含前 10% 概率质量的代币。
      */
     @JsonProperty("top_p")
-    private Double topP = 1d;
+    private Double topP;
 
     /**
      * 调用标识，避免重复调用
      */
     private String user;
 
-    /**
-     * 构造基础请求内容
-     *
-     * @param question 问题内容
-     * @return 聊天对话请求体
-     */
-    public static ChatCompletionRequest BuildBaseChatCompletionRequest(String question) {
-        return ChatCompletionRequest
-                .builder()
-                .messages(new ArrayList<>(Collections.singletonList(Message.builder().role(Constants.Role.USER.getRoleName()).content(question).build())))
-                .build();
-    }
-
-    /**
-     * 上下文对话时，添加问答内容
-     *
-     * @param message 问答内容
-     */
-    public void addMessage(Message message) {
-        this.messages.add(message);
-    }
-
-    /**
-     * 上下文对话时，添加问答内容
-     *
-     * @param role    角色
-     * @param content 内容
-     */
-    public void addMessage(String role, String content) {
-        this.addMessage(Message.builder().role(role).content(content).build());
-    }
-
     @Getter
     @AllArgsConstructor
     public enum Model {
         GPT_3_5_TURBO("gpt-3.5-turbo"), GPT_4("gpt-4"), GPT_4_32K("gpt-4-32k"),
+        GPT_4_VISION_PREVIEW("gpt-4-vision-preview"),
         ;
         private String moduleName;
     }

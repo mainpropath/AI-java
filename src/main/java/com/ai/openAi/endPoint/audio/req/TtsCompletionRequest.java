@@ -1,6 +1,6 @@
 package com.ai.openAi.endPoint.audio.req;
 
-import com.ai.openAi.endPoint.chat.req.ChatCompletionRequest;
+import com.ai.openAi.endPoint.chat.req.BaseChatCompletionRequest;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
@@ -18,7 +18,7 @@ public class TtsCompletionRequest implements Serializable {
      * 要使用的模型的 ID
      */
     @Builder.Default
-    private String model = ChatCompletionRequest.Model.GPT_3_5_TURBO.getModuleName();
+    private String model = BaseChatCompletionRequest.Model.GPT_3_5_TURBO.getModuleName();
 
     /**
      * 要为其生成音频的文本，最大长度为4096个字符

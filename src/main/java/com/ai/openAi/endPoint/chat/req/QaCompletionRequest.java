@@ -41,7 +41,6 @@ public class QaCompletionRequest implements Serializable {
     @JsonProperty("frequency_penalty")
     private double frequencyPenalty;
 
-
     /**
      * 修改指定标记出现的可能性，默认值为 null
      */
