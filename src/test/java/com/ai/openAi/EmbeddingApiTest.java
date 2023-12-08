@@ -1,7 +1,7 @@
 package com.ai.openAi;
 
 import com.ai.openAi.achieve.Configuration;
-import com.ai.openAi.achieve.defaults.session.DefaultOpenAiSessionFactory;
+import com.ai.openAi.achieve.defaults.DefaultOpenAiSessionFactory;
 import com.ai.openAi.achieve.defaults.strategy.FirstKeyStrategy;
 import com.ai.openAi.achieve.standard.OpenAiSessionFactory;
 import com.ai.openAi.achieve.standard.interfaceSession.AggregationSession;
@@ -37,6 +37,7 @@ public class EmbeddingApiTest {
         configuration.setKeyList(Arrays.asList("填入你的API Key"));
         // 4. 设置请求时 key 的使用策略，默认实现了：随机获取 和 固定第一个Key 两种方式。
         configuration.setKeyStrategy(new FirstKeyStrategy());
+//        configuration.setKeyStrategy(new RandomKeyStrategy());
         // 5. 设置代理，若不需要可不设置
         configuration.setProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("127.0.0.1", 7890)));
         // 6. 创建 session 工厂，制造不同场景的 session

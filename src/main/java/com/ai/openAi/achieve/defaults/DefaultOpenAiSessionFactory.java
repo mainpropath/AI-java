@@ -1,7 +1,8 @@
-package com.ai.openAi.achieve.defaults.session;
+package com.ai.openAi.achieve.defaults;
 
 
 import com.ai.openAi.achieve.Configuration;
+import com.ai.openAi.achieve.defaults.session.DefaultAggregationSession;
 import com.ai.openAi.achieve.standard.OpenAiSessionFactory;
 import com.ai.openAi.achieve.standard.api.ApiServer;
 import com.ai.openAi.interceptor.HeaderInterceptor;
