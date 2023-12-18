@@ -49,7 +49,8 @@ public class ChatApiTest {
         // 2. 设置请求地址，若有代理商或者代理服务器，可填写为代理服务器的请求路径
         configuration.setApiHost("https://api.openai.com");
         // 3. 设置鉴权所需的API Key,可设置多个。
-        configuration.setKeyList(Arrays.asList("填入你的API Key"));
+//        configuration.setKeyList(Arrays.asList("填入你的API Key"));
+        configuration.setKeyList(Arrays.asList("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"));
         // 4. 设置请求时 key 的使用策略，默认实现了：随机获取 和 固定第一个Key 两种方式。
         configuration.setKeyStrategy(new FirstKeyStrategy());
 //        configuration.setKeyStrategy(new RandomKeyStrategy());

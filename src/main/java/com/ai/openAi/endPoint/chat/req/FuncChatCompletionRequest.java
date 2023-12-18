@@ -3,6 +3,7 @@ package com.ai.openAi.endPoint.chat.req;
 import com.ai.openAi.common.Constants;
 import com.ai.openAi.endPoint.chat.msg.DefaultMessage;
 import com.ai.openAi.endPoint.chat.tools.Tool;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
@@ -18,9 +19,10 @@ import java.util.List;
  **/
 @Data
 @SuperBuilder
-@JsonInclude(JsonInclude.Include.NON_NULL)
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class FuncChatCompletionRequest extends BaseChatCompletionRequest implements Serializable {
 
     /**

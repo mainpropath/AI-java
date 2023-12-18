@@ -2,6 +2,7 @@ package com.ai.openAi.endPoint.chat.req;
 
 import com.ai.openAi.common.Constants;
 import com.ai.openAi.endPoint.chat.msg.DefaultMessage;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -22,6 +23,7 @@ import java.util.List;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class DefaultChatCompletionRequest extends BaseChatCompletionRequest implements Serializable {
 

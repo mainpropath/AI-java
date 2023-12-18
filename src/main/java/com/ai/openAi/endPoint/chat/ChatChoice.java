@@ -2,8 +2,12 @@ package com.ai.openAi.endPoint.chat;
 
 import com.ai.openAi.endPoint.chat.msg.BaseMessage;
 import com.ai.openAi.endPoint.chat.msg.DefaultMessage;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
@@ -11,6 +15,10 @@ import java.io.Serializable;
  * @Description: 聊天接口模型返回的信息
  **/
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ChatChoice implements Serializable {
 
     private long index;

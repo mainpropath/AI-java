@@ -1,6 +1,8 @@
 package com.ai.openAi.endPoint.fineTuning.resp;
 
 import com.ai.openAi.endPoint.fineTuning.HyperParameters;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,6 +14,8 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class FineTuningResponse implements Serializable {
 
     /**

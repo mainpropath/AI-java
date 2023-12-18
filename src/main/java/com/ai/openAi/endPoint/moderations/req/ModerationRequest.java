@@ -1,5 +1,6 @@
 package com.ai.openAi.endPoint.moderations.req;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
@@ -8,9 +9,10 @@ import java.util.List;
 
 @Data
 @Builder
-@JsonInclude(JsonInclude.Include.NON_NULL)
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ModerationRequest {
 
     @NonNull

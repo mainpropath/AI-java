@@ -1,5 +1,6 @@
 package com.ai.openAi.endPoint.fineTuning.req;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,9 +11,10 @@ import java.io.Serializable;
 
 @Data
 @Builder
-@JsonInclude(JsonInclude.Include.NON_NULL)
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ListFineTuningRequest implements Serializable {
 
     /**
