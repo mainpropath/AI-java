@@ -74,7 +74,7 @@ public class CreateImageRequest implements Serializable {
      * @return 请求参数
      */
     public static CreateImageRequest BuildBaseCreateImageRequest(String prompt) {
-        return CreateImageRequest.builder().prompt("森林里有一只小熊，小熊在吃蜂蜜。").build();
+        return CreateImageRequest.builder().prompt(prompt).build();
     }
 
     /**
