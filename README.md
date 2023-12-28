@@ -98,16 +98,16 @@
 // 1. 创建配置类
 Configuration configuration=new Configuration();
 // 2. 设置请求地址，若有代理商或者代理服务器，可填写为代理服务器的请求路径
-        configuration.setApiHost("https://api.openai.com");
+configuration.setApiHost("https://api.openai.com");
 // 3. 设置鉴权所需的API Key,可设置多个。
-        configuration.setKeyList(Arrays.asList("填入你的API Key"));
+configuration.setKeyList(Arrays.asList("填入你的API Key"));
 // 4. 设置请求时 key 的使用策略，默认实现了：随机获取 和 固定第一个Key 两种方式。
-        configuration.setKeyStrategy(new FirstKeyStrategy());
+configuration.setKeyStrategy(new FirstKeyStrategy());
 //  configuration.setKeyStrategy(new RandomKeyStrategy());// 设置随机获取 Key
 // 5. 设置代理，若不需要可不设置
-        configuration.setProxy(new Proxy(Proxy.Type.HTTP,new InetSocketAddress("127.0.0.1",7890)));
+configuration.setProxy(new Proxy(Proxy.Type.HTTP,new InetSocketAddress("127.0.0.1",7890)));
 // 6. 创建 session 工厂，制造不同场景的 session
-        OpenAiSessionFactory factory=new DefaultOpenAiSessionFactory(configuration);
+OpenAiSessionFactory factory=new DefaultOpenAiSessionFactory(configuration);
 ```
 
 通过sessionFactory获取聚合的不同场景的会话窗口。
@@ -118,21 +118,21 @@ AggregationSession aggregationSession=factory.openAggregationSession();
 
 // 通过聚合的session获取不同场景的会话，处理不同场景，进行解耦。
 // 获取聊天会话窗口
-        aggregationSession.getChatSession();
+aggregationSession.getChatSession();
 // 获取文件会话窗口
-        aggregationSession.getFilesSession();
+aggregationSession.getFilesSession();
 // 获取微调会话窗口
-        aggregationSession.getFineTuningSession();
+aggregationSession.getFineTuningSession();
 // 获取图片会话窗口
-        aggregationSession.getImageSession();
+aggregationSession.getImageSession();
 // 获取模型会话窗口
-        aggregationSession.getModelSession();
+aggregationSession.getModelSession();
 // 获取音频会话窗口
-        aggregationSession.getAudioSession();
+aggregationSession.getAudioSession();
 // 获取审核会话窗口
-        aggregationSession.getModerationSession();
+aggregationSession.getModerationSession();
 // 获取嵌入会话窗口
-        aggregationSession.getEmbeddingSession();
+aggregationSession.getEmbeddingSession();
 ```
 
 ## **示例**
@@ -142,75 +142,75 @@ AggregationSession aggregationSession=factory.openAggregationSession();
 示例一：多轮对话
 
 ```java
-    public void test_chat_completions(){
-        // 创建参数，上下文对话。
-        // 第一次的问题
-        DefaultChatCompletionRequest defaultChatCompletionRequest=DefaultChatCompletionRequest.BuildDefaultChatCompletionRequest("1+1=");
-        // 第一次的回复
-        defaultChatCompletionRequest.addMessage(Constants.Role.ASSISTANT.getRoleName(),"2");
-        // 第二次的问题
-        defaultChatCompletionRequest.addMessage(Constants.Role.USER.getRoleName(),"2+2=");
-        // 询问第二次的问题的结果
-        ChatCompletionResponse chatCompletionResponse=aggregationSession.getChatSession().chatCompletions(NULL,NULL,NULL,defaultChatCompletionRequest);
-        // 解析结果
-        chatCompletionResponse.getChoices().forEach(e->{
-        log.info("测试结果：{}",e.getMessage());
-        });
-        }
+public void test_chat_completions() {
+    // 创建参数，上下文对话。
+    // 第一次的问题
+    DefaultChatCompletionRequest defaultChatCompletionRequest = DefaultChatCompletionRequest.BuildDefaultChatCompletionRequest("1+1=");
+    // 第一次的回复
+    defaultChatCompletionRequest.addMessage(Constants.Role.ASSISTANT.getRoleName(), "2");
+    // 第二次的问题
+    defaultChatCompletionRequest.addMessage(Constants.Role.USER.getRoleName(), "2+2=");
+    // 询问第二次的问题的结果
+    ChatCompletionResponse chatCompletionResponse = aggregationSession.getChatSession().chatCompletions(NULL, NULL, NULL, defaultChatCompletionRequest);
+    // 解析结果
+    chatCompletionResponse.getChoices().forEach(e -> {
+        log.info("测试结果：{}", e.getMessage());
+    });
+}
 ```
 
 示例二：图片创作
 
 ```java
-    public void test_create_image(){
-        CreateImageRequest createImageRequest=CreateImageRequest.BuildBaseCreateImageRequest("森林里有一只小熊，小熊在吃蜂蜜。");
-        List<ImageObject> imageObjectList=aggregationSession.getImageSession().createImageCompletions(NULL,NULL,NULL,createImageRequest);
-        log.info("测试结果：{}",imageObjectList);
-        }
+public void test_create_image() {
+    CreateImageRequest createImageRequest = CreateImageRequest.BuildBaseCreateImageRequest("森林里有一只小熊，小熊在吃蜂蜜。");
+    List<ImageObject> imageObjectList = aggregationSession.getImageSession().createImageCompletions(NULL, NULL, NULL, createImageRequest);
+    log.info("测试结果：{}", imageObjectList);
+}
 ```
 
 示例三：文本转语音（主要是通过回调函数获取回传的音频数据）
 
 ```java
-    public void test_tts()throws InterruptedException{
-        // 定义请求参数
-        TtsCompletionRequest ttsCompletionRequest=TtsCompletionRequest.builder()
-        .model(TtsCompletionRequest.Model.tts_1.getModuleName())// 设置使用的模型
-        .input("你好，我是chatGPT")
-        .voice(TtsCompletionRequest.Voice.alloy.getVoiceName())// 设置声音的样式
-        .build();
-        // 回传文件存放的路径
-        File file=new File("doc/test/test_tts.mp3");
-        // 添加回调函数，发送请求
-        aggregationSession.getAudioSession().ttsCompletions(NULL,NULL,NULL,ttsCompletionRequest,new Callback<ResponseBody>(){
-@Override
-public void onResponse(Call<ResponseBody> call,Response<ResponseBody> response){
-        try(InputStream inputStream=response.body().byteStream();
-        OutputStream os=new BufferedOutputStream(new FileOutputStream(file))){
-        // 创建文件
-        if(!file.exists()){
-        if(!file.getParentFile().exists())file.getParentFile().mkdir();
-        file.createNewFile();
-        }
-        byte data[]=new byte[10240];
-        int len;
-        while((len=inputStream.read(data,0,8192))!=-1){
-        os.write(data,0,len);
-        }
-        }catch(IOException e){
-        e.printStackTrace();
-        }
-        }
+public void test_tts() throws InterruptedException {
+    // 定义请求参数
+    TtsCompletionRequest ttsCompletionRequest = TtsCompletionRequest.builder()
+            .model(TtsCompletionRequest.Model.tts_1.getModuleName())// 设置使用的模型
+            .input("你好，我是chatGPT")
+            .voice(TtsCompletionRequest.Voice.alloy.getVoiceName())// 设置声音的样式
+            .build();
+    // 回传文件存放的路径
+    File file = new File("doc/test/test_tts.mp3");
+    // 添加回调函数，发送请求
+    aggregationSession.getAudioSession().ttsCompletions(NULL, NULL, NULL, ttsCompletionRequest, new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    try (InputStream inputStream = response.body().byteStream();
+                         OutputStream os = new BufferedOutputStream(new FileOutputStream(file))) {
+                        // 创建文件
+                        if (!file.exists()) {
+                            if (!file.getParentFile().exists()) file.getParentFile().mkdir();
+                            file.createNewFile();
+                        }
+                        byte data[] = new byte[10240];
+                        int len;
+                        while ((len = inputStream.read(data, 0, 8192)) != -1) {
+                            os.write(data, 0, len);
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
 
-@Override
-public void onFailure(Call<ResponseBody> call,Throwable t){
-        t.printStackTrace();
-        }
-        }
-        );
-        // 阻塞等待
-        new CountDownLatch(1).await();
-        }
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    t.printStackTrace();
+                }
+            }
+    );
+    // 阻塞等待
+    new CountDownLatch(1).await();
+}
 ```
 
 更多示例请参考测试目录下各个场景的测试用例。[测试用例文件路径](https://github.com/mainpropath/AI-java/tree/master/src/test/java/com/ai/openAi)
