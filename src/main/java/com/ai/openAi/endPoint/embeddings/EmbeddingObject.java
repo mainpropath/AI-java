@@ -1,5 +1,6 @@
 package com.ai.openAi.endPoint.embeddings;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,12 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EmbeddingObject implements Serializable {
+
+    /**
+     * 嵌入的内容
+     */
+    @JsonIgnore
+    private String content;
 
     /**
      * 嵌入列表中嵌入的索引

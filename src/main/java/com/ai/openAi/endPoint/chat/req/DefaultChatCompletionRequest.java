@@ -4,7 +4,6 @@ import com.ai.openAi.common.Constants;
 import com.ai.openAi.endPoint.chat.msg.DefaultMessage;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

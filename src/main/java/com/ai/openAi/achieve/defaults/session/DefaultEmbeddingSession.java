@@ -1,13 +1,15 @@
 package com.ai.openAi.achieve.defaults.session;
 
-import com.ai.openAi.endPoint.embeddings.req.EmbeddingCompletionRequest;
-import com.ai.openAi.endPoint.embeddings.resp.EmbeddingCompletionResponse;
 import com.ai.openAi.achieve.Configuration;
 import com.ai.openAi.achieve.standard.api.ApiServer;
 import com.ai.openAi.achieve.standard.interfaceSession.EmbeddingSession;
+import com.ai.openAi.endPoint.embeddings.EmbeddingObject;
+import com.ai.openAi.endPoint.embeddings.req.EmbeddingCompletionRequest;
+import com.ai.openAi.endPoint.embeddings.resp.EmbeddingCompletionResponse;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.IntStream;
 
 /**
  * @Description: OpenAI 嵌入类会话
@@ -40,7 +42,12 @@ public class DefaultEmbeddingSession implements EmbeddingSession {
 
     @Override
     public EmbeddingCompletionResponse embeddingCompletions(String apiHostByUser, String apiKeyByUser, String apiUrlByUser, EmbeddingCompletionRequest embeddingCompletionRequest) {
-        return this.apiServer.createEmbeddingsCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, embeddingCompletionRequest).blockingGet();
+        EmbeddingCompletionResponse response = this.apiServer.createEmbeddingsCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, embeddingCompletionRequest).blockingGet();
+        List<EmbeddingObject> data = response.getData();
+        List<String> input = embeddingCompletionRequest.getInput();
+        IntStream.range(0, Math.min(data.size(), input.size()))
+                .forEach(i -> data.get(i).setContent(input.get(i)));
+        return response;
     }
 
 }

@@ -1,6 +1,5 @@
 package com.ai.openAi.endPoint.chat;
 
-import com.ai.openAi.endPoint.chat.msg.BaseMessage;
 import com.ai.openAi.endPoint.chat.msg.DefaultMessage;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;

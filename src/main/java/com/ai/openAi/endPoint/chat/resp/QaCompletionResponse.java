@@ -1,8 +1,8 @@
 package com.ai.openAi.endPoint.chat.resp;
 
 
-import com.ai.openAi.endPoint.chat.QaChoice;
 import com.ai.openAi.common.Usage;
+import com.ai.openAi.endPoint.chat.QaChoice;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;

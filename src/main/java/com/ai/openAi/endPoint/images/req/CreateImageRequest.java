@@ -28,7 +28,7 @@ public class CreateImageRequest implements Serializable {
      * @see Model
      */
     @Builder.Default
-    private String model = Model.DALL_E_3.getName();
+    private String model = Model.DALL_E_2.getName();
 
     /**
      * 要生成的图像数。必须介于 1 和 10 之间，dall-e-3只能为1。
