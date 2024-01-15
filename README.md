@@ -8,6 +8,8 @@
 
 ## **项目背景**
 
+![star-history-2024116](doc/img/star-history-2024116.png)
+
 **基于本项目的大模型框架正在火速研发当中，项目地址：[AI-SmartFuse-Framework](https://github.com/mainpropath/AI-SmartFuse-Framework)**
 
 随着人工智能技术的飞速发展，自然语言处理在各个领域都具有广泛的应用前景。聊天机器人作为其中一种受欢迎且实用的解决方案，能够与用户进行自然对话，并提供有价值的信息和服务。
