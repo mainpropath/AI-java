@@ -1,7 +1,7 @@
 package com.ai.openai.achieve.defaults.session;
 
 import com.ai.openai.achieve.Configuration;
-import com.ai.openai.achieve.standard.api.ApiServer;
+import com.ai.openai.achieve.standard.api.OpenaiApiServer;
 import com.ai.openai.achieve.standard.interfaceSession.EmbeddingSession;
 import com.ai.openai.endPoint.embeddings.EmbeddingObject;
 import com.ai.openai.endPoint.embeddings.req.EmbeddingCompletionRequest;
@@ -23,11 +23,11 @@ public class DefaultEmbeddingSession implements EmbeddingSession {
     /**
      * OpenAI 接口
      */
-    private ApiServer apiServer;
+    private OpenaiApiServer openaiApiServer;
 
     public DefaultEmbeddingSession(Configuration configuration) {
         this.configuration = configuration;
-        this.apiServer = configuration.getApiServer();
+        this.openaiApiServer = configuration.getOpenaiApiServer();
     }
 
     @Override
@@ -42,7 +42,7 @@ public class DefaultEmbeddingSession implements EmbeddingSession {
 
     @Override
     public EmbeddingCompletionResponse embeddingCompletions(String apiHostByUser, String apiKeyByUser, String apiUrlByUser, EmbeddingCompletionRequest embeddingCompletionRequest) {
-        EmbeddingCompletionResponse response = this.apiServer.createEmbeddingsCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, embeddingCompletionRequest).blockingGet();
+        EmbeddingCompletionResponse response = this.openaiApiServer.createEmbeddingsCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, embeddingCompletionRequest).blockingGet();
         List<EmbeddingObject> data = response.getData();
         List<String> input = embeddingCompletionRequest.getInput();
         IntStream.range(0, Math.min(data.size(), input.size()))

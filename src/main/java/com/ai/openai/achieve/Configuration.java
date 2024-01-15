@@ -1,6 +1,6 @@
 package com.ai.openai.achieve;
 
-import com.ai.openai.achieve.standard.api.ApiServer;
+import com.ai.openai.achieve.standard.api.OpenaiApiServer;
 import com.ai.openai.achieve.standard.interfaceStrategy.KeyStrategy;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,7 +26,7 @@ public class Configuration {
     /**
      * api 服务提供者
      */
-    private ApiServer apiServer;
+    private OpenaiApiServer openaiApiServer;
 
     /**
      * api 请求客户端

@@ -1,7 +1,7 @@
 package com.ai.openai.achieve.defaults.session;
 
 import com.ai.openai.achieve.Configuration;
-import com.ai.openai.achieve.standard.api.ApiServer;
+import com.ai.openai.achieve.standard.api.OpenaiApiServer;
 import com.ai.openai.achieve.standard.interfaceSession.FineTuningSession;
 import com.ai.openai.common.CommonListResponse;
 import com.ai.openai.endPoint.fineTuning.FineTuningEvent;
@@ -21,16 +21,16 @@ public class DefaultFineTuningSession implements FineTuningSession {
     /**
      * OpenAI 接口
      */
-    private ApiServer apiServer;
+    private OpenaiApiServer openaiApiServer;
 
     public DefaultFineTuningSession(Configuration configuration) {
         this.configuration = configuration;
-        this.apiServer = configuration.getApiServer();
+        this.openaiApiServer = configuration.getOpenaiApiServer();
     }
 
     @Override
     public FineTuningResponse createFineTuningJobCompletions(String apiHostByUser, String apiKeyByUser, String apiUrlByUser, FineTuningRequest fineTuningRequest) {
-        return this.apiServer.createFineTuningJobCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, fineTuningRequest).blockingGet();
+        return this.openaiApiServer.createFineTuningJobCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, fineTuningRequest).blockingGet();
     }
 
     @Override
@@ -40,22 +40,22 @@ public class DefaultFineTuningSession implements FineTuningSession {
 
     @Override
     public CommonListResponse<FineTuningResponse> listFineTuningJobsCompletions(String apiHostByUser, String apiKeyByUser, String apiUrlByUser, String after, Integer limit) {
-        return this.apiServer.listFineTuningJobsCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, after, limit).blockingGet();
+        return this.openaiApiServer.listFineTuningJobsCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, after, limit).blockingGet();
     }
 
     @Override
     public FineTuningResponse retrieveFineTuningJobCompletions(String apiHostByUser, String apiKeyByUser, String apiUrlByUser, String fineTuningJobId) {
-        return this.apiServer.retrieveFineTuningJobCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, fineTuningJobId).blockingGet();
+        return this.openaiApiServer.retrieveFineTuningJobCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, fineTuningJobId).blockingGet();
     }
 
     @Override
     public FineTuningResponse cancelFineTuningJobCompletions(String apiHostByUser, String apiKeyByUser, String apiUrlByUser, String fineTuningJobId) {
-        return this.apiServer.cancelFineTuningJobCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, fineTuningJobId).blockingGet();
+        return this.openaiApiServer.cancelFineTuningJobCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, fineTuningJobId).blockingGet();
     }
 
     @Override
     public CommonListResponse<FineTuningEvent> listFineTuningEventsCompletions(String apiHostByUser, String apiKeyByUser, String apiUrlByUser, String fineTuningJobId) {
-        return this.apiServer.listFineTuningEventsCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, fineTuningJobId).blockingGet();
+        return this.openaiApiServer.listFineTuningEventsCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, fineTuningJobId).blockingGet();
     }
 
 }

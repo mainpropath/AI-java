@@ -3,7 +3,7 @@ package com.ai.openai.achieve.defaults.session;
 
 import cn.hutool.http.ContentType;
 import com.ai.openai.achieve.Configuration;
-import com.ai.openai.achieve.standard.api.ApiServer;
+import com.ai.openai.achieve.standard.api.OpenaiApiServer;
 import com.ai.openai.achieve.standard.interfaceSession.ChatSession;
 import com.ai.openai.common.Constants;
 import com.ai.openai.endPoint.chat.ChatChoice;
@@ -41,7 +41,7 @@ public class DefaultChatSession implements ChatSession {
     /**
      * OpenAI 接口
      */
-    private ApiServer apiServer;
+    private OpenaiApiServer openaiApiServer;
     /**
      * 工厂事件
      */
@@ -49,13 +49,13 @@ public class DefaultChatSession implements ChatSession {
 
     public DefaultChatSession(Configuration configuration) {
         this.configuration = configuration;
-        this.apiServer = configuration.getApiServer();
+        this.openaiApiServer = configuration.getOpenaiApiServer();
         this.factory = configuration.createRequestFactory();
     }
 
     @Override
     public QaCompletionResponse qaCompletions(String apiHostByUser, String apiKeyByUser, String apiUrlByUser, QaCompletionRequest qaCompletionRequest) {
-        return this.apiServer.createQaCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, qaCompletionRequest).blockingGet();
+        return this.openaiApiServer.createQaCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, qaCompletionRequest).blockingGet();
     }
 
     @Override
@@ -72,17 +72,17 @@ public class DefaultChatSession implements ChatSession {
 
     @Override
     public ChatCompletionResponse chatCompletions(String apiHostByUser, String apiKeyByUser, String apiUrlByUser, DefaultChatCompletionRequest defaultChatCompletionRequest) {
-        return this.apiServer.createChatCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, defaultChatCompletionRequest).blockingGet();
+        return this.openaiApiServer.createChatCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, defaultChatCompletionRequest).blockingGet();
     }
 
     @Override
     public ChatCompletionResponse chatCompletions(String apiHostByUser, String apiKeyByUser, String apiUrlByUser, ImgChatCompletionRequest imgChatCompletionRequest) {
-        return this.apiServer.createChatCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, imgChatCompletionRequest).blockingGet();
+        return this.openaiApiServer.createChatCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, imgChatCompletionRequest).blockingGet();
     }
 
     @Override
     public ChatCompletionResponse chatCompletions(String apiHostByUser, String apiKeyByUser, String apiUrlByUser, FuncChatCompletionRequest funcChatCompletionRequest) {
-        return this.apiServer.createChatCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, funcChatCompletionRequest).blockingGet();
+        return this.openaiApiServer.createChatCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, funcChatCompletionRequest).blockingGet();
     }
 
     @Override

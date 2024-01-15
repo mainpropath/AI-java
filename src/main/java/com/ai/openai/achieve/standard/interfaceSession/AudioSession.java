@@ -33,6 +33,8 @@ public interface AudioSession {
     SttCompletionResponse sttCompletions(String apiHostByUser, String apiKeyByUser, String apiUrlByUser, SttCompletionRequest sttCompletionRequest);
 
     /**
+     * 翻译
+     *
      * @param apiHostByUser        用户自定义 host
      * @param apiKeyByUser         用户自定义密钥
      * @param apiUrlByUser         用户自定义请求地址

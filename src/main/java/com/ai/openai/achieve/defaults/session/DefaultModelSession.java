@@ -2,7 +2,7 @@ package com.ai.openai.achieve.defaults.session;
 
 
 import com.ai.openai.achieve.Configuration;
-import com.ai.openai.achieve.standard.api.ApiServer;
+import com.ai.openai.achieve.standard.api.OpenaiApiServer;
 import com.ai.openai.achieve.standard.interfaceSession.ModelSession;
 import com.ai.openai.endPoint.models.ModelObject;
 import com.ai.openai.endPoint.models.resp.DeleteFineTuneModelResponse;
@@ -21,26 +21,26 @@ public class DefaultModelSession implements ModelSession {
     /**
      * OpenAI 接口
      */
-    private ApiServer apiServer;
+    private OpenaiApiServer openaiApiServer;
 
     public DefaultModelSession(Configuration configuration) {
         this.configuration = configuration;
-        this.apiServer = configuration.getApiServer();
+        this.openaiApiServer = configuration.getOpenaiApiServer();
     }
 
     @Override
     public List<ModelObject> listModelCompletions(String apiHostByUser, String apiKeyByUser, String apiUrlByUser) {
-        return this.apiServer.listModelsCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser).blockingGet().getData();
+        return this.openaiApiServer.listModelsCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser).blockingGet().getData();
     }
 
     @Override
     public ModelObject retrieveModelCompletions(String apiHostByUser, String apiKeyByUser, String apiUrlByUser, String model) {
-        return this.apiServer.retrieveModelCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, model).blockingGet();
+        return this.openaiApiServer.retrieveModelCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, model).blockingGet();
     }
 
     @Override
     public DeleteFineTuneModelResponse deleteFineTuneModelCompletions(String apiHostByUser, String apiKeyByUser, String apiUrlByUser, String model) {
-        return this.apiServer.deleteFineTuneModelCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, model).blockingGet();
+        return this.openaiApiServer.deleteFineTuneModelCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, model).blockingGet();
     }
 
 }

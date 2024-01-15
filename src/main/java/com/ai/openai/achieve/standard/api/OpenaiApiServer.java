@@ -36,7 +36,7 @@ import static com.ai.openai.common.Constants.*;
 /**
  * @Description: OpenAI API接口
  **/
-public interface ApiServer {
+public interface OpenaiApiServer {
 
     /**
      * 简单问答接口

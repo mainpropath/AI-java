@@ -1,7 +1,7 @@
 package com.ai.openai.achieve.defaults.session;
 
 import com.ai.openai.achieve.Configuration;
-import com.ai.openai.achieve.standard.api.ApiServer;
+import com.ai.openai.achieve.standard.api.OpenaiApiServer;
 import com.ai.openai.achieve.standard.interfaceSession.ImageSession;
 import com.ai.openai.endPoint.images.ImageObject;
 import com.ai.openai.endPoint.images.req.CreateImageRequest;
@@ -29,16 +29,16 @@ public class DefaultImageSession implements ImageSession {
     /**
      * OpenAI 接口
      */
-    private ApiServer apiServer;
+    private OpenaiApiServer openaiApiServer;
 
     public DefaultImageSession(Configuration configuration) {
         this.configuration = configuration;
-        this.apiServer = configuration.getApiServer();
+        this.openaiApiServer = configuration.getOpenaiApiServer();
     }
 
     @Override
     public List<ImageObject> createImageCompletions(String apiHostByUser, String apiKeyByUser, String apiUrlByUser, CreateImageRequest createImageRequest) {
-        return this.apiServer.createImageCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, createImageRequest).blockingGet().getData();
+        return this.openaiApiServer.createImageCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, createImageRequest).blockingGet().getData();
     }
 
     @Override
@@ -59,7 +59,7 @@ public class DefaultImageSession implements ImageSession {
         if (!(Objects.isNull(imageEditRequest.getUser()) || "".equals(imageEditRequest.getUser()))) {
             requestBodyMap.put("user", RequestBody.create(MediaType.parse("multipart/form-data"), imageEditRequest.getUser()));
         }
-        return this.apiServer.editImageCompletion(
+        return this.openaiApiServer.editImageCompletion(
                 apiHostByUser, apiKeyByUser, apiUrlByUser,
                 imageMultipartBody,
                 maskMultipartBody,
@@ -78,7 +78,7 @@ public class DefaultImageSession implements ImageSession {
         if (!(Objects.isNull(imageVariationRequest.getUser()) || "".equals(imageVariationRequest.getUser()))) {
             requestBodyMap.put("user", RequestBody.create(MediaType.parse("multipart/form-data"), imageVariationRequest.getUser()));
         }
-        return this.apiServer.variationImageCompletion(
+        return this.openaiApiServer.variationImageCompletion(
                 apiHostByUser, apiKeyByUser, apiUrlByUser,
                 multipartBody,
                 requestBodyMap
