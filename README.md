@@ -142,21 +142,21 @@ aggregationSession.getEmbeddingSession();
 示例一：多轮对话
 
 ```java
-public void test_chat_completions(){
-        // 创建参数，上下文对话。
-        // 第一次的问题
-        DefaultChatCompletionRequest defaultChatCompletionRequest=DefaultChatCompletionRequest.BuildDefaultChatCompletionRequest("1+1=");
-        // 第一次的回复
-        defaultChatCompletionRequest.addMessage(Constants.Role.ASSISTANT.getRoleName(),"2");
-        // 第二次的问题
-        defaultChatCompletionRequest.addMessage(Constants.Role.USER.getRoleName(),"2+2=");
-        // 询问第二次的问题的结果
-        ChatCompletionResponse chatCompletionResponse=aggregationSession.getChatSession().chatCompletions(NULL,NULL,NULL,defaultChatCompletionRequest);
-        // 解析结果
-        chatCompletionResponse.getChoices().forEach(e->{
-        log.info("测试结果：{}",e.getMessage());
-        });
-        }
+public void test_chat_completions() {
+    // 创建参数，上下文对话。
+    // 第一次的问题
+    DefaultChatCompletionRequest defaultChatCompletionRequest = DefaultChatCompletionRequest.BuildDefaultChatCompletionRequest("1+1=");
+    // 第一次的回复
+    defaultChatCompletionRequest.addMessage(Constants.Role.ASSISTANT.getRoleName(), "2");
+    // 第二次的问题
+    defaultChatCompletionRequest.addMessage(Constants.Role.USER.getRoleName(), "2+2=");
+    // 询问第二次的问题的结果
+    ChatCompletionResponse chatCompletionResponse = aggregationSession.getChatSession().chatCompletions(NULL, NULL, NULL, defaultChatCompletionRequest);
+    // 解析结果
+    chatCompletionResponse.getChoices().forEach(e -> {
+        log.info("测试结果：{}", e.getMessage());
+    });
+}
 ```
 
 示例二：图片创作
@@ -216,7 +216,6 @@ public void test_tts() throws InterruptedException {
 更多示例请参考测试目录下各个场景的测试用例。[测试用例文件路径](https://github.com/mainpropath/AI-java/tree/master/src/test/java/com/ai/openAi)
 
 ## **更新记录**
-
 2023-12-28：预启动其他模型的API编写工作
 
 2023-12-14：修复BUG
