@@ -85,7 +85,7 @@ public class ChatApiTest {
             }
 
             @Override
-            public void onFailure(EventSource eventSource, Throwable t, okhttp3.Response response) {
+            public void onFailure(EventSource eventSource, Throwable t, Response response) {
                 log.error("失败 code:{} message:{}", response.code(), response.message());
             }
         });

@@ -15,7 +15,7 @@ import java.util.Objects;
 @Slf4j
 public class ResponseInterceptor implements Interceptor {
     @Override
-    public Response intercept(Interceptor.Chain chain) throws IOException {
+    public Response intercept(Chain chain) throws IOException {
         // 1. 获取 req 和 resp
         Request original = chain.request();
         Response response = chain.proceed(original);
