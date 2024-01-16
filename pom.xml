@@ -9,8 +9,9 @@
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>openai-java</module>
-        <module>spark-java</module>
+        <module>ai-common</module>
+        <module>ai-openai</module>
+        <module>ai-spark</module>
     </modules>
     <name>AI-java</name>
     <description>ai-sdk-java</description>
