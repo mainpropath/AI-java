@@ -5,12 +5,11 @@
     <parent>
         <artifactId>AI-java</artifactId>
         <groupId>com.ai</groupId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>ai-openai</artifactId>
-
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -34,7 +33,7 @@
         <dependency>
             <groupId>com.ai</groupId>
             <artifactId>ai-common</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
