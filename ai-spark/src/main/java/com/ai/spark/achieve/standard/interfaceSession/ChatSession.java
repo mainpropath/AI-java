@@ -8,8 +8,6 @@ public interface ChatSession {
 
     <T extends ChatListener> WebSocket chat(T chatListener);
 
-    <T extends ChatListener> WebSocket chat(String question, T chatListener);
-
-    <T extends ChatListener> WebSocket chat(String hostUrl, String apiKey, String apiSecret, T chatListener);
+    <T extends ChatListener> WebSocket chat(String apiKey, String apiSecret, T chatListener);
 
 }

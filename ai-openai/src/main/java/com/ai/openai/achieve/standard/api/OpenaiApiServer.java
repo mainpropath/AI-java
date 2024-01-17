@@ -112,7 +112,7 @@ public interface OpenaiApiServer {
      */
     @Multipart
     @POST("/v1/audio/transcriptions")
-    Single<SttCompletionResponse> createTranscriptionCompletion(@Header(API_HOST) String apiHostByUser, @Header(API_KEY) String apiKeyByUser, @Header(URL) String apiUrlByUser, @Part MultipartBody.Part file, @PartMap() Map<String, RequestBody> requestBodyMap);
+    Single<SttCompletionResponse> createTranscriptionCompletion(@Header(API_HOST) String apiHostByUser, @Header(API_KEY) String apiKeyByUser, @Header(URL) String apiUrlByUser, @Part MultipartBody.Part file, @PartMap Map<String, RequestBody> requestBodyMap);
 
     /**
      * 发送音频文件，解析并翻译为英文

@@ -36,11 +36,11 @@ public class Choice {
         END(2),
         ;
 
+        private final int value;
+
         Status(int value) {
             this.value = value;
         }
-
-        private final int value;
     }
 
 }

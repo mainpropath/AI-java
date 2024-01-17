@@ -5,7 +5,8 @@ import com.ai.spark.achieve.defaults.session.DefaultAggregationSession;
 import com.ai.spark.achieve.standard.SparkSessionFactory;
 import com.ai.spark.achieve.standard.api.SparkApiServer;
 import com.ai.spark.achieve.standard.interfaceSession.AggregationSession;
-import com.ai.spark.interceptor.UrlInterceptor;
+import com.ai.spark.interceptor.BaseUrlInterceptor;
+import com.ai.spark.interceptor.ResponseInterceptor;
 import lombok.AllArgsConstructor;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -32,7 +33,8 @@ public class DefaultSparkSessionFactory implements SparkSessionFactory {
         // 2. 开启 Http 客户端
         OkHttpClient.Builder builder = new OkHttpClient.Builder()
                 .addInterceptor(httpLoggingInterceptor)
-                .addInterceptor(new UrlInterceptor(configuration.getKeyList(), configuration.getApiHost(), configuration.getKeyStrategy()))
+                .addInterceptor(new BaseUrlInterceptor())
+                .addInterceptor(new ResponseInterceptor())
                 .connectTimeout(450, TimeUnit.SECONDS)
                 .writeTimeout(450, TimeUnit.SECONDS)
                 .readTimeout(450, TimeUnit.SECONDS);
@@ -45,7 +47,7 @@ public class DefaultSparkSessionFactory implements SparkSessionFactory {
 
     public SparkApiServer createSparkAiApi(OkHttpClient okHttpClient) {
         return new Retrofit.Builder()
-//                .baseUrl(configuration.getApiHost())
+                .baseUrl(configuration.getApiHost())
                 .client(okHttpClient)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(JacksonConverterFactory.create())
@@ -56,7 +58,7 @@ public class DefaultSparkSessionFactory implements SparkSessionFactory {
     public AggregationSession openAggregationSession() {
         OkHttpClient okHttpClient = createHttpClient();
         configuration.setOkHttpClient(okHttpClient);
-//        configuration.setSparkApiServer(createSparkAiApi(okHttpClient));
+        configuration.setSparkApiServer(createSparkAiApi(okHttpClient));
         return new DefaultAggregationSession(configuration);
     }
 }

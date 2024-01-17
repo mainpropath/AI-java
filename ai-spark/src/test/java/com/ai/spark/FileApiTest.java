@@ -1,24 +1,20 @@
 package com.ai.spark;
 
-
 import com.ai.common.strategy.impl.FirstKeyStrategy;
 import com.ai.spark.achieve.ApiData;
 import com.ai.spark.achieve.Configuration;
 import com.ai.spark.achieve.defaults.DefaultSparkSessionFactory;
-import com.ai.spark.achieve.defaults.listener.ChatListener;
 import com.ai.spark.achieve.standard.SparkSessionFactory;
 import com.ai.spark.achieve.standard.interfaceSession.AggregationSession;
-import com.ai.spark.common.Usage;
-import com.ai.spark.endPoint.chat.req.ChatRequest;
-import com.ai.spark.endPoint.chat.resp.ChatResponse;
-import lombok.SneakyThrows;
+import com.ai.spark.endPoint.file.req.FileUploadRequest;
+import com.ai.spark.endPoint.file.resp.FileUploadResponse;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.File;
 import java.util.Arrays;
-import java.util.concurrent.CountDownLatch;
 
-public class ChatApiTest {
+public class FileApiTest {
 
     private AggregationSession aggregationSession;
 
@@ -45,37 +41,10 @@ public class ChatApiTest {
     }
 
     @Test
-    public void test_chat() {
-        ChatRequest chatRequest = ChatRequest.buildChatRequest("讲一个笑话", "c8f362b8");
-        aggregationSession.getChatSession().chat(new ChatListener(chatRequest) {
-            @SneakyThrows
-            @Override
-            public void onChatError(ChatResponse chatResponse) {
-                System.err.println(chatResponse);
-            }
-
-            @Override
-            public void onChatOutput(ChatResponse chatResponse) {
-//                System.err.println(chatResponse);
-                System.out.print(chatResponse.getPayload().getChoice().getTexts().get(0).getContent());
-            }
-
-            @Override
-            public void onChatEnd() {
-                System.out.println("当前会话结束了");
-            }
-
-            @Override
-            public void onChatToken(Usage usage) {
-                System.out.println("token 信息：" + usage);
-            }
-        });
-
-        CountDownLatch countDownLatch = new CountDownLatch(1);
-        try {
-            countDownLatch.await();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    public void test_file_upload() {
+        File file = new File("D:\\chatGPT-api\\AI-java\\doc\\test\\test_file_upload.txt");
+        FileUploadRequest request = FileUploadRequest.builder().file(file).build();
+        FileUploadResponse fileUploadResponse = this.aggregationSession.getFileSession().fileUpload(request);
+        System.out.println(fileUploadResponse);
     }
 }

@@ -6,7 +6,6 @@ import com.ai.spark.endPoint.chat.Choice;
 import com.ai.spark.endPoint.chat.Header;
 import com.ai.spark.endPoint.chat.req.ChatRequest;
 import com.ai.spark.endPoint.chat.resp.ChatResponse;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -134,7 +133,6 @@ public abstract class ChatListener extends WebSocketListener {
     public final void onOpen(@NotNull WebSocket webSocket, @NotNull Response response) {
         super.onOpen(webSocket, response);
         ChatRequest chatRequest = this.onChatSend();
-        ObjectMapper mapper = new ObjectMapper();
-        webSocket.send(mapper.writeValueAsString(Objects.isNull(chatRequest) ? this.getChatRequest() : chatRequest));
+        webSocket.send(JsonUtils.objectMapper.writeValueAsString(Objects.isNull(chatRequest) ? this.getChatRequest() : chatRequest));
     }
 }

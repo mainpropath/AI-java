@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ApiData {
 
-    private String appid;
+    private String appId;
     private String apiKey;
     private String apiSecret;
 
