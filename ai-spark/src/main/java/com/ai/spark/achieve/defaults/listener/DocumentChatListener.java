@@ -1,11 +1,8 @@
 package com.ai.spark.achieve.defaults.listener;
 
-import com.ai.spark.common.Usage;
 import com.ai.spark.common.utils.JsonUtils;
-import com.ai.spark.endPoint.chat.Choice;
-import com.ai.spark.endPoint.chat.Header;
-import com.ai.spark.endPoint.chat.req.ChatRequest;
-import com.ai.spark.endPoint.chat.resp.ChatResponse;
+import com.ai.spark.endPoint.chat.req.DocumentChatRequest;
+import com.ai.spark.endPoint.chat.resp.DocumentChatResponse;
 import lombok.Data;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -21,15 +18,20 @@ import static com.ai.common.utils.ValidationUtils.ensureNotNull;
 
 @Slf4j
 @Data
-public abstract class ChatListener extends WebSocketListener {
+public abstract class DocumentChatListener extends WebSocketListener {
 
     /**
      * 请求大模型的参数
      */
-    private ChatRequest chatRequest;
+    private DocumentChatRequest documentChatRequest;
 
-    public ChatListener(ChatRequest chatRequest) {
-        this.chatRequest = ensureNotNull(chatRequest, "chatRequest");
+    /**
+     * 构造方法，传入大模型参数
+     *
+     * @param documentChatRequest 大模型参数
+     */
+    public DocumentChatListener(DocumentChatRequest documentChatRequest) {
+        this.documentChatRequest = ensureNotNull(documentChatRequest, "documentChatRequest");
     }
 
     /**
@@ -47,28 +49,21 @@ public abstract class ChatListener extends WebSocketListener {
     /**
      * 星火大模型发生异常
      *
-     * @param chatResponse 大模型返回值
+     * @param documentChatResponse 大模型返回值
      */
-    public abstract void onChatError(ChatResponse chatResponse);
+    public abstract void onChatError(DocumentChatResponse documentChatResponse);
 
     /**
      * 星火大模型正常返回信息
      *
-     * @param chatResponse 大模型返回值
+     * @param documentChatResponse 大模型返回值
      */
-    public abstract void onChatOutput(ChatResponse chatResponse);
+    public abstract void onChatOutput(DocumentChatResponse documentChatResponse);
 
     /**
      * 星火大模型返回信息结束回调
      */
     public abstract void onChatEnd();
-
-    /**
-     * 星火大模型本次请求消耗的Token信息
-     *
-     * @param usage 大模型返回token信息
-     */
-    public abstract void onChatToken(Usage usage);
 
     @Override
     public final void onClosed(@NotNull WebSocket webSocket, int code, @NotNull String reason) {
@@ -88,24 +83,21 @@ public abstract class ChatListener extends WebSocketListener {
 
     @Override
     public final void onMessage(@NotNull WebSocket webSocket, @NotNull String text) {
-        System.out.println(text);
-        ChatResponse chatResponse = JsonUtils.fromJson(text, ChatResponse.class);
+        DocumentChatResponse documentChatResponse = JsonUtils.fromJson(text, DocumentChatResponse.class);
 
-        if (Header.Code.SUCCESS.getValue() != chatResponse.getHeader().getCode()) {
-            log.warn("调用星火模型发生错误，错误码为：{}，请求的sid为：{}", chatResponse.getHeader().getCode(), chatResponse.getHeader().getSid());
+        if (DocumentChatResponse.Code.SUCCESS.getValue() != documentChatResponse.getCode()) {
+            log.warn("调用星火模型文档对话发生错误，错误码为：{}，请求的sid为：{}", documentChatResponse.getCode(), documentChatResponse.getSid());
             webSocket.close(1000, "星火模型调用异常");
-            this.onChatError(chatResponse);
+            this.onChatError(documentChatResponse);
             return;
         }
 
-        this.onChatOutput(chatResponse);
+        this.onChatOutput(documentChatResponse);
 
-        if (Choice.Status.END.getValue() == chatResponse.getHeader().getStatus()) {
+        if (DocumentChatResponse.Status.END.getValue() == documentChatResponse.getStatus()) {
             // 可以关闭连接，释放资源
             webSocket.close(1000, "星火模型返回结束");
-            Usage usage = chatResponse.getPayload().getUsage();
             this.onChatEnd();
-            this.onChatToken(usage);
         }
     }
 
@@ -118,6 +110,6 @@ public abstract class ChatListener extends WebSocketListener {
     @Override
     public final void onOpen(@NotNull WebSocket webSocket, @NotNull Response response) {
         super.onOpen(webSocket, response);
-        webSocket.send(JsonUtils.toJson(chatRequest));
+        webSocket.send(JsonUtils.toJson(documentChatRequest));
     }
 }

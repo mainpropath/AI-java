@@ -1,5 +1,6 @@
 package com.ai.spark.achieve.defaults.session;
 
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import com.ai.spark.achieve.ApiData;
 import com.ai.spark.achieve.Configuration;
@@ -29,13 +30,13 @@ public class DefaultFileSession implements FileSession {
 
     @Override
     public FileUploadResponse fileUpload(FileUploadRequest fileUploadRequest) {
-        ApiData apiData = (ApiData) configuration.getKeyStrategy().apply(configuration.getKeyList());
+        ApiData apiData = configuration.getSystemApiData();
         return this.fileUpload(apiData.getAppId(), apiData.getApiKey(), apiData.getApiSecret(), fileUploadRequest);
     }
 
     @Override
     public FileUploadResponse fileUpload(String appId, String apiKey, String apiSecret, FileUploadRequest fileUploadRequest) {
-        long ts = System.currentTimeMillis() / 1000;
+        long ts = DateUtil.currentSeconds();
         RequestBody fileBody = RequestBody.create(MediaType.parse("multipart/form-data"), fileUploadRequest.getFile());
         MultipartBody.Part multipartBody = MultipartBody.Part.createFormData("file", fileUploadRequest.getFile().getName(), fileBody);
         Map<String, RequestBody> requestBodyMap = new HashMap<>();

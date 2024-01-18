@@ -53,4 +53,8 @@ public class Configuration {
      */
     private Proxy proxy;
 
+    public ApiData getSystemApiData() {
+        return (ApiData) keyStrategy.apply(keyList);
+    }
+
 }
