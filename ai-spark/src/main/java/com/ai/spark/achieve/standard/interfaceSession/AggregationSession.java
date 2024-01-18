@@ -6,4 +6,6 @@ public interface AggregationSession {
     ChatSession getChatSession();
 
     DocumentSession getDocumentSession();
+
+    EmbeddingSession getEmbeddingSession();
 }

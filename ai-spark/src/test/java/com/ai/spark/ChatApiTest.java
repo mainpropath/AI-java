@@ -59,7 +59,7 @@ public class ChatApiTest {
 
             @Override
             public void onChatOutput(ChatResponse chatResponse) {
-                System.out.print(chatResponse.getPayload().getChoice().getTexts().get(0).getContent());
+                System.out.print(chatResponse.getChatPayload().getChoice().getTexts().get(0).getContent());
             }
 
             @Override

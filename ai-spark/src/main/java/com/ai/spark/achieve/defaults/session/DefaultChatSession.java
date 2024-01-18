@@ -7,22 +7,25 @@ import com.ai.spark.achieve.Configuration;
 import com.ai.spark.achieve.defaults.listener.ChatListener;
 import com.ai.spark.achieve.defaults.listener.DocumentChatListener;
 import com.ai.spark.achieve.standard.interfaceSession.ChatSession;
-import com.ai.spark.common.SparkDesk;
+import com.ai.spark.common.SparkApiUrl;
 import com.ai.spark.common.utils.AuthUtils;
-import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import okhttp3.Request;
 import okhttp3.WebSocket;
 
-import static com.ai.spark.common.SparkDesk.DOCUMENT_CHAT;
+import static com.ai.common.utils.ValidationUtils.ensureNotNull;
+import static com.ai.spark.common.SparkApiUrl.DOCUMENT_CHAT;
 
-@AllArgsConstructor
 public class DefaultChatSession implements ChatSession {
 
     /**
      * 配置信息
      */
     private Configuration configuration;
+
+    public DefaultChatSession(Configuration configuration) {
+        this.configuration = ensureNotNull(configuration, "configuration");
+    }
 
     @Override
     @SneakyThrows
@@ -37,7 +40,7 @@ public class DefaultChatSession implements ChatSession {
     public <T extends ChatListener> WebSocket chat(String apiKey, String apiSecret, T chatListener) {
         // 获取到对应访问的domain，根据domain获取对应的请求地址
         String domain = chatListener.getChatRequest().getChatParameter().getChat().getDomain();
-        String authUrl = AuthUtils.getAuthUrl(SparkDesk.getUrl(domain), apiKey, apiSecret);
+        String authUrl = AuthUtils.getAuthUrl(SparkApiUrl.getUrl(domain), apiKey, apiSecret);
         String url = authUrl
                 .replaceAll("http://", "ws://")
                 .replaceAll("https://", "wss://");
@@ -53,7 +56,7 @@ public class DefaultChatSession implements ChatSession {
     @Override
     public <T extends DocumentChatListener> WebSocket documentChat(String appId, String apiSecret, T documentChatListener) {
         long ts = DateUtil.currentSeconds();
-        String url = SparkDesk.getUrl(DOCUMENT_CHAT) + "?"
+        String url = SparkApiUrl.getUrl(DOCUMENT_CHAT) + "?"
                 + "appId=" + appId
                 + "&timestamp=" + ts
                 + "&signature=" + AuthUtils.getSignature(appId, apiSecret, ts);

@@ -1,4 +1,4 @@
-package com.ai.spark.common.utils;
+package com.ai.common.utils;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;

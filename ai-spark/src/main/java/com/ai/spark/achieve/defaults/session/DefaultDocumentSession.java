@@ -6,7 +6,7 @@ import com.ai.spark.achieve.ApiData;
 import com.ai.spark.achieve.Configuration;
 import com.ai.spark.achieve.standard.api.SparkApiServer;
 import com.ai.spark.achieve.standard.interfaceSession.DocumentSession;
-import com.ai.spark.common.SparkDesk;
+import com.ai.spark.common.SparkApiUrl;
 import com.ai.spark.common.utils.AuthUtils;
 import com.ai.spark.endPoint.document.req.FileUploadRequest;
 import com.ai.spark.endPoint.document.resp.DocumentSummaryResponse;
@@ -18,6 +18,8 @@ import okhttp3.RequestBody;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.ai.common.utils.ValidationUtils.ensureNotNull;
+
 
 public class DefaultDocumentSession implements DocumentSession {
 
@@ -26,8 +28,8 @@ public class DefaultDocumentSession implements DocumentSession {
     private SparkApiServer sparkApiServer;
 
     public DefaultDocumentSession(Configuration configuration) {
-        this.configuration = configuration;
-        this.sparkApiServer = configuration.getSparkApiServer();
+        this.configuration = ensureNotNull(configuration, "configuration");
+        this.sparkApiServer = ensureNotNull(configuration.getSparkApiServer(), "sparkApiServer");
     }
 
     @Override
@@ -65,7 +67,7 @@ public class DefaultDocumentSession implements DocumentSession {
 
     @Override
     public DocumentSummaryResponse documentSummaryStart(String appId, String apiSecret, String fileId) {
-        return this.documentSummary(SparkDesk.ApiRrl.documentSummaryStart.getUrl(), appId, apiSecret, fileId);
+        return this.documentSummary(SparkApiUrl.ApiRrl.documentSummaryStart.getUrl(), appId, apiSecret, fileId);
     }
 
     @Override
@@ -76,7 +78,7 @@ public class DefaultDocumentSession implements DocumentSession {
 
     @Override
     public DocumentSummaryResponse documentSummaryQuery(String appId, String apiSecret, String fileId) {
-        return this.documentSummary(SparkDesk.ApiRrl.documentSummaryQuery.getUrl(), appId, apiSecret, fileId);
+        return this.documentSummary(SparkApiUrl.ApiRrl.documentSummaryQuery.getUrl(), appId, apiSecret, fileId);
     }
 
 

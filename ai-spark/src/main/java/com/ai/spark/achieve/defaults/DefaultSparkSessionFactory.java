@@ -7,7 +7,6 @@ import com.ai.spark.achieve.standard.api.SparkApiServer;
 import com.ai.spark.achieve.standard.interfaceSession.AggregationSession;
 import com.ai.spark.interceptor.BaseUrlInterceptor;
 import com.ai.spark.interceptor.ResponseInterceptor;
-import lombok.AllArgsConstructor;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -16,10 +15,15 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 
 import java.util.concurrent.TimeUnit;
 
-@AllArgsConstructor
+import static com.ai.common.utils.ValidationUtils.ensureNotNull;
+
 public class DefaultSparkSessionFactory implements SparkSessionFactory {
 
     private final Configuration configuration;
+
+    public DefaultSparkSessionFactory(Configuration configuration) {
+        this.configuration = ensureNotNull(configuration, "configuration");
+    }
 
     /**
      * 获取 httpClient

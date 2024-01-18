@@ -11,7 +11,7 @@ import lombok.*;
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Header {
+public class ChatHeader {
 
     /**
      * 必传

@@ -1,9 +1,9 @@
 package com.ai.spark.achieve.defaults.listener;
 
+import com.ai.common.utils.JsonUtils;
 import com.ai.spark.common.Usage;
-import com.ai.spark.common.utils.JsonUtils;
+import com.ai.spark.endPoint.chat.ChatHeader;
 import com.ai.spark.endPoint.chat.Choice;
-import com.ai.spark.endPoint.chat.Header;
 import com.ai.spark.endPoint.chat.req.ChatRequest;
 import com.ai.spark.endPoint.chat.resp.ChatResponse;
 import lombok.Data;
@@ -91,8 +91,8 @@ public abstract class ChatListener extends WebSocketListener {
         System.out.println(text);
         ChatResponse chatResponse = JsonUtils.fromJson(text, ChatResponse.class);
 
-        if (Header.Code.SUCCESS.getValue() != chatResponse.getHeader().getCode()) {
-            log.warn("调用星火模型发生错误，错误码为：{}，请求的sid为：{}", chatResponse.getHeader().getCode(), chatResponse.getHeader().getSid());
+        if (ChatHeader.Code.SUCCESS.getValue() != chatResponse.getChatHeader().getCode()) {
+            log.warn("调用星火模型发生错误，错误码为：{}，请求的sid为：{}", chatResponse.getChatHeader().getCode(), chatResponse.getChatHeader().getSid());
             webSocket.close(1000, "星火模型调用异常");
             this.onChatError(chatResponse);
             return;
@@ -100,10 +100,10 @@ public abstract class ChatListener extends WebSocketListener {
 
         this.onChatOutput(chatResponse);
 
-        if (Choice.Status.END.getValue() == chatResponse.getHeader().getStatus()) {
+        if (Choice.Status.END.getValue() == chatResponse.getChatHeader().getStatus()) {
             // 可以关闭连接，释放资源
             webSocket.close(1000, "星火模型返回结束");
-            Usage usage = chatResponse.getPayload().getUsage();
+            Usage usage = chatResponse.getChatPayload().getUsage();
             this.onChatEnd();
             this.onChatToken(usage);
         }

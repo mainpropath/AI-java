@@ -11,7 +11,7 @@ import retrofit2.http.*;
 import java.util.Map;
 
 import static com.ai.spark.common.Constants.*;
-import static com.ai.spark.common.SparkDesk.FILE_UPLOAD_API_URL;
+import static com.ai.spark.common.SparkApiUrl.FILE_UPLOAD_API_URL;
 
 /**
  * @Description: 讯飞星火 API接口
@@ -25,6 +25,5 @@ public interface SparkApiServer {
     @Multipart
     @POST
     Single<DocumentSummaryResponse> documentSummary(@Url String url, @Header(APP_ID) String appId, @Header(TIMESTAMP) String timestamp, @Header(SIGNATURE) String signature, @Part("fileId") RequestBody fileId);
-
 
 }

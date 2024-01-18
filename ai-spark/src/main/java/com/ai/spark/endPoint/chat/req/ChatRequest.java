@@ -19,19 +19,21 @@ import java.util.Arrays;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ChatRequest {
 
-    private Header header;
+    @JsonProperty("header")
+    private ChatHeader chatHeader;
     @JsonProperty("parameter")
     private ChatParameter chatParameter;
-    private Payload payload;
+    @JsonProperty("payload")
+    private ChatPayload chatPayload;
 
     public static ChatRequest buildChatRequest(String question, String appId) {
-        Header header = Header.builder().appId(appId).build();
+        ChatHeader chatHeader = ChatHeader.builder().appId(appId).build();
         Chat chat = Chat.builder().domain(Chat.General.generalV3.getMsg()).build();
         ChatParameter chatParameter = ChatParameter.builder().chat(chat).build();
         ChatText chatText = ChatText.builder().role(ChatText.Role.USER.getRoleName()).content(question).build();
         Message message = Message.builder().chatTexts(Arrays.asList(chatText)).build();
-        Payload payload = Payload.builder().message(message).build();
-        return ChatRequest.builder().header(header).chatParameter(chatParameter).payload(payload).build();
+        ChatPayload chatPayload = ChatPayload.builder().message(message).build();
+        return ChatRequest.builder().chatHeader(chatHeader).chatParameter(chatParameter).chatPayload(chatPayload).build();
     }
 
 }

@@ -3,6 +3,7 @@ package com.ai.openai.achieve.defaults.session;
 
 import cn.hutool.http.ContentType;
 import com.ai.common.exception.Constants;
+import com.ai.common.utils.JsonUtils;
 import com.ai.openai.achieve.Configuration;
 import com.ai.openai.achieve.standard.api.OpenaiApiServer;
 import com.ai.openai.achieve.standard.interfaceSession.ChatSession;
@@ -65,7 +66,7 @@ public class DefaultChatSession implements ChatSession {
                 .addHeader(API_KEY, apiKeyByUser)
                 .addHeader(URL, apiUrlByUser)
                 .url(configuration.getApiHost().concat(ApiUrl.v1_completions.getCode()))
-                .post(RequestBody.create(MediaType.parse(ContentType.JSON.getValue()), new ObjectMapper().writeValueAsString(qaCompletionRequest)))
+                .post(RequestBody.create(MediaType.parse(ContentType.JSON.getValue()), JsonUtils.toJson(qaCompletionRequest)))
                 .build();
         return factory.newEventSource(request, eventSourceListener);
     }

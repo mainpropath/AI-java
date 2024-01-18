@@ -1,6 +1,6 @@
 package com.ai.spark.achieve.defaults.listener;
 
-import com.ai.spark.common.utils.JsonUtils;
+import com.ai.common.utils.JsonUtils;
 import com.ai.spark.endPoint.chat.req.DocumentChatRequest;
 import com.ai.spark.endPoint.chat.resp.DocumentChatResponse;
 import lombok.Data;

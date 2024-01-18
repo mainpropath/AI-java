@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
-public class SparkDesk {
+public class SparkApiUrl {
     // 星火模型对话链接
     public final static String GENERAL_V1 = "general";
     public final static String GENERAL_V2 = "generalv2";
@@ -35,6 +35,12 @@ public class SparkDesk {
     // 查询文档总结结果链接
     public final static String DOCUMENT_SUMMARY_QUERY = "documentSummaryStart";
     public final static String DOCUMENT_SUMMARY_QUERY_API_URL = "https://chatdoc.xfyun.cn/openapi/fileSummary";
+
+    public final static String EMBEDDING_P = "Embeddingp";
+    public final static String EMBEDDING_P_API_URL = "https://cn-huabei-1.xf-yun.com/v1/private/sa8a05c27";
+    public final static String EMBEDDING_Q = "Embeddingq";
+    public final static String EMBEDDING_Q_API_URL = "https://cn-huabei-1.xf-yun.com/v1/private/s50d55a16";
+
     public final static Map<String, String> urlMap = new HashMap<>();
 
     static {
@@ -45,6 +51,8 @@ public class SparkDesk {
         urlMap.put(DOCUMENT_CHAT, DOCUMENT_CHAT_API_URL);
         urlMap.put(DOCUMENT_SUMMARY_START, DOCUMENT_SUMMARY_START_API_URL);
         urlMap.put(DOCUMENT_SUMMARY_QUERY, DOCUMENT_SUMMARY_QUERY_API_URL);
+        urlMap.put(EMBEDDING_P, EMBEDDING_P_API_URL);
+        urlMap.put(EMBEDDING_Q, EMBEDDING_Q_API_URL);
     }
 
     public static String getUrl(String key) {
@@ -64,7 +72,9 @@ public class SparkDesk {
         fileUpload(FILE_UPLOAD_API_URL),
         documentChat(DOCUMENT_CHAT_API_URL),
         documentSummaryStart(DOCUMENT_SUMMARY_START_API_URL),
-        documentSummaryQuery(DOCUMENT_SUMMARY_QUERY_API_URL);
+        documentSummaryQuery(DOCUMENT_SUMMARY_QUERY_API_URL),
+        embeddingp(EMBEDDING_P_API_URL),
+        embeddingq(EMBEDDING_Q_API_URL);
         private String url;
     }
 
