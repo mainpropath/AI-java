@@ -9,11 +9,15 @@ public interface DocumentSession {
 
     FileUploadResponse fileUpload(FileUploadRequest fileUploadRequest);
 
-    FileUploadResponse fileUpload(String appId, String apiKey, String apiSecret, FileUploadRequest fileUploadRequest);
+    FileUploadResponse fileUpload(String appId, String apiSecret, FileUploadRequest fileUploadRequest);
 
-    DocumentSummaryResponse documentSummary(String fileId);
+    DocumentSummaryResponse documentSummaryStart(String fileId);
 
-    DocumentSummaryResponse documentSummary(String appId, String apiKey, String apiSecret, String fileId);
+    DocumentSummaryResponse documentSummaryStart(String appId, String apiSecret, String fileId);
+
+    DocumentSummaryResponse documentSummaryQuery(String fileId);
+
+    DocumentSummaryResponse documentSummaryQuery(String appId, String apiSecret, String fileId);
 
 
 }

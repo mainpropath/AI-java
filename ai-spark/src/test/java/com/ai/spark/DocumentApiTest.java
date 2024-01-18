@@ -51,10 +51,20 @@ public class DocumentApiTest {
 //        FileUploadResponse(code=0, sid=8e4f267415d84827a6ec7a1580e1ce64, desc=null, data=Data(fileId=004c3c6e79bc4d738a7e94a12697ea75))
     }
 
+    // 文档总结和文档总结查询这两个接口其实只有请求路径不同，类似于异步的效果。
+    // 调用文档总结接口，并不会直接返回结果，而是通知模型开始进行总结。
+    // 然后调用文档总结查询接口查询结果，如果结果已经存在的情况下，不管是调用文档总结接口还是文档总结查询接口，返回的数据都是一样的。
     @Test
-    public void test_document_summary() {
+    public void test_document_summary_start() {
         DocumentSummaryResponse documentSummaryResponse = this.aggregationSession.getDocumentSession()
-                .documentSummary("004c3c6e79bc4d738a7e94a12697ea75");
+                .documentSummaryStart("004c3c6e79bc4d738a7e94a12697ea75");
+        System.out.println(documentSummaryResponse);
+    }
+
+    @Test
+    public void test_document_summary_query() {
+        DocumentSummaryResponse documentSummaryResponse = this.aggregationSession.getDocumentSession()
+                .documentSummaryQuery("004c3c6e79bc4d738a7e94a12697ea75");
         System.out.println(documentSummaryResponse);
     }
 }

@@ -6,6 +6,7 @@ import com.ai.spark.achieve.ApiData;
 import com.ai.spark.achieve.Configuration;
 import com.ai.spark.achieve.standard.api.SparkApiServer;
 import com.ai.spark.achieve.standard.interfaceSession.DocumentSession;
+import com.ai.spark.common.SparkDesk;
 import com.ai.spark.common.utils.AuthUtils;
 import com.ai.spark.endPoint.document.req.FileUploadRequest;
 import com.ai.spark.endPoint.document.resp.DocumentSummaryResponse;
@@ -32,11 +33,11 @@ public class DefaultDocumentSession implements DocumentSession {
     @Override
     public FileUploadResponse fileUpload(FileUploadRequest fileUploadRequest) {
         ApiData apiData = configuration.getSystemApiData();
-        return this.fileUpload(apiData.getAppId(), apiData.getApiKey(), apiData.getApiSecret(), fileUploadRequest);
+        return this.fileUpload(apiData.getAppId(), apiData.getApiSecret(), fileUploadRequest);
     }
 
     @Override
-    public FileUploadResponse fileUpload(String appId, String apiKey, String apiSecret, FileUploadRequest fileUploadRequest) {
+    public FileUploadResponse fileUpload(String appId, String apiSecret, FileUploadRequest fileUploadRequest) {
         long ts = DateUtil.currentSeconds();
         RequestBody fileBody = RequestBody.create(MediaType.parse("multipart/form-data"), fileUploadRequest.getFile());
         MultipartBody.Part multipartBody = MultipartBody.Part.createFormData("file", fileUploadRequest.getFile().getName(), fileBody);
@@ -57,14 +58,30 @@ public class DefaultDocumentSession implements DocumentSession {
     }
 
     @Override
-    public DocumentSummaryResponse documentSummary(String fileId) {
+    public DocumentSummaryResponse documentSummaryStart(String fileId) {
         ApiData apiData = configuration.getSystemApiData();
-        return this.documentSummary(apiData.getAppId(), apiData.getApiKey(), apiData.getApiSecret(), fileId);
+        return this.documentSummaryStart(apiData.getAppId(), apiData.getApiSecret(), fileId);
     }
 
     @Override
-    public DocumentSummaryResponse documentSummary(String appId, String apiKey, String apiSecret, String fileId) {
+    public DocumentSummaryResponse documentSummaryStart(String appId, String apiSecret, String fileId) {
+        return this.documentSummary(SparkDesk.ApiRrl.documentSummaryStart.getUrl(), appId, apiSecret, fileId);
+    }
+
+    @Override
+    public DocumentSummaryResponse documentSummaryQuery(String fileId) {
+        ApiData apiData = configuration.getSystemApiData();
+        return this.documentSummaryQuery(apiData.getAppId(), apiData.getApiSecret(), fileId);
+    }
+
+    @Override
+    public DocumentSummaryResponse documentSummaryQuery(String appId, String apiSecret, String fileId) {
+        return this.documentSummary(SparkDesk.ApiRrl.documentSummaryQuery.getUrl(), appId, apiSecret, fileId);
+    }
+
+
+    private DocumentSummaryResponse documentSummary(String url, String appId, String apiSecret, String fileId) {
         long ts = DateUtil.currentSeconds();
-        return sparkApiServer.documentSummary(appId, String.valueOf(ts), AuthUtils.getSignature(appId, apiSecret, ts), RequestBody.create(MediaType.parse("multipart/form-data"), fileId)).blockingGet();
+        return sparkApiServer.documentSummary(url, appId, String.valueOf(ts), AuthUtils.getSignature(appId, apiSecret, ts), RequestBody.create(MediaType.parse("multipart/form-data"), fileId)).blockingGet();
     }
 }

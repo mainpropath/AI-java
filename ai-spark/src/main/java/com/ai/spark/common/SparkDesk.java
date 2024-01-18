@@ -29,8 +29,31 @@ public class SparkDesk {
     public final static String DOCUMENT_CHAT_API_URL = "wss://chatdoc.xfyun.cn/openapi/chat";
 
     // 文档总结链接
-    public final static String DOCUMENT_SUMMARY = "documentSummary";
-    public final static String DOCUMENT_SUMMARY_API_URL = "https://chatdoc.xfyun.cn/openapi/startSummary";
+    public final static String DOCUMENT_SUMMARY_START = "documentSummaryStart";
+    public final static String DOCUMENT_SUMMARY_START_API_URL = "https://chatdoc.xfyun.cn/openapi/startSummary";
+
+    // 查询文档总结结果链接
+    public final static String DOCUMENT_SUMMARY_QUERY = "documentSummaryStart";
+    public final static String DOCUMENT_SUMMARY_QUERY_API_URL = "https://chatdoc.xfyun.cn/openapi/fileSummary";
+    public final static Map<String, String> urlMap = new HashMap<>();
+
+    static {
+        urlMap.put(GENERAL_V1, SPARK_API_HOST_WSS_V1_1_URL);
+        urlMap.put(GENERAL_V2, SPARK_API_HOST_WSS_V2_1_URL);
+        urlMap.put(GENERAL_V3, SPARK_API_HOST_WSS_V3_1_URL);
+        urlMap.put(FILE_UPLOAD, FILE_UPLOAD_API_URL);
+        urlMap.put(DOCUMENT_CHAT, DOCUMENT_CHAT_API_URL);
+        urlMap.put(DOCUMENT_SUMMARY_START, DOCUMENT_SUMMARY_START_API_URL);
+        urlMap.put(DOCUMENT_SUMMARY_QUERY, DOCUMENT_SUMMARY_QUERY_API_URL);
+    }
+
+    public static String getUrl(String key) {
+        if (!urlMap.containsKey(key)) {
+            log.error("No corresponding URL path found for {}", key);
+            return null;
+        }
+        return urlMap.get(key);
+    }
 
     @Getter
     @AllArgsConstructor
@@ -40,27 +63,9 @@ public class SparkDesk {
         generalV3(SPARK_API_HOST_WSS_V3_1_URL),
         fileUpload(FILE_UPLOAD_API_URL),
         documentChat(DOCUMENT_CHAT_API_URL),
-        documentSummary(DOCUMENT_SUMMARY_API_URL);
+        documentSummaryStart(DOCUMENT_SUMMARY_START_API_URL),
+        documentSummaryQuery(DOCUMENT_SUMMARY_QUERY_API_URL);
         private String url;
-    }
-
-
-    public final static Map<String, String> urlMap = new HashMap<>();
-
-    static {
-        urlMap.put(GENERAL_V1, SPARK_API_HOST_WSS_V1_1_URL);
-        urlMap.put(GENERAL_V2, SPARK_API_HOST_WSS_V2_1_URL);
-        urlMap.put(GENERAL_V3, SPARK_API_HOST_WSS_V3_1_URL);
-        urlMap.put(FILE_UPLOAD, FILE_UPLOAD_API_URL);
-        urlMap.put(DOCUMENT_CHAT, DOCUMENT_CHAT_API_URL);
-    }
-
-    public static String getUrl(String key) {
-        if (!urlMap.containsKey(key)) {
-            log.error("No corresponding URL path found for {}", key);
-            return null;
-        }
-        return urlMap.get(key);
     }
 
 }

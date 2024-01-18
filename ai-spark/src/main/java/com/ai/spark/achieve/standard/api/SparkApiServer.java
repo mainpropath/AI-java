@@ -11,7 +11,6 @@ import retrofit2.http.*;
 import java.util.Map;
 
 import static com.ai.spark.common.Constants.*;
-import static com.ai.spark.common.SparkDesk.DOCUMENT_SUMMARY_API_URL;
 import static com.ai.spark.common.SparkDesk.FILE_UPLOAD_API_URL;
 
 /**
@@ -24,8 +23,8 @@ public interface SparkApiServer {
     Single<FileUploadResponse> fileUpload(@Header(APP_ID) String appId, @Header(TIMESTAMP) String timestamp, @Header(SIGNATURE) String signature, @Part MultipartBody.Part file, @PartMap Map<String, RequestBody> requestBodyMap);
 
     @Multipart
-    @POST(DOCUMENT_SUMMARY_API_URL)
-    Single<DocumentSummaryResponse> documentSummary(@Header(APP_ID) String appId, @Header(TIMESTAMP) String timestamp, @Header(SIGNATURE) String signature, @Part("fileId") RequestBody fileId);
+    @POST
+    Single<DocumentSummaryResponse> documentSummary(@Url String url, @Header(APP_ID) String appId, @Header(TIMESTAMP) String timestamp, @Header(SIGNATURE) String signature, @Part("fileId") RequestBody fileId);
 
 
 }
