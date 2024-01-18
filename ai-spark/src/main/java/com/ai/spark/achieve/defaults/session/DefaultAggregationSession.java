@@ -3,7 +3,7 @@ package com.ai.spark.achieve.defaults.session;
 import com.ai.spark.achieve.Configuration;
 import com.ai.spark.achieve.standard.interfaceSession.AggregationSession;
 import com.ai.spark.achieve.standard.interfaceSession.ChatSession;
-import com.ai.spark.achieve.standard.interfaceSession.FileSession;
+import com.ai.spark.achieve.standard.interfaceSession.DocumentSession;
 
 
 public class DefaultAggregationSession implements AggregationSession {
@@ -12,7 +12,7 @@ public class DefaultAggregationSession implements AggregationSession {
 
     private volatile ChatSession chatSession;
 
-    private volatile FileSession fileSession;
+    private volatile DocumentSession documentSession;
 
     public DefaultAggregationSession(Configuration configuration) {
         this.configuration = configuration;
@@ -31,14 +31,14 @@ public class DefaultAggregationSession implements AggregationSession {
     }
 
     @Override
-    public FileSession getFileSession() {
-        if (fileSession == null) {
+    public DocumentSession getDocumentSession() {
+        if (documentSession == null) {
             synchronized (this) {
-                if (fileSession == null) {
-                    fileSession = new DefaultFileSession(configuration);
+                if (documentSession == null) {
+                    documentSession = new DefaultDocumentSession(configuration);
                 }
             }
         }
-        return fileSession;
+        return documentSession;
     }
 }

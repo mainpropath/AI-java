@@ -16,7 +16,6 @@ public class ResponseInterceptor implements Interceptor {
         // 1. 获取 req 和 resp
         Request original = chain.request();
         Response response = chain.proceed(original);
-
         // 2. 排除webSocket连接，判断返回状态
         if (!"websocket".equalsIgnoreCase(response.header("Upgrade"))
                 && !"Upgrade".equalsIgnoreCase(response.header("Connection"))

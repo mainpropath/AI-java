@@ -1,4 +1,4 @@
-package com.ai.spark.endPoint.file.resp;
+package com.ai.spark.endPoint.document.resp;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -13,21 +13,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class FileUploadResponse {
-    /**
-     * 返回上传的 fileId
-     */
+public class DocumentSummaryResponse {
+
+    private Boolean flag;
     private Integer code;
-    /**
-     * 请求唯一 id，用于问题定位
-     */
     private String sid;
-    /**
-     * 结果描述
-     */
     private String desc;
-    /**
-     * 返回结果
-     */
-    private com.ai.spark.endPoint.file.Data data;
+    private Object data;
+
 }

@@ -6,15 +6,16 @@ import com.ai.spark.achieve.Configuration;
 import com.ai.spark.achieve.defaults.DefaultSparkSessionFactory;
 import com.ai.spark.achieve.standard.SparkSessionFactory;
 import com.ai.spark.achieve.standard.interfaceSession.AggregationSession;
-import com.ai.spark.endPoint.file.req.FileUploadRequest;
-import com.ai.spark.endPoint.file.resp.FileUploadResponse;
+import com.ai.spark.endPoint.document.req.FileUploadRequest;
+import com.ai.spark.endPoint.document.resp.DocumentSummaryResponse;
+import com.ai.spark.endPoint.document.resp.FileUploadResponse;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
 import java.util.Arrays;
 
-public class FileApiTest {
+public class DocumentApiTest {
 
     private AggregationSession aggregationSession;
 
@@ -42,9 +43,18 @@ public class FileApiTest {
 
     @Test
     public void test_file_upload() {
-        File file = new File("D:\\chatGPT-api\\AI-java\\doc\\test\\test_file_upload.txt");
+        File file = new File("D:\\chatGPT-api\\AI-java\\doc\\test\\test_file_upload.pdf");
         FileUploadRequest request = FileUploadRequest.builder().file(file).build();
-        FileUploadResponse fileUploadResponse = this.aggregationSession.getFileSession().fileUpload(request);
+        FileUploadResponse fileUploadResponse = this.aggregationSession.getDocumentSession().fileUpload(request);
         System.out.println(fileUploadResponse);
+//        FileUploadResponse(code=0, sid=28db14303e054046aabd2e96e7e65c51, desc=null, data=Data(fileId=1a477e7e9cb44e23ad4abd98076e3f70))
+//        FileUploadResponse(code=0, sid=8e4f267415d84827a6ec7a1580e1ce64, desc=null, data=Data(fileId=004c3c6e79bc4d738a7e94a12697ea75))
+    }
+
+    @Test
+    public void test_document_summary() {
+        DocumentSummaryResponse documentSummaryResponse = this.aggregationSession.getDocumentSession()
+                .documentSummary("004c3c6e79bc4d738a7e94a12697ea75");
+        System.out.println(documentSummaryResponse);
     }
 }

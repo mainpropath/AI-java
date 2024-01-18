@@ -5,10 +5,11 @@ import cn.hutool.core.util.StrUtil;
 import com.ai.spark.achieve.ApiData;
 import com.ai.spark.achieve.Configuration;
 import com.ai.spark.achieve.standard.api.SparkApiServer;
-import com.ai.spark.achieve.standard.interfaceSession.FileSession;
+import com.ai.spark.achieve.standard.interfaceSession.DocumentSession;
 import com.ai.spark.common.utils.AuthUtils;
-import com.ai.spark.endPoint.file.req.FileUploadRequest;
-import com.ai.spark.endPoint.file.resp.FileUploadResponse;
+import com.ai.spark.endPoint.document.req.FileUploadRequest;
+import com.ai.spark.endPoint.document.resp.DocumentSummaryResponse;
+import com.ai.spark.endPoint.document.resp.FileUploadResponse;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -17,13 +18,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class DefaultFileSession implements FileSession {
+public class DefaultDocumentSession implements DocumentSession {
 
     private Configuration configuration;
 
     private SparkApiServer sparkApiServer;
 
-    public DefaultFileSession(Configuration configuration) {
+    public DefaultDocumentSession(Configuration configuration) {
         this.configuration = configuration;
         this.sparkApiServer = configuration.getSparkApiServer();
     }
@@ -53,5 +54,17 @@ public class DefaultFileSession implements FileSession {
             requestBodyMap.put(FileUploadRequest.Fields.callbackUrl, RequestBody.create(MediaType.parse("multipart/form-data"), fileUploadRequest.getCallbackUrl()));
         }
         return sparkApiServer.fileUpload(appId, String.valueOf(ts), AuthUtils.getSignature(appId, apiSecret, ts), multipartBody, requestBodyMap).blockingGet();
+    }
+
+    @Override
+    public DocumentSummaryResponse documentSummary(String fileId) {
+        ApiData apiData = configuration.getSystemApiData();
+        return this.documentSummary(apiData.getAppId(), apiData.getApiKey(), apiData.getApiSecret(), fileId);
+    }
+
+    @Override
+    public DocumentSummaryResponse documentSummary(String appId, String apiKey, String apiSecret, String fileId) {
+        long ts = DateUtil.currentSeconds();
+        return sparkApiServer.documentSummary(appId, String.valueOf(ts), AuthUtils.getSignature(appId, apiSecret, ts), RequestBody.create(MediaType.parse("multipart/form-data"), fileId)).blockingGet();
     }
 }

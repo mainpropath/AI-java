@@ -1,4 +1,4 @@
-package com.ai.spark.endPoint.file.req;
+package com.ai.spark.endPoint.document.req;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
