@@ -26,93 +26,40 @@
 
 ## **安装**
 
-下载项目到本地，将项目 install 到本地 maven 仓库。
+**下载项目到本地，将项目 install 到本地 maven 仓库。**
 
 ![image-20231205204603312](doc/img/image-20231205204603312.png)
+
+**注意，由于本项目是多模块编写，想要使用哪一个厂商的模型API，请引入对应的依赖。**
+
+**如果想使用openai相关模型功能，install 之后，在其他项目中可引入依赖。**
+
+```
+        <dependency>
+            <groupId>com.ai</groupId>
+            <artifactId>ai-openai</artifactId>
+            <version>1.0</version>
+        </dependency>
+```
+
+
 
 ## **使用方式**
 
 **本项目目前实现了chatGPT官方文档下 endpoints 各个板块全部的接口。**
 
-![image-20231205204355776](doc/img/image-20231205204355776.png)
-
-国内相关大模型API SDK开发已提上日程。
+**正在完成讯飞星火模型相关API的编写。**
 
 项目结构如下
 
 ```java
-├─main
-        │  ├─java
-        │  │  └─com
-        │  │      └─ai
-        │  │          └─openAi
-        │  │              ├─achieve
-        │  │              │  ├─defaults
-        │  │              │  │  ├─session
-        │  │              │  │  └─strategy
-        │  │              │  └─standard
-        │  │              │      ├─api
-        │  │              │      ├─interfaceSession
-        │  │              │      └─interfaceStrategy
-        │  │              ├─annotation
-        │  │              ├─common
-        │  │              │  └─exception
-        │  │              ├─config
-        │  │              ├─endPoint
-        │  │              │  ├─audio
-        │  │              │  │  ├─req
-        │  │              │  │  └─resp
-        │  │              │  ├─chat
-        │  │              │  │  ├─msg
-        │  │              │  │  ├─req
-        │  │              │  │  ├─resp
-        │  │              │  │  └─tools
-        │  │              │  ├─embeddings
-        │  │              │  │  ├─req
-        │  │              │  │  └─resp
-        │  │              │  ├─files
-        │  │              │  │  ├─req
-        │  │              │  │  └─resp
-        │  │              │  ├─fineTuning
-        │  │              │  │  ├─req
-        │  │              │  │  └─resp
-        │  │              │  ├─images
-        │  │              │  │  ├─req
-        │  │              │  │  └─resp
-        │  │              │  ├─models
-        │  │              │  │  ├─req
-        │  │              │  │  └─resp
-        │  │              │  └─moderations
-        │  │              │      ├─req
-        │  │              │      └─resp
-        │  │              └─interceptor
-        │  └─resources
-        └─test
-        └─java
-        └─com
-        └─ai
-        └─openAi
+├─ai-common 
+├─ai-openai   openai相关API功能
+├─ai-spark    星火模型相关API功能
+└─doc         测试相关的文件
 ```
 
-首先创建sessionFactory，可通过sessionFactory获取不同场景下的会话窗口。
-
-```java
-// 1. 创建配置类
-Configuration configuration=new Configuration();
-// 2. 设置请求地址，若有代理商或者代理服务器，可填写为代理服务器的请求路径
-        configuration.setApiHost("https://api.openai.com");
-// 3. 设置鉴权所需的API Key,可设置多个。
-        configuration.setKeyList(Arrays.asList("填入你的API Key"));
-// 4. 设置请求时 key 的使用策略，默认实现了：随机获取 和 固定第一个Key 两种方式。
-        configuration.setKeyStrategy(new FirstKeyStrategy());
-//  configuration.setKeyStrategy(new RandomKeyStrategy());// 设置随机获取 Key
-// 5. 设置代理，若不需要可不设置
-        configuration.setProxy(new Proxy(Proxy.Type.HTTP,new InetSocketAddress("127.0.0.1",7890)));
-// 6. 创建 session 工厂，制造不同场景的 session
-        OpenAiSessionFactory factory=new DefaultOpenAiSessionFactory(configuration);
-```
-
-通过sessionFactory获取聚合的不同场景的会话窗口。
+**不管是使用哪一个厂商的模型API，在我们的SDK当中，使用方式都是一致的。使用方式如下：（下面是openai相关功能的使用方式）**
 
 ```java
 // 工厂创建聚合的session
@@ -141,7 +88,13 @@ aggregationSession.getEmbeddingSession();
 
 示例相关的测试图片和语言文件在 doc/test 目录下。
 
-示例一：多轮对话
+openai相关功能测试如下所示，更多功能测试请参考测试类
+
+[openai测试路径](https://github.com/mainpropath/AI-java/tree/dev/ai-openai/src/test/java/com/ai/openai)
+
+[讯飞星火测试路径](https://github.com/mainpropath/AI-java/tree/dev/ai-spark/src/test/java/com/ai/spark)
+
+**示例一：多轮对话**
 
 ```java
 public void test_chat_completions() {
@@ -161,7 +114,7 @@ public void test_chat_completions() {
 }
 ```
 
-示例二：图片创作
+**示例二：图片创作**
 
 ```java
 public void test_create_image() {
@@ -171,7 +124,7 @@ public void test_create_image() {
 }
 ```
 
-示例三：文本转语音（主要是通过回调函数获取回传的音频数据）
+**示例三：文本转语音（主要是通过回调函数获取回传的音频数据）**
 
 ```java
 public void test_tts() throws InterruptedException {
@@ -215,9 +168,10 @@ public void test_tts() throws InterruptedException {
 }
 ```
 
-更多示例请参考测试目录下各个场景的测试用例。[测试用例文件路径](https://github.com/mainpropath/AI-java/tree/master/src/test/java/com/ai/openAi)
-
 ## **更新记录**
+
+2024-01-10：开始讯飞星火模型相关API的编写工作
+
 2023-12-28：预启动其他模型的API编写工作
 
 2023-12-14：修复BUG
