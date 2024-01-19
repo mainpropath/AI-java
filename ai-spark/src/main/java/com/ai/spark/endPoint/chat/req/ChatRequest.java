@@ -26,7 +26,7 @@ public class ChatRequest {
     @JsonProperty("payload")
     private ChatPayload chatPayload;
 
-    public static ChatRequest buildChatRequest(String question, String appId) {
+    public static ChatRequest baseBuild(String question, String appId) {
         ChatHeader chatHeader = ChatHeader.builder().appId(appId).build();
         Chat chat = Chat.builder().domain(Chat.General.generalV3.getMsg()).build();
         ChatParameter chatParameter = ChatParameter.builder().chat(chat).build();

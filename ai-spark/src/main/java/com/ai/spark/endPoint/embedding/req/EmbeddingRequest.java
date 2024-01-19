@@ -36,7 +36,7 @@ public class EmbeddingRequest {
     private EmbeddingPayload embeddingPayload;
 
 
-    public static EmbeddingRequest buildEmbeddingRequest(ChatText text, String appId) {
+    public static EmbeddingRequest baseBuild(ChatText text, String appId) {
         return EmbeddingRequest.builder()
                 .embeddingHeader(EmbeddingHeader.builder().appId(appId).build())
                 .embeddingParameter(EmbeddingParameter.builder().build())

@@ -35,7 +35,7 @@ public class DocumentChatRequest {
     @JsonProperty("messages")
     private List<ChatText> chatTexts;
 
-    public static DocumentChatRequest buildDocumentChatRequest(String question, List<String> fileIds) {
+    public static DocumentChatRequest baseBuild(String question, List<String> fileIds) {
         ChatText chatText = ChatText.builder().role(ChatText.Role.USER.getRoleName()).content(question).build();
         return DocumentChatRequest.builder()
                 .fileIds(fileIds)

@@ -29,7 +29,7 @@ public class ChatText {
      */
     private Integer index;
 
-    public static ChatText buildChatText(Role role, String content) {
+    public static ChatText baseBuild(Role role, String content) {
         return ChatText.builder().role(role.getRoleName()).content(content).build();
     }
 
