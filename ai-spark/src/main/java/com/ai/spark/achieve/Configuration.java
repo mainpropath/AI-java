@@ -38,7 +38,7 @@ public class Configuration {
     private List<ApiData> keyList;
 
     /**
-     * 请求地址
+     * 请求地址（很多情况下，这个apiHost都是一个摆设）
      */
     @NotNull
     private String apiHost;

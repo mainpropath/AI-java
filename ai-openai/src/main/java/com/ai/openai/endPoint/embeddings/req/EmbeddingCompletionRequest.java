@@ -47,8 +47,8 @@ public class EmbeddingCompletionRequest implements Serializable {
      * @param input 文本
      * @return 请求参数
      */
-    public static EmbeddingCompletionRequest BuildBaseEmbeddingCompletionRequest(String input) {
-        return BuildBaseEmbeddingCompletionRequest(Arrays.asList(input));
+    public static EmbeddingCompletionRequest baseBuild(String input) {
+        return baseBuild(Arrays.asList(input));
     }
 
     /**
@@ -57,7 +57,7 @@ public class EmbeddingCompletionRequest implements Serializable {
      * @param inputList 文本数组
      * @return 请求参数
      */
-    public static EmbeddingCompletionRequest BuildBaseEmbeddingCompletionRequest(List<String> inputList) {
+    public static EmbeddingCompletionRequest baseBuild(List<String> inputList) {
         return EmbeddingCompletionRequest.builder().input(inputList).build();
     }
 

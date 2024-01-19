@@ -10,6 +10,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -36,10 +37,9 @@ public class DocumentChatRequest {
     private List<ChatText> chatTexts;
 
     public static DocumentChatRequest baseBuild(String question, List<String> fileIds) {
-        ChatText chatText = ChatText.builder().role(ChatText.Role.USER.getRoleName()).content(question).build();
         return DocumentChatRequest.builder()
                 .fileIds(fileIds)
-                .chatTexts(Arrays.asList(chatText))
+                .chatTexts(new ArrayList<>(Arrays.asList(ChatText.baseBuild(ChatText.Role.USER, question))))
                 .build();
     }
 

@@ -48,7 +48,7 @@ public class ModerationApiTest {
      */
     @Test
     public void test_moderation() {
-        ModerationRequest moderationRequest = ModerationRequest.BuildBaseModerationRequest("我要杀了你");
+        ModerationRequest moderationRequest = ModerationRequest.baseBuild("我要杀了你");
         ModerationResponse moderationResponse = aggregationSession.getModerationSession().moderationCompletions(NULL, NULL, NULL, moderationRequest);
         log.info("测试结果：{}", moderationResponse);
     }

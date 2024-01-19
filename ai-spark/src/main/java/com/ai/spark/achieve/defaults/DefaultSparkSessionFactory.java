@@ -38,7 +38,7 @@ public class DefaultSparkSessionFactory implements SparkSessionFactory {
         OkHttpClient.Builder builder = new OkHttpClient.Builder()
                 .addInterceptor(httpLoggingInterceptor)
                 .addInterceptor(new BaseUrlInterceptor())
-                .addInterceptor(new ResponseInterceptor())
+                .addInterceptor(new ResponseInterceptor())// 设置返回信息拦截器
                 .connectTimeout(450, TimeUnit.SECONDS)
                 .writeTimeout(450, TimeUnit.SECONDS)
                 .readTimeout(450, TimeUnit.SECONDS);
@@ -49,6 +49,9 @@ public class DefaultSparkSessionFactory implements SparkSessionFactory {
         return builder.build();
     }
 
+    /**
+     * 创建API SERVER
+     */
     public SparkApiServer createSparkAiApi(OkHttpClient okHttpClient) {
         return new Retrofit.Builder()
                 .baseUrl(configuration.getApiHost())

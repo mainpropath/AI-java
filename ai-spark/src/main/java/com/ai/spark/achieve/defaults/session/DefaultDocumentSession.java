@@ -40,9 +40,12 @@ public class DefaultDocumentSession implements DocumentSession {
 
     @Override
     public FileUploadResponse fileUpload(String appId, String apiSecret, FileUploadRequest fileUploadRequest) {
+        // 得到当前时间戳，按秒计算
         long ts = DateUtil.currentSeconds();
+        // 设置文件
         RequestBody fileBody = RequestBody.create(MediaType.parse("multipart/form-data"), fileUploadRequest.getFile());
         MultipartBody.Part multipartBody = MultipartBody.Part.createFormData("file", fileUploadRequest.getFile().getName(), fileBody);
+        // 设置其余参数
         Map<String, RequestBody> requestBodyMap = new HashMap<>();
         if (StrUtil.isNotBlank(fileUploadRequest.getUrl())) {
             requestBodyMap.put(FileUploadRequest.Fields.url, RequestBody.create(MediaType.parse("multipart/form-data"), fileUploadRequest.getUrl()));
@@ -56,6 +59,7 @@ public class DefaultDocumentSession implements DocumentSession {
         if (StrUtil.isNotBlank(fileUploadRequest.getCallbackUrl())) {
             requestBodyMap.put(FileUploadRequest.Fields.callbackUrl, RequestBody.create(MediaType.parse("multipart/form-data"), fileUploadRequest.getCallbackUrl()));
         }
+        // 发起请求返回结果
         return sparkApiServer.fileUpload(appId, String.valueOf(ts), AuthUtils.getSignature(appId, apiSecret, ts), multipartBody, requestBodyMap).blockingGet();
     }
 
@@ -81,9 +85,18 @@ public class DefaultDocumentSession implements DocumentSession {
         return this.documentSummary(SparkApiUrl.ApiUrl.documentSummaryQuery.getUrl(), appId, apiSecret, fileId);
     }
 
-
+    /**
+     * 文档总结底层都依赖这个方法
+     *
+     * @param url       请求的URL
+     * @param appId     用户的AppId
+     * @param apiSecret 用户的ApiSecret
+     * @param fileId    文件ID
+     * @return 请求结果
+     */
     private DocumentSummaryResponse documentSummary(String url, String appId, String apiSecret, String fileId) {
         long ts = DateUtil.currentSeconds();
         return sparkApiServer.documentSummary(url, appId, String.valueOf(ts), AuthUtils.getSignature(appId, apiSecret, ts), RequestBody.create(MediaType.parse("multipart/form-data"), fileId)).blockingGet();
     }
+
 }

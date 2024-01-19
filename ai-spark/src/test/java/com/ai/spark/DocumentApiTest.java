@@ -41,10 +41,16 @@ public class DocumentApiTest {
         this.aggregationSession = factory.openAggregationSession();
     }
 
+    /**
+     * 测试文件上传功能
+     */
     @Test
     public void test_file_upload() {
+        // 读取文件
         File file = new File("D:\\chatGPT-api\\AI-java\\doc\\test\\test_file_upload.pdf");
+        // 构建参数
         FileUploadRequest request = FileUploadRequest.builder().file(file).build();
+        // 发起请求获取结果
         FileUploadResponse fileUploadResponse = this.aggregationSession.getDocumentSession().fileUpload(request);
         System.out.println(fileUploadResponse);
 //        FileUploadResponse(code=0, sid=28db14303e054046aabd2e96e7e65c51, desc=null, data=Data(fileId=1a477e7e9cb44e23ad4abd98076e3f70))
@@ -54,15 +60,24 @@ public class DocumentApiTest {
     // 文档总结和文档总结查询这两个接口其实只有请求路径不同，类似于异步的效果。
     // 调用文档总结接口，并不会直接返回结果，而是通知模型开始进行总结。
     // 然后调用文档总结查询接口查询结果，如果结果已经存在的情况下，不管是调用文档总结接口还是文档总结查询接口，返回的数据都是一样的。
+
+    /**
+     * 测试文档总结功能
+     */
     @Test
     public void test_document_summary_start() {
+        // 传入文档ID，发起请求
         DocumentSummaryResponse documentSummaryResponse = this.aggregationSession.getDocumentSession()
                 .documentSummaryStart("004c3c6e79bc4d738a7e94a12697ea75");
         System.out.println(documentSummaryResponse);
     }
 
+    /**
+     * 测试文档总结结果查询功能
+     */
     @Test
     public void test_document_summary_query() {
+        // 传入文档ID，发起请求
         DocumentSummaryResponse documentSummaryResponse = this.aggregationSession.getDocumentSession()
                 .documentSummaryQuery("004c3c6e79bc4d738a7e94a12697ea75");
         System.out.println(documentSummaryResponse);

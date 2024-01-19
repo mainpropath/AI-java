@@ -18,14 +18,13 @@ import org.jetbrains.annotations.Nullable;
 
 import static com.ai.common.utils.ValidationUtils.ensureNotNull;
 
-
+/**
+ * 星火大模型流式返回监听器
+ */
 @Slf4j
 @Data
 public abstract class ChatListener extends WebSocketListener {
 
-    /**
-     * 请求大模型的参数
-     */
     private ChatRequest chatRequest;
 
     public ChatListener(ChatRequest chatRequest) {

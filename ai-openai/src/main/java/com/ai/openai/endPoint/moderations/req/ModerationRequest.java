@@ -27,8 +27,8 @@ public class ModerationRequest {
      * @param input 文本
      * @return 请求参数
      */
-    public static ModerationRequest BuildBaseModerationRequest(String input) {
-        return BuildBaseModerationRequest(Arrays.asList(input));
+    public static ModerationRequest baseBuild(String input) {
+        return baseBuild(Arrays.asList(input));
     }
 
     /**
@@ -37,7 +37,7 @@ public class ModerationRequest {
      * @param inputList 文本数组
      * @return 请求参数
      */
-    public static ModerationRequest BuildBaseModerationRequest(List<String> inputList) {
+    public static ModerationRequest baseBuild(List<String> inputList) {
         return ModerationRequest.builder().input(inputList).build();
     }
 

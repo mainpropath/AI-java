@@ -7,6 +7,9 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 记录各个API的请求URL
+ */
 @Slf4j
 public class SparkApiUrl {
     // 星火模型对话链接

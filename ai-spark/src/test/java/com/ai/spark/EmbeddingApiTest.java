@@ -13,12 +13,7 @@ import com.ai.spark.endPoint.embedding.resp.EmbeddingResponse;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.util.Arrays;
-import java.util.Base64;
-
-import static com.ai.spark.endPoint.chat.ChatText.baseBuild;
 
 public class EmbeddingApiTest {
 
@@ -32,9 +27,9 @@ public class EmbeddingApiTest {
         configuration.setApiHost("https://spark-api.xf-yun.com");
         // 3. 设置鉴权所需的API Key,可设置多个。
         ApiData apiData = ApiData.builder()
-                .apiKey("90991067651f9fc4c457b9244c36e790")
-                .apiSecret("YWUwOGY2MzMxNjA5OWE3MmQ0MzRmNDRh")
-                .appId("c8f362b8")
+                .apiKey("***********************")
+                .apiSecret("***********************")
+                .appId("***********************")
                 .build();
         configuration.setKeyList(Arrays.asList(apiData));
         // 4. 设置请求时 key 的使用策略，默认实现了：随机获取 和 固定第一个Key 两种方式。
@@ -47,11 +42,15 @@ public class EmbeddingApiTest {
         this.aggregationSession = factory.openAggregationSession();
     }
 
+    /**
+     * 测试文本嵌入功能
+     */
     @Test
     public void test_embedding() {
-        // TODO 请求不成功，还需要再测试
-        ChatText chatText = baseBuild(ChatText.Role.USER, "这是一段文字");
+        // 构造参数信息
+        ChatText chatText = ChatText.baseBuild(ChatText.Role.USER, "这是一段文字");
         EmbeddingRequest request = EmbeddingRequest.baseBuild(chatText, "c8f362b8");
+        // 发起请求
         EmbeddingResponse response = aggregationSession.getEmbeddingSession().embed(request);
         System.out.println(response);
     }

@@ -52,7 +52,7 @@ public class ImageApiTest {
      */
     @Test
     public void test_create_image() {
-        CreateImageRequest createImageRequest = CreateImageRequest.BuildBaseCreateImageRequest("富有科技感的房屋");
+        CreateImageRequest createImageRequest = CreateImageRequest.baseBuild("富有科技感的房屋");
         List<ImageObject> imageObjectList = aggregationSession.getImageSession().createImageCompletions(NULL, NULL, NULL, createImageRequest);
         for (ImageObject imageObject : imageObjectList) {
             System.out.println(imageObject);
@@ -66,7 +66,7 @@ public class ImageApiTest {
     @Test
     public void test_edit_image() {
         File file = new File("doc/test/test_edit_image.png");
-        ImageEditRequest imageEditRequest = ImageEditRequest.BuildBaseImageEditRequest("给小熊的背后加上一只梅花鹿。");
+        ImageEditRequest imageEditRequest = ImageEditRequest.baseBuild("给小熊的背后加上一只梅花鹿。");
         List<ImageObject> imageObjectList = aggregationSession.getImageSession().editImageCompletions(NULL, NULL, NULL, file, null, imageEditRequest);
         log.info("测试结果：{}", imageObjectList);
     }

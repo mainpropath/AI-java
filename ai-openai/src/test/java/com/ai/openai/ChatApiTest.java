@@ -65,7 +65,7 @@ public class ChatApiTest {
      */
     @Test
     public void test_qa_completions() {
-        QaCompletionRequest qaCompletionRequest = QaCompletionRequest.buildBaseQaCompletionRequest("9*7=");
+        QaCompletionRequest qaCompletionRequest = QaCompletionRequest.baseBuild("9*7=");
         QaCompletionResponse qaCompletionResponse = aggregationSession.getChatSession().qaCompletions(NULL, NULL, NULL, qaCompletionRequest);
         log.info("测试结果：{}", qaCompletionResponse);
     }
@@ -102,7 +102,7 @@ public class ChatApiTest {
     public void test_chat_completions() {
         // 创建参数，上下文对话。
         // 第一次的问题
-        DefaultChatCompletionRequest defaultChatCompletionRequest = DefaultChatCompletionRequest.BuildDefaultChatCompletionRequest("1+1=");
+        DefaultChatCompletionRequest defaultChatCompletionRequest = DefaultChatCompletionRequest.baseBuild("1+1=");
         // 第一次的回复
         defaultChatCompletionRequest.addMessage(Constants.Role.ASSISTANT.getRoleName(), "2");
         // 第二次的问题
@@ -140,7 +140,7 @@ public class ChatApiTest {
         // 构造工具
         Tool tool = Tool.builder().type(Tool.Type.FUNCTION.getName()).function(toolFunction).build();
         // 构造请求参数
-        FuncChatCompletionRequest funcChatCompletionRequest = FuncChatCompletionRequest.BuildFuncChatCompletionRequest("What is the weather like in Boston?");
+        FuncChatCompletionRequest funcChatCompletionRequest = FuncChatCompletionRequest.baseBuild("What is the weather like in Boston?");
         funcChatCompletionRequest.setTools(Arrays.asList(tool));
         funcChatCompletionRequest.setToolChoice("auto");
         // 获取请求结果

@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 @Data
@@ -31,7 +32,7 @@ public class ChatRequest {
         Chat chat = Chat.builder().domain(Chat.General.generalV3.getMsg()).build();
         ChatParameter chatParameter = ChatParameter.builder().chat(chat).build();
         ChatText chatText = ChatText.builder().role(ChatText.Role.USER.getRoleName()).content(question).build();
-        Message message = Message.builder().chatTexts(Arrays.asList(chatText)).build();
+        Message message = Message.builder().chatTexts(new ArrayList<>(Arrays.asList(chatText))).build();
         ChatPayload chatPayload = ChatPayload.builder().message(message).build();
         return ChatRequest.builder().chatHeader(chatHeader).chatParameter(chatParameter).chatPayload(chatPayload).build();
     }

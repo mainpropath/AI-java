@@ -73,7 +73,7 @@ public class EmbeddingApiTest {
         List<String> inputList = new ArrayList<>();
         inputList.add("你asd sad 好");
         inputList.add("世界123");
-        EmbeddingCompletionRequest embeddingCompletionRequest = EmbeddingCompletionRequest.BuildBaseEmbeddingCompletionRequest(inputList);
+        EmbeddingCompletionRequest embeddingCompletionRequest = EmbeddingCompletionRequest.baseBuild(inputList);
         EmbeddingCompletionResponse embeddingCompletionResponse = aggregationSession.getEmbeddingSession().embeddingCompletions(NULL, NULL, NULL, embeddingCompletionRequest);
         log.info("返回结果：{}", embeddingCompletionResponse);
     }

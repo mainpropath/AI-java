@@ -33,9 +33,13 @@ public class DefaultEmbeddingSession implements EmbeddingSession {
     @Override
     @SneakyThrows
     public EmbeddingResponse embed(String apiKey, String apiSecret, EmbeddingRequest embeddingRequest) {
+        // 鉴权，得到请求路径
         String authUrl = AuthUtils.getAuthUrl(AuthUtils.RequestMethod.POST.getMethod(), SparkApiUrl.ApiUrl.embeddingp.getUrl(), apiKey, apiSecret);
+        // 创建请求，设置请求URL和json数据
         Request request = new Request.Builder().url(authUrl).post(RequestBody.create(MediaType.parse(ContentType.JSON.getValue()), JsonUtils.toJson(embeddingRequest))).build();
-        String jsonResp = configuration.getOkHttpClient().newCall(request).execute().body().string();
-        return JsonUtils.fromJson(jsonResp, EmbeddingResponse.class);
+        // 发起请求，获取返回的json字符串
+        String response = configuration.getOkHttpClient().newCall(request).execute().body().string();
+        // 将json映射到对象上
+        return JsonUtils.fromJson(response, EmbeddingResponse.class);
     }
 }

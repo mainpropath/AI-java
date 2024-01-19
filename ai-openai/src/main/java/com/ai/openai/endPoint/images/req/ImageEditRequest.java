@@ -47,7 +47,7 @@ public class ImageEditRequest {
      * @param prompt 提示词
      * @return 请求参数
      */
-    public static ImageEditRequest BuildBaseImageEditRequest(String prompt) {
+    public static ImageEditRequest baseBuild(String prompt) {
         return ImageEditRequest.builder().prompt(prompt).build();
     }
 

@@ -30,9 +30,9 @@ public class ImageApiTest {
         configuration.setApiHost("https://spark-api.xf-yun.com");
         // 3. 设置鉴权所需的API Key,可设置多个。
         ApiData apiData = ApiData.builder()
-                .apiKey("90991067651f9fc4c457b9244c36e790")
-                .apiSecret("YWUwOGY2MzMxNjA5OWE3MmQ0MzRmNDRh")
-                .appId("c8f362b8")
+                .apiKey("***********************")
+                .apiSecret("***********************")
+                .appId("***********************")
                 .build();
         configuration.setKeyList(Arrays.asList(apiData));
         // 4. 设置请求时 key 的使用策略，默认实现了：随机获取 和 固定第一个Key 两种方式。
@@ -45,17 +45,23 @@ public class ImageApiTest {
         this.aggregationSession = factory.openAggregationSession();
     }
 
+    /**
+     * 测试图片生成功能
+     */
     @Test
     public void test_image_create() throws IOException {
+        // 创建请求参数
         ImageCreateRequest request = ImageCreateRequest.baseBuild("画一个大海", "c8f362b8");
+        // 发起请求获取结果
         ImageCreateResponse imageCreateResponse = aggregationSession.getImageSession().imageCreate(request);
-        System.out.println(imageCreateResponse);
+        // 得到结果当中的base64 图片字符串
         String content = imageCreateResponse.getImagePayload().getChoice().getTexts().get(0).getContent();
+        // 转换为byte数组
         byte[] imageBytes = DatatypeConverter.parseBase64Binary(content.substring(content.indexOf(",") + 1));
+        // 读取byte数组，存放到指定文件路径
         BufferedImage bufferedImage = ImageIO.read(new ByteArrayInputStream(imageBytes));
         File outputFile = new File("D:\\chatGPT-api\\AI-java\\doc\\test\\test_create_image.png");
         ImageIO.write(bufferedImage, "png", outputFile);
-
     }
 
 

@@ -3,7 +3,11 @@ package com.ai.spark.achieve.defaults.session;
 import com.ai.spark.achieve.Configuration;
 import com.ai.spark.achieve.standard.interfaceSession.*;
 
+import static com.ai.common.utils.ValidationUtils.ensureNotNull;
 
+/**
+ * 聚合各个场景的session
+ */
 public class DefaultAggregationSession implements AggregationSession {
 
     private Configuration configuration;
@@ -17,7 +21,7 @@ public class DefaultAggregationSession implements AggregationSession {
     private volatile ImageSession imageSession;
 
     public DefaultAggregationSession(Configuration configuration) {
-        this.configuration = configuration;
+        this.configuration = ensureNotNull(configuration, "configuration");
     }
 
     @Override

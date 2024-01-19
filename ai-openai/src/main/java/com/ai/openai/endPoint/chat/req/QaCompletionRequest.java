@@ -108,7 +108,7 @@ public class QaCompletionRequest implements Serializable {
      * @param question 问题内容
      * @return 简单问答请求体
      */
-    public static QaCompletionRequest buildBaseQaCompletionRequest(String question) {
+    public static QaCompletionRequest baseBuild(String question) {
         return QaCompletionRequest.builder().prompt(question).build();
     }
 

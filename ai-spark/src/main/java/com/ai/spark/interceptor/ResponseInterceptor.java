@@ -9,6 +9,9 @@ import okhttp3.Response;
 
 import java.io.IOException;
 
+/**
+ * 返回信息拦截器
+ */
 @Slf4j
 public class ResponseInterceptor implements Interceptor {
     @Override

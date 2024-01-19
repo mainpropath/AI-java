@@ -42,7 +42,7 @@ public class DefaultChatCompletionRequest extends BaseChatCompletionRequest impl
      *
      * @param question 问题内容
      */
-    public static DefaultChatCompletionRequest BuildDefaultChatCompletionRequest(String question) {
+    public static DefaultChatCompletionRequest baseBuild(String question) {
         return DefaultChatCompletionRequest
                 .builder()
                 .messages(new ArrayList<>(Collections.singletonList(DefaultMessage.builder().role(Constants.Role.USER.getRoleName()).content(question).build())))

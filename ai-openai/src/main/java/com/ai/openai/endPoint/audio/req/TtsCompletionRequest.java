@@ -51,7 +51,7 @@ public class TtsCompletionRequest implements Serializable {
      * @param input 文本内容
      * @return 文本转语言请求参数
      */
-    public static TtsCompletionRequest buildBaseAudioCompletionRequest(String input) {
+    public static TtsCompletionRequest baseBuild(String input) {
         return TtsCompletionRequest
                 .builder()
                 .input(input)

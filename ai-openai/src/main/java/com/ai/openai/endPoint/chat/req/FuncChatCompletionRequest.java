@@ -50,7 +50,7 @@ public class FuncChatCompletionRequest extends BaseChatCompletionRequest impleme
      *
      * @param question 问题内容
      */
-    public static FuncChatCompletionRequest BuildFuncChatCompletionRequest(String question) {
+    public static FuncChatCompletionRequest baseBuild(String question) {
         return FuncChatCompletionRequest.builder()
                 .messages(new ArrayList<>(Collections.singletonList(DefaultMessage.builder().role(Constants.Role.USER.getRoleName()).content(question).build())))
                 .build();

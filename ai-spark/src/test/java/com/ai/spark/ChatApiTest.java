@@ -10,6 +10,7 @@ import com.ai.spark.achieve.defaults.listener.DocumentChatListener;
 import com.ai.spark.achieve.standard.SparkSessionFactory;
 import com.ai.spark.achieve.standard.interfaceSession.AggregationSession;
 import com.ai.spark.common.Usage;
+import com.ai.spark.endPoint.chat.ChatText;
 import com.ai.spark.endPoint.chat.req.ChatRequest;
 import com.ai.spark.endPoint.chat.req.DocumentChatRequest;
 import com.ai.spark.endPoint.chat.resp.ChatResponse;
@@ -32,9 +33,9 @@ public class ChatApiTest {
         configuration.setApiHost("https://spark-api.xf-yun.com");
         // 3. 设置鉴权所需的API Key,可设置多个。
         ApiData apiData = ApiData.builder()
-                .apiKey("90991067651f9fc4c457b9244c36e790")
-                .apiSecret("YWUwOGY2MzMxNjA5OWE3MmQ0MzRmNDRh")
-                .appId("c8f362b8")
+                .apiKey("***********************")
+                .apiSecret("***********************")
+                .appId("***********************")
                 .build();
         configuration.setKeyList(Arrays.asList(apiData));
         // 4. 设置请求时 key 的使用策略，默认实现了：随机获取 和 固定第一个Key 两种方式。
@@ -47,10 +48,15 @@ public class ChatApiTest {
         this.aggregationSession = factory.openAggregationSession();
     }
 
+    /**
+     * 测试聊天功能
+     */
     @Test
     public void test_chat() {
-        ChatRequest chatRequest = ChatRequest.baseBuild("讲一个笑话", "c8f362b8");
-        aggregationSession.getChatSession().chat(new ChatListener(chatRequest) {
+        // 创建参数
+        ChatRequest request = ChatRequest.baseBuild("讲一个笑话", "c8f362b8");
+        // 设置参数并发起请求，监听事件信息
+        aggregationSession.getChatSession().chat(new ChatListener(request) {
             @SneakyThrows
             @Override
             public void onChatError(ChatResponse chatResponse) {
@@ -72,7 +78,7 @@ public class ChatApiTest {
                 System.out.println("token 信息：" + usage);
             }
         });
-
+        // 等待会话结束
         CountDownLatch countDownLatch = new CountDownLatch(1);
         try {
             countDownLatch.await();
@@ -81,9 +87,60 @@ public class ChatApiTest {
         }
     }
 
+    /**
+     * 测试多轮聊天功能
+     */
+    @Test
+    public void test_chat_multiple() {
+        // 创建参数
+        ChatRequest request = ChatRequest.baseBuild("1+1=", "c8f362b8");
+        // 设置第一轮对话的结果
+        ChatText chatText1 = ChatText.baseBuild(ChatText.Role.ASSISTANT, "2");
+        // 设置第二轮对话的问题
+        ChatText chatText2 = ChatText.baseBuild(ChatText.Role.USER, "2+2=");
+        // 将对话过程注入到参数当中
+        request.getChatPayload().getMessage().getChatTexts().add(chatText1);
+        request.getChatPayload().getMessage().getChatTexts().add(chatText2);
+        // 设置参数并发起请求，监听事件信息
+        aggregationSession.getChatSession().chat(new ChatListener(request) {
+            @SneakyThrows
+            @Override
+            public void onChatError(ChatResponse chatResponse) {
+                System.out.println(chatResponse);
+            }
+
+            @Override
+            public void onChatOutput(ChatResponse chatResponse) {
+                System.out.print(chatResponse.getChatPayload().getChoice().getTexts().get(0).getContent());
+            }
+
+            @Override
+            public void onChatEnd() {
+                System.out.println("当前会话结束了");
+            }
+
+            @Override
+            public void onChatToken(Usage usage) {
+                System.out.println("token 信息：" + usage);
+            }
+        });
+        // 等待会话结束
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 测试文档对话功能
+     */
     @Test
     public void test_document_chat() {
+        // 构建参数
         DocumentChatRequest documentChatRequest = DocumentChatRequest.baseBuild("总结一下故事一说了什么？", Arrays.asList("c42a68fd31964d43b4f57eab11e9a833"));
+        // 设置阐述并发起请求
         aggregationSession.getChatSession().documentChat(new DocumentChatListener(documentChatRequest) {
             @SneakyThrows
             @Override
@@ -101,7 +158,7 @@ public class ChatApiTest {
                 System.out.println("当前会话结束了");
             }
         });
-
+        // 等待会话结束
         CountDownLatch countDownLatch = new CountDownLatch(1);
         try {
             countDownLatch.await();

@@ -4,6 +4,9 @@ package com.ai.spark.achieve.standard.interfaceSession;
 import com.ai.spark.endPoint.images.req.ImageCreateRequest;
 import com.ai.spark.endPoint.images.resp.ImageCreateResponse;
 
+/**
+ * 图片生成场景下的接口
+ */
 public interface ImageSession {
 
     /**
