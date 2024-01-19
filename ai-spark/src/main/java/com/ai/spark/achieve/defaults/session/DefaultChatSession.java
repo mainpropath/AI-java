@@ -40,7 +40,7 @@ public class DefaultChatSession implements ChatSession {
     public <T extends ChatListener> WebSocket chat(String apiKey, String apiSecret, T chatListener) {
         // 获取到对应访问的domain，根据domain获取对应的请求地址
         String domain = chatListener.getChatRequest().getChatParameter().getChat().getDomain();
-        String authUrl = AuthUtils.getAuthUrl(SparkApiUrl.getUrl(domain), apiKey, apiSecret);
+        String authUrl = AuthUtils.getAuthUrl(AuthUtils.RequestMethod.GET.getMethod(), SparkApiUrl.getUrl(domain), apiKey, apiSecret);
         String url = authUrl
                 .replaceAll("http://", "ws://")
                 .replaceAll("https://", "wss://");

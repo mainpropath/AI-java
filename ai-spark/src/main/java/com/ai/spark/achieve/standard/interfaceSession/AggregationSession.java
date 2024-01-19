@@ -8,4 +8,6 @@ public interface AggregationSession {
     DocumentSession getDocumentSession();
 
     EmbeddingSession getEmbeddingSession();
+
+    ImageSession getImageSession();
 }

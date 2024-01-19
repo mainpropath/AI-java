@@ -1,10 +1,7 @@
 package com.ai.spark.achieve.defaults.session;
 
 import com.ai.spark.achieve.Configuration;
-import com.ai.spark.achieve.standard.interfaceSession.AggregationSession;
-import com.ai.spark.achieve.standard.interfaceSession.ChatSession;
-import com.ai.spark.achieve.standard.interfaceSession.DocumentSession;
-import com.ai.spark.achieve.standard.interfaceSession.EmbeddingSession;
+import com.ai.spark.achieve.standard.interfaceSession.*;
 
 
 public class DefaultAggregationSession implements AggregationSession {
@@ -16,6 +13,8 @@ public class DefaultAggregationSession implements AggregationSession {
     private volatile DocumentSession documentSession;
 
     private volatile EmbeddingSession embeddingSession;
+
+    private volatile ImageSession imageSession;
 
     public DefaultAggregationSession(Configuration configuration) {
         this.configuration = configuration;
@@ -55,5 +54,17 @@ public class DefaultAggregationSession implements AggregationSession {
             }
         }
         return embeddingSession;
+    }
+
+    @Override
+    public ImageSession getImageSession() {
+        if (imageSession == null) {
+            synchronized (this) {
+                if (imageSession == null) {
+                    imageSession = new DefaultImageSession(configuration);
+                }
+            }
+        }
+        return imageSession;
     }
 }

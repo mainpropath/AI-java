@@ -36,10 +36,15 @@ public class SparkApiUrl {
     public final static String DOCUMENT_SUMMARY_QUERY = "documentSummaryStart";
     public final static String DOCUMENT_SUMMARY_QUERY_API_URL = "https://chatdoc.xfyun.cn/openapi/fileSummary";
 
+    // 文本嵌入接口
     public final static String EMBEDDING_P = "Embeddingp";
     public final static String EMBEDDING_P_API_URL = "https://cn-huabei-1.xf-yun.com/v1/private/sa8a05c27";
     public final static String EMBEDDING_Q = "Embeddingq";
     public final static String EMBEDDING_Q_API_URL = "https://cn-huabei-1.xf-yun.com/v1/private/s50d55a16";
+
+    public final static String IMAGE_CREATE = "imageCreate";
+    public final static String IMAGE_CREATE_API_URL = "https://spark-api.cn-huabei-1.xf-yun.com/v2.1/tti";
+
 
     public final static Map<String, String> urlMap = new HashMap<>();
 
@@ -53,6 +58,7 @@ public class SparkApiUrl {
         urlMap.put(DOCUMENT_SUMMARY_QUERY, DOCUMENT_SUMMARY_QUERY_API_URL);
         urlMap.put(EMBEDDING_P, EMBEDDING_P_API_URL);
         urlMap.put(EMBEDDING_Q, EMBEDDING_Q_API_URL);
+        urlMap.put(IMAGE_CREATE, IMAGE_CREATE_API_URL);
     }
 
     public static String getUrl(String key) {
@@ -65,7 +71,7 @@ public class SparkApiUrl {
 
     @Getter
     @AllArgsConstructor
-    public enum ApiRrl {
+    public enum ApiUrl {
         general(SPARK_API_HOST_WSS_V1_1_URL),
         generalV2(SPARK_API_HOST_WSS_V2_1_URL),
         generalV3(SPARK_API_HOST_WSS_V3_1_URL),
@@ -74,7 +80,9 @@ public class SparkApiUrl {
         documentSummaryStart(DOCUMENT_SUMMARY_START_API_URL),
         documentSummaryQuery(DOCUMENT_SUMMARY_QUERY_API_URL),
         embeddingp(EMBEDDING_P_API_URL),
-        embeddingq(EMBEDDING_Q_API_URL);
+        embeddingq(EMBEDDING_Q_API_URL),
+        imageCreate(IMAGE_CREATE_API_URL);
+
         private String url;
     }
 

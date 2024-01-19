@@ -15,6 +15,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 @Data
@@ -42,7 +43,7 @@ public class EmbeddingRequest {
                 .embeddingParameter(EmbeddingParameter.builder().build())
                 .embeddingPayload(EmbeddingPayload.builder().embeddingMessage(EmbeddingMessage
                         .builder()
-                        .text(Base64.getEncoder().encodeToString(JsonUtils.toJson(text).getBytes()))
+                        .text(Base64.getEncoder().encodeToString(JsonUtils.toJson(text).getBytes(StandardCharsets.UTF_8)))
                         .build()).build()
                 )
                 .build();

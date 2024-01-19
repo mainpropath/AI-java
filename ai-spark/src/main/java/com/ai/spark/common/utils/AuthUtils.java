@@ -1,6 +1,8 @@
 package com.ai.spark.common.utils;
 
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import okhttp3.HttpUrl;
 
 import javax.crypto.Mac;
@@ -27,18 +29,27 @@ public class AuthUtils {
     public final static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss z", Locale.US);
     public final static String preStr = "host: %s\n" +
             "date: %s\n" +
-            "GET %s HTTP/1.1";
+            "%s %s HTTP/1.1";
     private static final char[] MD5_TABLE = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+
+    @Getter
+    @AllArgsConstructor
+    public enum RequestMethod {
+        GET("GET"),
+        POST("POST");
+        private String method;
+    }
 
     /**
      * 鉴权方法，适用于对话接口
      *
-     * @param hostUrl   地址
-     * @param apiKey    apikey
-     * @param apiSecret apiSecret
+     * @param requestMethod 请求方式
+     * @param hostUrl       地址
+     * @param apiKey        apikey
+     * @param apiSecret     apiSecret
      * @return 鉴权信息
      */
-    public static String getAuthUrl(String hostUrl, String apiKey, String apiSecret) throws MalformedURLException, InvalidKeyException, NoSuchAlgorithmException {
+    public static String getAuthUrl(String requestMethod, String hostUrl, String apiKey, String apiSecret) throws MalformedURLException, InvalidKeyException, NoSuchAlgorithmException {
         URL url = new URL(hostUrl);
         ZonedDateTime now = ZonedDateTime.now(ZoneId.of("GMT"));
         String date = now.format(dateTimeFormatter);
@@ -46,7 +57,7 @@ public class AuthUtils {
         Mac mac = Mac.getInstance("hmacsha256");
         SecretKeySpec spec = new SecretKeySpec(apiSecret.getBytes(StandardCharsets.UTF_8), "hmacsha256");
         mac.init(spec);
-        byte[] hexDigits = mac.doFinal(String.format(preStr, url.getHost(), date, url.getPath()).getBytes(StandardCharsets.UTF_8));
+        byte[] hexDigits = mac.doFinal(String.format(preStr, url.getHost(), date, requestMethod, url.getPath()).getBytes(StandardCharsets.UTF_8));
         // Base64加密
         String sha = Base64.getEncoder().encodeToString(hexDigits);
         // 拼接

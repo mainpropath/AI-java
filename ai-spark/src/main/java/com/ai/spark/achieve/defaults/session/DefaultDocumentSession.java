@@ -67,7 +67,7 @@ public class DefaultDocumentSession implements DocumentSession {
 
     @Override
     public DocumentSummaryResponse documentSummaryStart(String appId, String apiSecret, String fileId) {
-        return this.documentSummary(SparkApiUrl.ApiRrl.documentSummaryStart.getUrl(), appId, apiSecret, fileId);
+        return this.documentSummary(SparkApiUrl.ApiUrl.documentSummaryStart.getUrl(), appId, apiSecret, fileId);
     }
 
     @Override
@@ -78,7 +78,7 @@ public class DefaultDocumentSession implements DocumentSession {
 
     @Override
     public DocumentSummaryResponse documentSummaryQuery(String appId, String apiSecret, String fileId) {
-        return this.documentSummary(SparkApiUrl.ApiRrl.documentSummaryQuery.getUrl(), appId, apiSecret, fileId);
+        return this.documentSummary(SparkApiUrl.ApiUrl.documentSummaryQuery.getUrl(), appId, apiSecret, fileId);
     }
 
 

@@ -32,9 +32,9 @@ public class ChatApiTest {
         configuration.setApiHost("https://spark-api.xf-yun.com");
         // 3. 设置鉴权所需的API Key,可设置多个。
         ApiData apiData = ApiData.builder()
-                .apiKey("***********************")
-                .apiSecret("***********************")
-                .appId("***********************")
+                .apiKey("90991067651f9fc4c457b9244c36e790")
+                .apiSecret("YWUwOGY2MzMxNjA5OWE3MmQ0MzRmNDRh")
+                .appId("c8f362b8")
                 .build();
         configuration.setKeyList(Arrays.asList(apiData));
         // 4. 设置请求时 key 的使用策略，默认实现了：随机获取 和 固定第一个Key 两种方式。
@@ -49,7 +49,7 @@ public class ChatApiTest {
 
     @Test
     public void test_chat() {
-        ChatRequest chatRequest = ChatRequest.buildChatRequest("讲一个笑话", "c8f362b8");
+        ChatRequest chatRequest = ChatRequest.baseBuild("讲一个笑话", "c8f362b8");
         aggregationSession.getChatSession().chat(new ChatListener(chatRequest) {
             @SneakyThrows
             @Override
@@ -83,7 +83,7 @@ public class ChatApiTest {
 
     @Test
     public void test_document_chat() {
-        DocumentChatRequest documentChatRequest = DocumentChatRequest.buildDocumentChatRequest("总结一下故事一说了什么？", Arrays.asList("c42a68fd31964d43b4f57eab11e9a833"));
+        DocumentChatRequest documentChatRequest = DocumentChatRequest.baseBuild("总结一下故事一说了什么？", Arrays.asList("c42a68fd31964d43b4f57eab11e9a833"));
         aggregationSession.getChatSession().documentChat(new DocumentChatListener(documentChatRequest) {
             @SneakyThrows
             @Override

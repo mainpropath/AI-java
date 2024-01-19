@@ -1,27 +1,25 @@
 package com.ai.spark;
 
-
 import com.ai.common.strategy.impl.FirstKeyStrategy;
 import com.ai.spark.achieve.ApiData;
 import com.ai.spark.achieve.Configuration;
 import com.ai.spark.achieve.defaults.DefaultSparkSessionFactory;
 import com.ai.spark.achieve.standard.SparkSessionFactory;
 import com.ai.spark.achieve.standard.interfaceSession.AggregationSession;
-import com.ai.spark.endPoint.chat.ChatText;
-import com.ai.spark.endPoint.embedding.req.EmbeddingRequest;
-import com.ai.spark.endPoint.embedding.resp.EmbeddingResponse;
+import com.ai.spark.endPoint.images.req.ImageCreateRequest;
+import com.ai.spark.endPoint.images.resp.ImageCreateResponse;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
+import javax.imageio.ImageIO;
+import javax.xml.bind.DatatypeConverter;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
-import java.util.Base64;
 
-import static com.ai.spark.endPoint.chat.ChatText.baseBuild;
-
-public class EmbeddingApiTest {
-
+public class ImageApiTest {
 
     private AggregationSession aggregationSession;
 
@@ -48,12 +46,17 @@ public class EmbeddingApiTest {
     }
 
     @Test
-    public void test_embedding() {
-        // TODO 请求不成功，还需要再测试
-        ChatText chatText = baseBuild(ChatText.Role.USER, "这是一段文字");
-        EmbeddingRequest request = EmbeddingRequest.baseBuild(chatText, "c8f362b8");
-        EmbeddingResponse response = aggregationSession.getEmbeddingSession().embed(request);
-        System.out.println(response);
+    public void test_image_create() throws IOException {
+        ImageCreateRequest request = ImageCreateRequest.baseBuild("画一个大海", "c8f362b8");
+        ImageCreateResponse imageCreateResponse = aggregationSession.getImageSession().imageCreate(request);
+        System.out.println(imageCreateResponse);
+        String content = imageCreateResponse.getImagePayload().getChoice().getTexts().get(0).getContent();
+        byte[] imageBytes = DatatypeConverter.parseBase64Binary(content.substring(content.indexOf(",") + 1));
+        BufferedImage bufferedImage = ImageIO.read(new ByteArrayInputStream(imageBytes));
+        File outputFile = new File("D:\\chatGPT-api\\AI-java\\doc\\test\\test_create_image.png");
+        ImageIO.write(bufferedImage, "png", outputFile);
+
     }
+
 
 }
