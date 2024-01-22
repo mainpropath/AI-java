@@ -1,5 +1,7 @@
-package com.ai.spark.endPoint.images;
+package com.ai.spark.endPoint.images.resp;
 
+import com.ai.spark.endPoint.images.ImageHeader;
+import com.ai.spark.endPoint.images.ImageUnderstandingPayload;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -16,21 +18,12 @@ import lombok.experimental.FieldNameConstants;
 @FieldNameConstants
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ImageHeader {
+public class ImageUnderstandingResponse {
 
-    @JsonProperty("app_id")
-    private String appId;
+    @JsonProperty("header")
+    private ImageHeader imageHeader;
 
-    private String uid;
-
-    // 下面是返回时用到的属性
-
-    private Integer code;
-
-    private String message;
-
-    private String sid;
-
-    private Integer status;
+    @JsonProperty("payload")
+    private ImageUnderstandingPayload imageUnderstandingPayload;
 
 }

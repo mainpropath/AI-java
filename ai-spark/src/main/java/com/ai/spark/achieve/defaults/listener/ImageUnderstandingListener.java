@@ -1,10 +1,13 @@
 package com.ai.spark.achieve.defaults.listener;
 
 import com.ai.common.utils.JsonUtils;
-import com.ai.spark.endPoint.chat.req.DocumentChatRequest;
+import com.ai.spark.endPoint.chat.ChatHeader;
+import com.ai.spark.endPoint.chat.Choice;
 import com.ai.spark.endPoint.chat.resp.DocumentChatResponse;
+import com.ai.spark.endPoint.images.ImageHeader;
+import com.ai.spark.endPoint.images.req.ImageUnderstandingRequest;
+import com.ai.spark.endPoint.images.resp.ImageUnderstandingResponse;
 import lombok.Data;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Response;
 import okhttp3.WebSocket;
@@ -15,21 +18,21 @@ import org.jetbrains.annotations.Nullable;
 import static com.ai.common.utils.ValidationUtils.ensureNotNull;
 
 /**
- * 星火大模型文档对话流式返回监听器
+ * 图片理解对话监听器
  */
 @Slf4j
 @Data
-public abstract class DocumentChatListener extends BaseListener<DocumentChatRequest, DocumentChatResponse> {
+public abstract class ImageUnderstandingListener extends BaseListener<ImageUnderstandingRequest, ImageUnderstandingResponse> {
 
-    private DocumentChatRequest documentChatRequest;
+    private ImageUnderstandingRequest imageUnderstandingRequest;
 
     /**
      * 构造方法，传入大模型参数
      *
-     * @param documentChatRequest 大模型参数
+     * @param imageUnderstandingRequest 大模型参数
      */
-    public DocumentChatListener(DocumentChatRequest documentChatRequest) {
-        this.documentChatRequest = ensureNotNull(documentChatRequest, "documentChatRequest");
+    public ImageUnderstandingListener(ImageUnderstandingRequest imageUnderstandingRequest) {
+        this.imageUnderstandingRequest = ensureNotNull(imageUnderstandingRequest, "documentChatRequest");
     }
 
     /**
@@ -47,16 +50,16 @@ public abstract class DocumentChatListener extends BaseListener<DocumentChatRequ
     /**
      * 星火大模型发生异常
      *
-     * @param documentChatResponse 大模型返回值
+     * @param imageUnderstandingResponse 大模型返回值
      */
-    public abstract void onChatError(DocumentChatResponse documentChatResponse);
+    public abstract void onChatError(ImageUnderstandingResponse imageUnderstandingResponse);
 
     /**
      * 星火大模型正常返回信息
      *
-     * @param documentChatResponse 大模型返回值
+     * @param imageUnderstandingResponse 大模型返回值
      */
-    public abstract void onChatOutput(DocumentChatResponse documentChatResponse);
+    public abstract void onChatOutput(ImageUnderstandingResponse imageUnderstandingResponse);
 
     /**
      * 星火大模型返回信息结束回调
@@ -81,18 +84,19 @@ public abstract class DocumentChatListener extends BaseListener<DocumentChatRequ
 
     @Override
     public void onMessage(@NotNull WebSocket webSocket, @NotNull String text) {
-        DocumentChatResponse documentChatResponse = JsonUtils.fromJson(text, DocumentChatResponse.class);
+        ImageUnderstandingResponse imageUnderstandingResponse = JsonUtils.fromJson(text, ImageUnderstandingResponse.class);
 
-        if (DocumentChatResponse.Code.SUCCESS.getValue() != documentChatResponse.getCode()) {
-            log.warn("调用星火模型文档对话发生错误，错误码为：{}，请求的sid为：{}", documentChatResponse.getCode(), documentChatResponse.getSid());
+        ImageHeader imageHeader = imageUnderstandingResponse.getImageHeader();
+        if (imageHeader.getCode() != ChatHeader.Code.SUCCESS.getValue()) {
+            log.warn("调用星火模型文档对话发生错误，错误码为：{}，请求的sid为：{}", imageHeader.getCode(), imageHeader.getSid());
             webSocket.close(1000, "星火模型调用异常");
-            this.onChatError(documentChatResponse);
+            this.onChatError(imageUnderstandingResponse);
             return;
         }
 
-        this.onChatOutput(documentChatResponse);
+        this.onChatOutput(imageUnderstandingResponse);
 
-        if (DocumentChatResponse.Status.END.getValue() == documentChatResponse.getStatus()) {
+        if (DocumentChatResponse.Status.END.getValue() == Choice.Status.END.getValue()) {
             // 可以关闭连接，释放资源
             webSocket.close(1000, "星火模型返回结束");
             this.onChatEnd();
@@ -107,6 +111,6 @@ public abstract class DocumentChatListener extends BaseListener<DocumentChatRequ
     @Override
     public void onOpen(@NotNull WebSocket webSocket, @NotNull Response response) {
         super.onOpen(webSocket, response);
-        webSocket.send(JsonUtils.toJson(documentChatRequest));
+        webSocket.send(JsonUtils.toJson(imageUnderstandingRequest));
     }
 }

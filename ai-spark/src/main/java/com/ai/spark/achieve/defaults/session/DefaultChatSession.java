@@ -41,10 +41,9 @@ public class DefaultChatSession implements ChatSession {
         // 获取到对应访问的domain，根据domain获取对应的请求地址
         String domain = chatListener.getChatRequest().getChatParameter().getChat().getDomain();
         // 生成请求的URL
-        String authUrl = AuthUtils.getAuthUrl(AuthUtils.RequestMethod.GET.getMethod(), SparkApiUrl.getUrl(domain), apiKey, apiSecret);
-        String url = authUrl
-                .replaceAll("http://", "ws://")
-                .replaceAll("https://", "wss://");
+        String url = AuthUtils.replaceAllHttp(
+                AuthUtils.getAuthUrl(AuthUtils.RequestMethod.GET.getMethod(), SparkApiUrl.getUrl(domain), apiKey, apiSecret)
+        );
         // 发起请求返回结果
         return this.configuration.getOkHttpClient().newWebSocket(new Request.Builder().url(url).build(), chatListener);
     }

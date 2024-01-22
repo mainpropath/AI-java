@@ -4,10 +4,13 @@ import com.ai.common.strategy.impl.FirstKeyStrategy;
 import com.ai.spark.achieve.ApiData;
 import com.ai.spark.achieve.Configuration;
 import com.ai.spark.achieve.defaults.DefaultSparkSessionFactory;
+import com.ai.spark.achieve.defaults.listener.ImageUnderstandingListener;
 import com.ai.spark.achieve.standard.SparkSessionFactory;
 import com.ai.spark.achieve.standard.interfaceSession.AggregationSession;
 import com.ai.spark.endPoint.images.req.ImageCreateRequest;
+import com.ai.spark.endPoint.images.req.ImageUnderstandingRequest;
 import com.ai.spark.endPoint.images.resp.ImageCreateResponse;
+import com.ai.spark.endPoint.images.resp.ImageUnderstandingResponse;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,6 +21,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.concurrent.CountDownLatch;
 
 public class ImageApiTest {
 
@@ -51,7 +55,7 @@ public class ImageApiTest {
     @Test
     public void test_image_create() throws IOException {
         // 创建请求参数
-        ImageCreateRequest request = ImageCreateRequest.baseBuild("画一个大海", "c8f362b8");
+        ImageCreateRequest request = ImageCreateRequest.baseBuild("画一座大山", "c8f362b8");
         // 发起请求获取结果
         ImageCreateResponse imageCreateResponse = aggregationSession.getImageSession().imageCreate(request);
         // 得到结果当中的base64 图片字符串
@@ -62,6 +66,35 @@ public class ImageApiTest {
         BufferedImage bufferedImage = ImageIO.read(new ByteArrayInputStream(imageBytes));
         File outputFile = new File("D:\\chatGPT-api\\AI-java\\doc\\test\\test_create_image.png");
         ImageIO.write(bufferedImage, "png", outputFile);
+    }
+
+    @Test
+    public void test_image_understanding() {
+        String filePath = "D:\\chatGPT-api\\AI-java\\doc\\test\\test_create_image.png";
+        File file = new File(filePath);
+        ImageUnderstandingRequest request = ImageUnderstandingRequest.baseBuild("这张图片的内容是什么？", "c8f362b8", file);
+        aggregationSession.getImageSession().imageUnderstanding(request, new ImageUnderstandingListener(request) {
+            @Override
+            public void onChatError(ImageUnderstandingResponse imageUnderstandingResponse) {
+                System.err.println(imageUnderstandingResponse);
+            }
+
+            @Override
+            public void onChatOutput(ImageUnderstandingResponse imageUnderstandingResponse) {
+                System.out.println(imageUnderstandingResponse.getImageUnderstandingPayload().getChoice().getTexts().get(0).getContent());
+            }
+
+            @Override
+            public void onChatEnd() {
+            }
+        });
+        // 等待会话结束
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 

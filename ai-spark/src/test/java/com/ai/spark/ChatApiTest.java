@@ -9,7 +9,6 @@ import com.ai.spark.achieve.defaults.listener.ChatListener;
 import com.ai.spark.achieve.defaults.listener.DocumentChatListener;
 import com.ai.spark.achieve.standard.SparkSessionFactory;
 import com.ai.spark.achieve.standard.interfaceSession.AggregationSession;
-import com.ai.spark.common.Usage;
 import com.ai.spark.endPoint.chat.ChatText;
 import com.ai.spark.endPoint.chat.req.ChatRequest;
 import com.ai.spark.endPoint.chat.req.DocumentChatRequest;
@@ -65,6 +64,7 @@ public class ChatApiTest {
 
             @Override
             public void onChatOutput(ChatResponse chatResponse) {
+                System.out.println(chatResponse);
                 System.out.print(chatResponse.getChatPayload().getChoice().getTexts().get(0).getContent());
             }
 
@@ -73,10 +73,6 @@ public class ChatApiTest {
                 System.out.println("当前会话结束了");
             }
 
-            @Override
-            public void onChatToken(Usage usage) {
-                System.out.println("token 信息：" + usage);
-            }
         });
         // 等待会话结束
         CountDownLatch countDownLatch = new CountDownLatch(1);
@@ -103,7 +99,6 @@ public class ChatApiTest {
         request.getChatPayload().getMessage().getChatTexts().add(chatText2);
         // 设置参数并发起请求，监听事件信息
         aggregationSession.getChatSession().chat(new ChatListener(request) {
-            @SneakyThrows
             @Override
             public void onChatError(ChatResponse chatResponse) {
                 System.out.println(chatResponse);
@@ -119,10 +114,6 @@ public class ChatApiTest {
                 System.out.println("当前会话结束了");
             }
 
-            @Override
-            public void onChatToken(Usage usage) {
-                System.out.println("token 信息：" + usage);
-            }
         });
         // 等待会话结束
         CountDownLatch countDownLatch = new CountDownLatch(1);
@@ -142,7 +133,6 @@ public class ChatApiTest {
         DocumentChatRequest documentChatRequest = DocumentChatRequest.baseBuild("总结一下故事一说了什么？", Arrays.asList("c42a68fd31964d43b4f57eab11e9a833"));
         // 设置阐述并发起请求
         aggregationSession.getChatSession().documentChat(new DocumentChatListener(documentChatRequest) {
-            @SneakyThrows
             @Override
             public void onChatError(DocumentChatResponse documentChatResponse) {
                 System.err.println(documentChatResponse);

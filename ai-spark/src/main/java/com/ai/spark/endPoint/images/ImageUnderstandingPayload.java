@@ -1,5 +1,8 @@
 package com.ai.spark.endPoint.images;
 
+
+import com.ai.spark.common.Usage;
+import com.ai.spark.endPoint.chat.Choice;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -16,21 +19,11 @@ import lombok.experimental.FieldNameConstants;
 @FieldNameConstants
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ImageHeader {
+public class ImageUnderstandingPayload {
 
-    @JsonProperty("app_id")
-    private String appId;
+    @JsonProperty("choices")
+    private Choice choice;
 
-    private String uid;
-
-    // 下面是返回时用到的属性
-
-    private Integer code;
-
-    private String message;
-
-    private String sid;
-
-    private Integer status;
+    private Usage usage;
 
 }

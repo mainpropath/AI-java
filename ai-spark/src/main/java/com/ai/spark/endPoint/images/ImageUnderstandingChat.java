@@ -16,21 +16,19 @@ import lombok.experimental.FieldNameConstants;
 @FieldNameConstants
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ImageHeader {
+public class ImageUnderstandingChat {
 
-    @JsonProperty("app_id")
-    private String appId;
+    @Builder.Default
+    private String domain = "general";
 
-    private String uid;
+    private String auditing;
 
-    // 下面是返回时用到的属性
+    private Double temperature;
 
-    private Integer code;
+    @JsonProperty("top_k")
+    private Integer topK;
 
-    private String message;
-
-    private String sid;
-
-    private Integer status;
+    @JsonProperty("max_tokens")
+    private Integer maxTokens;
 
 }

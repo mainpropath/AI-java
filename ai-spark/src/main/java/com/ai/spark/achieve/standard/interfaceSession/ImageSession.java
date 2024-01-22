@@ -1,8 +1,11 @@
 package com.ai.spark.achieve.standard.interfaceSession;
 
 
+import com.ai.spark.achieve.defaults.listener.ImageUnderstandingListener;
 import com.ai.spark.endPoint.images.req.ImageCreateRequest;
+import com.ai.spark.endPoint.images.req.ImageUnderstandingRequest;
 import com.ai.spark.endPoint.images.resp.ImageCreateResponse;
+import okhttp3.WebSocket;
 
 /**
  * 图片生成场景下的接口
@@ -27,5 +30,22 @@ public interface ImageSession {
      */
     ImageCreateResponse imageCreate(String apiKey, String apiSecret, ImageCreateRequest imageCreateRequest);
 
+    /**
+     * 图片理解
+     *
+     * @param imageUnderstandingRequest 请求参数
+     * @return 请求结果
+     */
+    public <T extends ImageUnderstandingListener> WebSocket imageUnderstanding(ImageUnderstandingRequest imageUnderstandingRequest, ImageUnderstandingListener imageUnderstandingListener);
+
+    /**
+     * 图片理解
+     *
+     * @param apiKey                    用户的ApiKey
+     * @param apiSecret                 用户的ApiSecret
+     * @param imageUnderstandingRequest 请求参数
+     * @return 请求结果
+     */
+    public <T extends ImageUnderstandingListener> WebSocket imageUnderstanding(String apiKey, String apiSecret, ImageUnderstandingRequest imageUnderstandingRequest, ImageUnderstandingListener imageUnderstandingListener);
 
 }

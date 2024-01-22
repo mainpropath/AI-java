@@ -35,6 +35,10 @@ public class AuthUtils {
             "%s %s HTTP/1.1";
     private static final char[] MD5_TABLE = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 
+    public static String replaceAllHttp(String authUrl) {
+        return authUrl.replaceAll("http://", "ws://").replaceAll("https://", "wss://");
+    }
+
     /**
      * 鉴权方法，适用于对话接口
      *

@@ -2,6 +2,7 @@ package com.ai.spark.endPoint.chat;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 @Data
@@ -29,6 +30,13 @@ public class ChatText {
      */
     private Integer index;
 
+    /**
+     * 数据的类型
+     */
+    @JsonProperty("content_type")
+    private String contentType;
+
+
     public static ChatText baseBuild(Role role, String content) {
         return ChatText.builder().role(role.getRoleName()).content(content).build();
     }
@@ -42,6 +50,17 @@ public class ChatText {
         ;
 
         private String RoleName;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public enum ContentType {
+
+        TEXT("text"),
+        IMAGE("image"),
+        ;
+
+        private String type;
     }
 
 }

@@ -45,9 +45,13 @@ public class SparkApiUrl {
     public final static String EMBEDDING_Q = "Embeddingq";
     public final static String EMBEDDING_Q_API_URL = "https://cn-huabei-1.xf-yun.com/v1/private/s50d55a16";
 
+    // 图片生成接口
     public final static String IMAGE_CREATE = "imageCreate";
     public final static String IMAGE_CREATE_API_URL = "https://spark-api.cn-huabei-1.xf-yun.com/v2.1/tti";
 
+    // 图片理解接口
+    public final static String IMAGE_UNDERSANDING = "imageUnderstanding";
+    public final static String IMAGE_UNDERSANDING_API_URL = "https://spark-api.cn-huabei-1.xf-yun.com/v2.1/image";
 
     public final static Map<String, String> urlMap = new HashMap<>();
 
@@ -62,6 +66,7 @@ public class SparkApiUrl {
         urlMap.put(EMBEDDING_P, EMBEDDING_P_API_URL);
         urlMap.put(EMBEDDING_Q, EMBEDDING_Q_API_URL);
         urlMap.put(IMAGE_CREATE, IMAGE_CREATE_API_URL);
+        urlMap.put(IMAGE_UNDERSANDING, IMAGE_UNDERSANDING_API_URL);
     }
 
     public static String getUrl(String key) {
@@ -84,7 +89,8 @@ public class SparkApiUrl {
         documentSummaryQuery(DOCUMENT_SUMMARY_QUERY_API_URL),
         embeddingp(EMBEDDING_P_API_URL),
         embeddingq(EMBEDDING_Q_API_URL),
-        imageCreate(IMAGE_CREATE_API_URL);
+        imageCreate(IMAGE_CREATE_API_URL),
+        imageUnderstanding(IMAGE_UNDERSANDING_API_URL);
 
         private String url;
     }
