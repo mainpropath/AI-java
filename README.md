@@ -10,7 +10,7 @@
 
 ## Star History
 
-<iframe style="width:100%;height:auto;min-width:600px;min-height:400px;" src="https://star-history.com/embed?secret=Z2hwX2xmNFNwY2hHSm5LSjhoOW14ZXlWSklReDhja0pyYjE4Qm1QVw==#mainpropath/AI-java&Date" frameBorder="0"></iframe>
+[![Star History Chart](https://api.star-history.com/svg?repos=mainpropath/AI-java&type=Date)](https://star-history.com/#mainpropath/AI-java&Date)
 
 **基于本项目的大模型框架正在火速研发当中，项目地址：[AI-SmartFuse-Framework](https://github.com/mainpropath/AI-SmartFuse-Framework)**
 
@@ -20,11 +20,13 @@
 
 该项目的主要目标如下：
 
-- **提供简单易用的接口：**我们致力于开发一个用户友好的SDK，提供简洁的方法和函数，使Java开发者能够轻松地与大模型进行通信。SDK应提供发送用户请求并接收生成的回复的便捷方法。
+- **提供简单易用的接口：**我们致力于开发一个用户友好的SDK，提供简洁的方法和函数，使Java开发者能够轻松地与大模型进行通信。本SDK提供发送用户请求并接收生成的回复的便捷方法。
 - **支持流式应答：**实时生成响应，不需要等待整个对话结束。能够快速获得反馈，更加流畅地进行对话。流式应答能够为用户提供更接近真实人类对话的体验。用户可以即时提出问题、进行追问或做出反应，而模型能够相应地作出回应和调整。
 - **上下文管理：**大模型是基于上下文的，因此我们希望SDK能够支持上下文的管理，允许用户在对话过程中保持和更新上下文信息。
 - **异常处理和错误处理：**我们将注重SDK的稳定性和可靠性，确保它能够有效地处理各种可能出现的错误和异常情况，并提供相应的异常处理机制。
 - **示例和文档：**为了方便Java开发者快速上手使用SDK，我们将提供详细的示例代码和清晰的文档，以解释如何正确集成和使用本项目。
+- **多厂商模型接入：**本项目旨在提供多个不同厂商的模型接入，大模型功能不应该局限于某一单一的模型。应当集各家之长。
+- **高拓展性：**本项目所有模型功能都提供对应接口，默认实现一套接口方法，同时也可让用户根据接口实现自己的API调用方式。
 
 ## **安装**
 
@@ -34,7 +36,7 @@
 
 **注意，由于本项目是多模块编写，想要使用哪一个厂商的模型API，请引入对应的依赖。**
 
-**如果想使用openai相关模型功能，install 之后，在其他项目中可引入依赖。**
+**如果使用openai相关模型功能，install 之后，在pom文件中可引入如下依赖。**
 
 ```
         <dependency>
@@ -44,13 +46,19 @@
         </dependency>
 ```
 
+**如果使用讯飞相关模型功能，install之后，在pom文件中引入如下依赖。**
 
+```
+        <dependency>
+            <groupId>com.ai</groupId>
+            <artifactId>ai-spark</artifactId>
+            <version>1.0</version>
+        </dependency>
+```
 
 ## **使用方式**
 
-**本项目目前实现了chatGPT官方文档下 endpoints 各个板块全部的接口。**
-
-**正在完成讯飞星火模型相关API的编写。**
+**本项目目前实现了chatGPT官方文档下 endpoints 各个板块全部的接口。正在完成讯飞星火模型相关API的编写。**
 
 项目结构如下
 
@@ -62,6 +70,8 @@
 ```
 
 **不管是使用哪一个厂商的模型API，在我们的SDK当中，使用方式都是一致的。使用方式如下：（下面是openai相关功能的使用方式）**
+
+**具体的使用方式请参考测试类当中的测试方法。**
 
 ```java
 // 工厂创建聚合的session
@@ -171,6 +181,8 @@ public void test_tts() throws InterruptedException {
 ```
 
 ## **更新记录**
+
+2024-01-24：完成星火模型对话、文档对话、图片生成、图片理解接口的实现。
 
 2024-01-10：开始讯飞星火模型相关API的编写工作
 

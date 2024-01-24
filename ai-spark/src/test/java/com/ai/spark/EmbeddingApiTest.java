@@ -27,9 +27,9 @@ public class EmbeddingApiTest {
         configuration.setApiHost("https://spark-api.xf-yun.com");
         // 3. 设置鉴权所需的API Key,可设置多个。
         ApiData apiData = ApiData.builder()
-                .apiKey("***********************")
-                .apiSecret("***********************")
-                .appId("***********************")
+                .apiKey("90991067651f9fc4c457b9244c36e790")
+                .apiSecret("YWUwOGY2MzMxNjA5OWE3MmQ0MzRmNDRh")
+                .appId("c8f362b8")
                 .build();
         configuration.setKeyList(Arrays.asList(apiData));
         // 4. 设置请求时 key 的使用策略，默认实现了：随机获取 和 固定第一个Key 两种方式。
