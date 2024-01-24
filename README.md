@@ -8,7 +8,9 @@
 
 ## **项目背景**
 
-![star-history-2024116](doc/img/star-history-2024116.png)
+## Star History
+
+<iframe style="width:100%;height:auto;min-width:600px;min-height:400px;" src="https://star-history.com/embed?secret=Z2hwX2xmNFNwY2hHSm5LSjhoOW14ZXlWSklReDhja0pyYjE4Qm1QVw==#mainpropath/AI-java&Date" frameBorder="0"></iframe>
 
 **基于本项目的大模型框架正在火速研发当中，项目地址：[AI-SmartFuse-Framework](https://github.com/mainpropath/AI-SmartFuse-Framework)**
 
