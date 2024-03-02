@@ -1,8 +1,8 @@
 package com.ai.openai;
 
+import com.ai.common.strategy.impl.FirstKeyStrategy;
 import com.ai.openai.achieve.Configuration;
 import com.ai.openai.achieve.defaults.DefaultOpenAiSessionFactory;
-import com.ai.common.strategy.impl.FirstKeyStrategy;
 import com.ai.openai.achieve.standard.OpenAiSessionFactory;
 import com.ai.openai.achieve.standard.interfaceSession.AggregationSession;
 import com.ai.openai.endPoint.models.ModelObject;

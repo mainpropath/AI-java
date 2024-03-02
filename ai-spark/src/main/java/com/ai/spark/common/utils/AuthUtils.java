@@ -3,12 +3,13 @@ package com.ai.spark.common.utils;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import okhttp3.HttpUrl;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
@@ -19,7 +20,6 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 import java.util.Locale;
-import java.util.Objects;
 
 /**
  * 鉴权工具类
@@ -48,26 +48,20 @@ public class AuthUtils {
      * @param apiSecret     apiSecret
      * @return 鉴权信息
      */
-    public static String getAuthUrl(String requestMethod, String hostUrl, String apiKey, String apiSecret) throws MalformedURLException, InvalidKeyException, NoSuchAlgorithmException {
-        URL url = new URL(hostUrl);
-        ZonedDateTime now = ZonedDateTime.now(ZoneId.of("GMT"));
-        String date = now.format(dateTimeFormatter);
+    public static String getAuthUrl(String requestMethod, String hostUrl, String apiKey, String apiSecret) throws InvalidKeyException, NoSuchAlgorithmException, URISyntaxException, UnsupportedEncodingException {
+        URI uri = new URI(hostUrl);
+        String date = ZonedDateTime.now(ZoneId.of("GMT")).format(dateTimeFormatter);
         // SHA256加密
         Mac mac = Mac.getInstance("hmacsha256");
-        SecretKeySpec spec = new SecretKeySpec(apiSecret.getBytes(StandardCharsets.UTF_8), "hmacsha256");
-        mac.init(spec);
-        byte[] hexDigits = mac.doFinal(String.format(preStr, url.getHost(), date, requestMethod, url.getPath()).getBytes(StandardCharsets.UTF_8));
-        // Base64加密
-        String sha = Base64.getEncoder().encodeToString(hexDigits);
-        // 拼接
-        String authorization = String.format("api_key=\"%s\", algorithm=\"%s\", headers=\"%s\", signature=\"%s\"", apiKey, "hmac-sha256", "host date request-line", sha);
+        mac.init(new SecretKeySpec(apiSecret.getBytes(StandardCharsets.UTF_8), "hmacsha256"));
+        byte[] hexDigits = mac.doFinal(String.format(preStr, uri.getHost(), date, requestMethod, uri.getPath()).getBytes(StandardCharsets.UTF_8));
+        String authorization = String.format("api_key=\"%s\", algorithm=\"%s\", headers=\"%s\", signature=\"%s\"", apiKey, "hmac-sha256", "host date request-line", Base64.getEncoder().encodeToString(hexDigits));
         // 拼接地址
-        HttpUrl httpUrl = Objects.requireNonNull(HttpUrl.parse("https://" + url.getHost() + url.getPath())).newBuilder().
-                addQueryParameter("authorization", Base64.getEncoder().encodeToString(authorization.getBytes(StandardCharsets.UTF_8))).
-                addQueryParameter("date", date).
-                addQueryParameter("host", url.getHost()).
-                build();
-        return httpUrl.toString();
+        return new StringBuilder(hostUrl)
+                .append("?authorization=").append(Base64.getEncoder().encodeToString(authorization.getBytes(StandardCharsets.UTF_8)))
+                .append("&date=").append(URLEncoder.encode(date, StandardCharsets.UTF_8.name()))
+                .append("&host=").append(uri.getHost())
+                .toString();
     }
 
     /**

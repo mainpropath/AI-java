@@ -53,6 +53,10 @@ public class SparkApiUrl {
     public final static String IMAGE_UNDERSANDING = "imageUnderstanding";
     public final static String IMAGE_UNDERSANDING_API_URL = "https://spark-api.cn-huabei-1.xf-yun.com/v2.1/image";
 
+    // 超拟人合成协议接口
+    public final static String HYPERMIMETIC_SYNTHESIS = "hypermimeticSynthesis";
+    public final static String HYPERMIMETIC_SYNTHESIS_API_URL = "wss://cbm01.cn-huabei-1.xf-yun.com/v1/private/medd90fec";
+
     public final static Map<String, String> urlMap = new HashMap<>();
 
     static {
@@ -67,6 +71,7 @@ public class SparkApiUrl {
         urlMap.put(EMBEDDING_Q, EMBEDDING_Q_API_URL);
         urlMap.put(IMAGE_CREATE, IMAGE_CREATE_API_URL);
         urlMap.put(IMAGE_UNDERSANDING, IMAGE_UNDERSANDING_API_URL);
+        urlMap.put(HYPERMIMETIC_SYNTHESIS, HYPERMIMETIC_SYNTHESIS_API_URL);
     }
 
     public static String getUrl(String key) {
@@ -90,8 +95,8 @@ public class SparkApiUrl {
         embeddingp(EMBEDDING_P_API_URL),
         embeddingq(EMBEDDING_Q_API_URL),
         imageCreate(IMAGE_CREATE_API_URL),
-        imageUnderstanding(IMAGE_UNDERSANDING_API_URL);
-
+        imageUnderstanding(IMAGE_UNDERSANDING_API_URL),
+        hypermimeticSynthesis(HYPERMIMETIC_SYNTHESIS_API_URL);
         private String url;
     }
 

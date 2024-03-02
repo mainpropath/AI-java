@@ -4,7 +4,6 @@ import com.ai.common.utils.JsonUtils;
 import com.ai.spark.endPoint.chat.req.DocumentChatRequest;
 import com.ai.spark.endPoint.chat.resp.DocumentChatResponse;
 import lombok.Data;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Response;
 import okhttp3.WebSocket;

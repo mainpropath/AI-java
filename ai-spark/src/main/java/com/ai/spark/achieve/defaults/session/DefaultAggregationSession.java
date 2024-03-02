@@ -20,6 +20,8 @@ public class DefaultAggregationSession implements AggregationSession {
 
     private volatile ImageSession imageSession;
 
+    private volatile AudioSession audioSession;
+
     public DefaultAggregationSession(Configuration configuration) {
         this.configuration = ensureNotNull(configuration, "configuration");
     }
@@ -71,4 +73,17 @@ public class DefaultAggregationSession implements AggregationSession {
         }
         return imageSession;
     }
+
+    @Override
+    public AudioSession getAudioSession() {
+        if (audioSession == null) {
+            synchronized (this) {
+                if (audioSession == null) {
+                    audioSession = new DefaultAudioSession(configuration);
+                }
+            }
+        }
+        return audioSession;
+    }
+
 }

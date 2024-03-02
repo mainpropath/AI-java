@@ -1,6 +1,5 @@
 package com.ai.spark.achieve.defaults.listener;
 
-import com.ai.spark.common.Usage;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Response;

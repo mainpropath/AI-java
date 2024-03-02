@@ -1,22 +1,17 @@
 package com.ai.spark;
 
-
 import com.ai.common.strategy.impl.FirstKeyStrategy;
 import com.ai.spark.achieve.ApiData;
 import com.ai.spark.achieve.Configuration;
 import com.ai.spark.achieve.defaults.DefaultSparkSessionFactory;
 import com.ai.spark.achieve.standard.SparkSessionFactory;
 import com.ai.spark.achieve.standard.interfaceSession.AggregationSession;
-import com.ai.spark.endPoint.chat.ChatText;
-import com.ai.spark.endPoint.embedding.req.EmbeddingRequest;
-import com.ai.spark.endPoint.embedding.resp.EmbeddingResponse;
 import org.junit.Before;
-import org.junit.Test;
 
 import java.util.Arrays;
 
-public class EmbeddingApiTest {
 
+public class AudioApiTest {
 
     private AggregationSession aggregationSession;
 
@@ -40,19 +35,6 @@ public class EmbeddingApiTest {
         // 6. 创建 session 工厂，制造不同场景的 session
         SparkSessionFactory factory = new DefaultSparkSessionFactory(configuration);
         this.aggregationSession = factory.openAggregationSession();
-    }
-
-    /**
-     * 测试文本嵌入功能
-     */
-    @Test
-    public void test_embedding() {
-        // 构造参数信息
-        ChatText chatText = ChatText.baseBuild(ChatText.Role.USER, "这是一段文字");
-        EmbeddingRequest request = EmbeddingRequest.baseBuild(chatText, "c8f362b8");
-        // 发起请求
-        EmbeddingResponse response = aggregationSession.getEmbeddingSession().embed(request);
-        System.out.println(response);
     }
 
 }

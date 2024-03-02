@@ -10,4 +10,7 @@ public interface AggregationSession {
     EmbeddingSession getEmbeddingSession();
 
     ImageSession getImageSession();
+
+    AudioSession getAudioSession();
+
 }
