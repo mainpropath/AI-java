@@ -1,7 +1,10 @@
 package com.ai.baidu.achieve.standard.api;
 
 import com.ai.baidu.endPoint.auth.resp.AuthResponse;
+import com.ai.baidu.endPoint.chat.req.ChatRequest;
+import com.ai.baidu.endPoint.chat.resp.ChatResponse;
 import io.reactivex.Single;
+import retrofit2.http.Body;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
@@ -43,5 +46,15 @@ public interface BaiduApiServer {
     default String getAccessToken(String grantType, String apiKey, String secretKey) {
         return this.auth(grantType, apiKey, secretKey).blockingGet().getAccessToken();
     }
+
+    /**
+     * 聊天接口
+     *
+     * @param accessToken 鉴权的 accessToken
+     * @param chatRequest 请求参数
+     * @return 返回数据
+     */
+    @POST("/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/completions_pro")
+    Single<ChatResponse> chat(@Query("access_token") String accessToken, @Body ChatRequest chatRequest);
 
 }

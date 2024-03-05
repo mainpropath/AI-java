@@ -56,18 +56,21 @@ public class ChatApiTest {
         ChatRequest request = ChatRequest.baseBuild("讲一个笑话", "c8f362b8");
         // 设置参数并发起请求，监听事件信息
         aggregationSession.getChatSession().chat(new ChatListener(request) {
+            // 异常处理
             @SneakyThrows
             @Override
             public void onChatError(ChatResponse chatResponse) {
                 System.out.println(chatResponse);
             }
 
+            // 获取正常返回的数据
             @Override
             public void onChatOutput(ChatResponse chatResponse) {
                 System.out.println(chatResponse);
                 System.out.print(chatResponse.getChatPayload().getChoice().getTexts().get(0).getContent());
             }
 
+            // 结束处理
             @Override
             public void onChatEnd() {
                 System.out.println("当前会话结束了");

@@ -7,6 +7,8 @@ import com.ai.openai.achieve.standard.interfaceSession.ModerationSession;
 import com.ai.openai.endPoint.moderations.req.ModerationRequest;
 import com.ai.openai.endPoint.moderations.resp.ModerationResponse;
 
+import static com.ai.common.utils.ValidationUtils.ensureNotNull;
+
 /**
  * @Description: OpenAI 审核类会话
  **/
@@ -21,8 +23,8 @@ public class DefaultModerationSession implements ModerationSession {
     private OpenaiApiServer openaiApiServer;
 
     public DefaultModerationSession(Configuration configuration) {
-        this.configuration = configuration;
-        this.openaiApiServer = configuration.getOpenaiApiServer();
+        this.configuration = ensureNotNull(configuration, "configuration");
+        this.openaiApiServer = ensureNotNull(configuration.getOpenaiApiServer(), "openaiApiServer");
     }
 
     @Override

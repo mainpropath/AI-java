@@ -17,6 +17,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.ai.common.utils.ValidationUtils.ensureNotNull;
+
 /**
  * @Description: OpenAI 语音类会话
  **/
@@ -33,8 +35,8 @@ public class DefaultAudioSession implements AudioSession {
     private OpenaiApiServer openaiApiServer;
 
     public DefaultAudioSession(Configuration configuration) {
-        this.configuration = configuration;
-        this.openaiApiServer = configuration.getOpenaiApiServer();
+        this.configuration = ensureNotNull(configuration, "configuration");
+        this.openaiApiServer = ensureNotNull(configuration.getOpenaiApiServer(), "openaiApiServer");
     }
 
     @Override

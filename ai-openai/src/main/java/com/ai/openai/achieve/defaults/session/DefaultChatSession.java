@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import static com.ai.common.exception.Constants.*;
+import static com.ai.common.utils.ValidationUtils.ensureNotNull;
 
 /**
  * @description OpenAI 对话类会话
@@ -49,9 +50,9 @@ public class DefaultChatSession implements ChatSession {
     private EventSource.Factory factory;
 
     public DefaultChatSession(Configuration configuration) {
-        this.configuration = configuration;
-        this.openaiApiServer = configuration.getOpenaiApiServer();
-        this.factory = configuration.createRequestFactory();
+        this.configuration = ensureNotNull(configuration, "configuration");
+        this.openaiApiServer = ensureNotNull(configuration.getOpenaiApiServer(), "openaiApiServer");
+        this.factory = ensureNotNull(configuration.createRequestFactory(), "requestFactory");
     }
 
     @Override

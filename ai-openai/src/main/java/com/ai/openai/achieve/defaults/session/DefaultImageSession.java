@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.ai.common.utils.ValidationUtils.ensureNotNull;
+
 /**
  * @Description: OpenAI 图片类会话
  **/
@@ -32,8 +34,8 @@ public class DefaultImageSession implements ImageSession {
     private OpenaiApiServer openaiApiServer;
 
     public DefaultImageSession(Configuration configuration) {
-        this.configuration = configuration;
-        this.openaiApiServer = configuration.getOpenaiApiServer();
+        this.configuration = ensureNotNull(configuration, "configuration");
+        this.openaiApiServer = ensureNotNull(configuration.getOpenaiApiServer(), "openaiApiServer");
     }
 
     @Override

@@ -3,6 +3,8 @@ package com.ai.openai.achieve.defaults.session;
 import com.ai.openai.achieve.Configuration;
 import com.ai.openai.achieve.standard.interfaceSession.*;
 
+import static com.ai.common.utils.ValidationUtils.ensureNotNull;
+
 /**
  * @Description: 聚合各个类型的session
  **/
@@ -27,7 +29,7 @@ public class DefaultAggregationSession implements AggregationSession {
     private volatile ModerationSession moderationSession;
 
     public DefaultAggregationSession(Configuration configuration) {
-        this.configuration = configuration;
+        this.configuration = ensureNotNull(configuration, "configuration");
     }
 
     public Configuration getConfiguration() {

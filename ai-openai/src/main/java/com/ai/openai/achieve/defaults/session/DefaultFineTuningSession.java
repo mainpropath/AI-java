@@ -9,6 +9,8 @@ import com.ai.openai.endPoint.fineTuning.req.FineTuningRequest;
 import com.ai.openai.endPoint.fineTuning.req.ListFineTuningRequest;
 import com.ai.openai.endPoint.fineTuning.resp.FineTuningResponse;
 
+import static com.ai.common.utils.ValidationUtils.ensureNotNull;
+
 /**
  * @Description: OpenAI 微调类会话
  **/
@@ -24,8 +26,8 @@ public class DefaultFineTuningSession implements FineTuningSession {
     private OpenaiApiServer openaiApiServer;
 
     public DefaultFineTuningSession(Configuration configuration) {
-        this.configuration = configuration;
-        this.openaiApiServer = configuration.getOpenaiApiServer();
+        this.configuration = ensureNotNull(configuration, "configuration");
+        this.openaiApiServer = ensureNotNull(configuration.getOpenaiApiServer(), "openaiApiServer");
     }
 
     @Override

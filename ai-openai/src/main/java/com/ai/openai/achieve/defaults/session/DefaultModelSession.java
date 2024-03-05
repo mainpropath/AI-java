@@ -9,6 +9,8 @@ import com.ai.openai.endPoint.models.resp.DeleteFineTuneModelResponse;
 
 import java.util.List;
 
+import static com.ai.common.utils.ValidationUtils.ensureNotNull;
+
 /**
  * @Description: OpenAI 模型类会话
  **/
@@ -24,8 +26,8 @@ public class DefaultModelSession implements ModelSession {
     private OpenaiApiServer openaiApiServer;
 
     public DefaultModelSession(Configuration configuration) {
-        this.configuration = configuration;
-        this.openaiApiServer = configuration.getOpenaiApiServer();
+        this.configuration = ensureNotNull(configuration, "configuration");
+        this.openaiApiServer = ensureNotNull(configuration.getOpenaiApiServer(), "openaiApiServer");
     }
 
     @Override

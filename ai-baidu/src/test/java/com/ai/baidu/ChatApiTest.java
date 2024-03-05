@@ -5,7 +5,9 @@ import com.ai.baidu.achieve.Configuration;
 import com.ai.baidu.achieve.defaults.DefaultBaiduSessionFactory;
 import com.ai.baidu.achieve.standard.BaiduSessionFactory;
 import com.ai.baidu.achieve.standard.interfaceSession.AggregationSession;
-import com.ai.baidu.endPoint.auth.resp.AuthResponse;
+import com.ai.baidu.endPoint.chat.Message;
+import com.ai.baidu.endPoint.chat.req.ChatRequest;
+import com.ai.baidu.endPoint.chat.resp.ChatResponse;
 import com.ai.common.strategy.impl.FirstKeyStrategy;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
@@ -51,11 +53,23 @@ public class ChatApiTest {
      */
     @Test
     public void test_auth() {
+        // 获取用户配置的ApiData
         ApiData systemApiData = configuration.getSystemApiData();
-        AuthResponse authResponse = configuration.getBaiduApiServer().auth("client_credentials", systemApiData.getApiKey(), systemApiData.getSecretKey()).blockingGet();
-        System.out.println(authResponse);
+        // 鉴权
         String accessToken = configuration.getBaiduApiServer().getAccessToken(systemApiData.getApiKey(), systemApiData.getSecretKey());
         System.out.println(accessToken);
+    }
+
+    /**
+     * 测试聊天功能
+     */
+    @Test
+    public void test_chat() {
+        // 发起聊天
+        ChatResponse chat = aggregationSession
+                .getChatSession()// 获取 chatSession
+                .chat(null, ChatRequest.baseBuild(Message.Role.USER, "你能讲一个笑话吗？"));// 构造一个基础的聊天请求体
+        System.out.println(chat.getResult());
     }
 
 }

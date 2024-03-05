@@ -13,6 +13,8 @@ import okhttp3.ResponseBody;
 import java.io.File;
 import java.util.List;
 
+import static com.ai.common.utils.ValidationUtils.ensureNotNull;
+
 /**
  * @Description: OpenAI 文件类会话
  **/
@@ -28,8 +30,8 @@ public class DefaultFilesSession implements FilesSession {
     private OpenaiApiServer openaiApiServer;
 
     public DefaultFilesSession(Configuration configuration) {
-        this.configuration = configuration;
-        this.openaiApiServer = configuration.getOpenaiApiServer();
+        this.configuration = ensureNotNull(configuration, "configuration");
+        this.openaiApiServer = ensureNotNull(configuration.getOpenaiApiServer(), "openaiApiServer");
     }
 
     @Override
