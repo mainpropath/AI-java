@@ -7,6 +7,7 @@ import com.ai.common.utils.JsonUtils;
 import com.ai.openai.achieve.Configuration;
 import com.ai.openai.achieve.standard.api.OpenaiApiServer;
 import com.ai.openai.achieve.standard.interfaceSession.ChatSession;
+import com.ai.openai.common.ApiUrl;
 import com.ai.openai.endPoint.chat.ChatChoice;
 import com.ai.openai.endPoint.chat.msg.DefaultMessage;
 import com.ai.openai.endPoint.chat.req.DefaultChatCompletionRequest;
@@ -61,12 +62,12 @@ public class DefaultChatSession implements ChatSession {
     }
 
     @Override
-    public EventSource qaCompletions(String apiHostByUser, String apiKeyByUser, String apiUrlByUser, QaCompletionRequest qaCompletionRequest, EventSourceListener eventSourceListener) throws JsonProcessingException {
+    public EventSource qaCompletions(String apiHostByUser, String apiKeyByUser, String apiUrlByUser, QaCompletionRequest qaCompletionRequest, EventSourceListener eventSourceListener) {
         Request request = new Request.Builder()
                 .addHeader(API_HOST, apiHostByUser)
                 .addHeader(API_KEY, apiKeyByUser)
                 .addHeader(URL, apiUrlByUser)
-                .url(configuration.getApiHost().concat(ApiUrl.v1_completions.getCode()))
+                .url(configuration.getApiHost().concat(ApiUrl.v1_completions.getUrl()))
                 .post(RequestBody.create(MediaType.parse(ContentType.JSON.getValue()), JsonUtils.toJson(qaCompletionRequest)))
                 .build();
         return factory.newEventSource(request, eventSourceListener);
@@ -93,7 +94,7 @@ public class DefaultChatSession implements ChatSession {
                 .addHeader(API_HOST, apiHostByUser)
                 .addHeader(API_KEY, apiKeyByUser)
                 .addHeader(URL, apiUrlByUser)
-                .url(configuration.getApiHost().concat(ApiUrl.v1_chat_completions.getCode()))
+                .url(configuration.getApiHost().concat(ApiUrl.v1_chat_completions.getUrl()))
                 .post(RequestBody.create(MediaType.parse(ContentType.JSON.getValue()), new ObjectMapper().writeValueAsString(defaultChatCompletionRequest)))
                 .build();
         return factory.newEventSource(request, eventSourceListener);

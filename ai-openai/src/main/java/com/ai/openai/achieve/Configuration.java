@@ -34,4 +34,8 @@ public class Configuration extends BaseConfiguration {
         return EventSources.createFactory(okHttpClient);
     }
 
+    public String getSystemApiData() {
+        return (String) keyStrategy.apply(keyList);
+    }
+
 }
