@@ -1,12 +1,12 @@
-package com.ai.spark.achieve.defaults;
+package com.ai.baidu.achieve.defaults;
 
-import com.ai.spark.achieve.Configuration;
-import com.ai.spark.achieve.defaults.session.DefaultAggregationSession;
-import com.ai.spark.achieve.standard.SparkSessionFactory;
-import com.ai.spark.achieve.standard.api.SparkApiServer;
-import com.ai.spark.achieve.standard.interfaceSession.AggregationSession;
-import com.ai.spark.interceptor.BaseUrlInterceptor;
-import com.ai.spark.interceptor.ResponseInterceptor;
+import com.ai.baidu.achieve.Configuration;
+import com.ai.baidu.achieve.defaults.session.DefaultAggregationSession;
+import com.ai.baidu.achieve.standard.BaiduSessionFactory;
+import com.ai.baidu.achieve.standard.api.BaiduApiServer;
+import com.ai.baidu.achieve.standard.interfaceSession.AggregationSession;
+import com.ai.baidu.interceptor.ResponseInterceptor;
+import lombok.AllArgsConstructor;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -15,15 +15,13 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 
 import java.util.concurrent.TimeUnit;
 
-import static com.ai.common.utils.ValidationUtils.ensureNotNull;
-
-public class DefaultSparkSessionFactory implements SparkSessionFactory {
+/**
+ * @Description: baidu API Factory 会话工厂
+ **/
+@AllArgsConstructor
+public class DefaultBaiduSessionFactory implements BaiduSessionFactory {
 
     private final Configuration configuration;
-
-    public DefaultSparkSessionFactory(Configuration configuration) {
-        this.configuration = ensureNotNull(configuration, "configuration");
-    }
 
     @Override
     public OkHttpClient createHttpClient() {
@@ -33,8 +31,7 @@ public class DefaultSparkSessionFactory implements SparkSessionFactory {
         // 2. 开启 Http 客户端
         OkHttpClient.Builder builder = new OkHttpClient.Builder()
                 .addInterceptor(httpLoggingInterceptor)
-                .addInterceptor(new BaseUrlInterceptor())
-                .addInterceptor(new ResponseInterceptor())// 设置返回信息拦截器
+                .addInterceptor(new ResponseInterceptor())
                 .connectTimeout(450, TimeUnit.SECONDS)
                 .writeTimeout(450, TimeUnit.SECONDS)
                 .readTimeout(450, TimeUnit.SECONDS);
@@ -46,20 +43,21 @@ public class DefaultSparkSessionFactory implements SparkSessionFactory {
     }
 
     @Override
-    public SparkApiServer createSparkAiApiServer(OkHttpClient okHttpClient) {
+    public BaiduApiServer createBaiduApiServer(OkHttpClient okHttpClient) {
         return new Retrofit.Builder()
                 .baseUrl(configuration.getApiHost())
                 .client(okHttpClient)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(JacksonConverterFactory.create())
-                .build().create(SparkApiServer.class);
+                .build().create(BaiduApiServer.class);
     }
 
     @Override
     public AggregationSession openAggregationSession() {
         OkHttpClient okHttpClient = createHttpClient();
         configuration.setOkHttpClient(okHttpClient);
-        configuration.setSparkApiServer(createSparkAiApiServer(okHttpClient));
+        configuration.setBaiduApiServer(createBaiduApiServer(okHttpClient));
         return new DefaultAggregationSession(configuration);
     }
+
 }

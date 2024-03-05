@@ -1,11 +1,13 @@
-package com.ai.spark.achieve.standard;
+package com.ai.baidu.achieve.standard;
 
-
-import com.ai.spark.achieve.standard.api.SparkApiServer;
-import com.ai.spark.achieve.standard.interfaceSession.AggregationSession;
+import com.ai.baidu.achieve.standard.api.BaiduApiServer;
+import com.ai.baidu.achieve.standard.interfaceSession.AggregationSession;
 import okhttp3.OkHttpClient;
 
-public interface SparkSessionFactory {
+/**
+ * @Description: 会话工厂
+ **/
+public interface BaiduSessionFactory {
 
     /**
      * 创建聚合过后的session
@@ -27,6 +29,6 @@ public interface SparkSessionFactory {
      * @param okHttpClient 客户端
      * @return api信息
      */
-    SparkApiServer createSparkAiApiServer(OkHttpClient okHttpClient);
+    BaiduApiServer createBaiduApiServer(OkHttpClient okHttpClient);
 
 }

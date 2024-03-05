@@ -44,4 +44,5 @@ public interface AggregationSession {
      * 获取审核会话窗口
      */
     ModerationSession getModerationSession();
+
 }

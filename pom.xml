@@ -12,6 +12,7 @@
         <module>ai-common</module>
         <module>ai-openai</module>
         <module>ai-spark</module>
+        <module>ai-baidu</module>
     </modules>
     <name>AI-java</name>
     <description>ai-sdk-java</description>

@@ -1,25 +1,21 @@
 package com.ai.spark.achieve;
 
-import com.ai.common.strategy.KeyStrategy;
+import com.ai.common.config.BaseConfiguration;
 import com.ai.spark.achieve.standard.api.SparkApiServer;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import okhttp3.OkHttpClient;
+import lombok.*;
 import org.jetbrains.annotations.NotNull;
 
-import java.net.Proxy;
 import java.util.List;
 
 /**
  * @Description: 配置信息
  **/
 @Data
-@Builder
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class Configuration {
+public class Configuration extends BaseConfiguration {
 
     /**
      * api 服务提供者
@@ -27,31 +23,10 @@ public class Configuration {
     private SparkApiServer sparkApiServer;
 
     /**
-     * api 请求客户端
-     */
-    private OkHttpClient okHttpClient;
-
-    /**
      * api Key 集合
      */
     @NotNull
     private List<ApiData> keyList;
-
-    /**
-     * 请求地址（很多情况下，这个apiHost都是一个摆设）
-     */
-    @NotNull
-    private String apiHost;
-
-    /**
-     * 获取key的策略
-     */
-    private KeyStrategy keyStrategy;
-
-    /**
-     * 代理信息
-     */
-    private Proxy proxy;
 
     public ApiData getSystemApiData() {
         return (ApiData) keyStrategy.apply(keyList);

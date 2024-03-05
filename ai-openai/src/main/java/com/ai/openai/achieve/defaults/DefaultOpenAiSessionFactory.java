@@ -25,11 +25,7 @@ public class DefaultOpenAiSessionFactory implements OpenAiSessionFactory {
 
     private final Configuration configuration;
 
-    /**
-     * 获取 httpClient
-     *
-     * @return 客户端
-     */
+    @Override
     public OkHttpClient createHttpClient() {
         // 1. 日志配置
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
@@ -49,13 +45,8 @@ public class DefaultOpenAiSessionFactory implements OpenAiSessionFactory {
         return builder.build();
     }
 
-    /**
-     * 获取 Api 信息
-     *
-     * @param okHttpClient 客户端
-     * @return api信息
-     */
-    public OpenaiApiServer createOpenAiApi(OkHttpClient okHttpClient) {
+    @Override
+    public OpenaiApiServer createOpenAiApiServer(OkHttpClient okHttpClient) {
         return new Retrofit.Builder()
                 .baseUrl(configuration.getApiHost())
                 .client(okHttpClient)
@@ -68,7 +59,7 @@ public class DefaultOpenAiSessionFactory implements OpenAiSessionFactory {
     public AggregationSession openAggregationSession() {
         OkHttpClient okHttpClient = createHttpClient();
         configuration.setOkHttpClient(okHttpClient);
-        configuration.setOpenaiApiServer(createOpenAiApi(okHttpClient));
+        configuration.setOpenaiApiServer(createOpenAiApiServer(okHttpClient));
         return new DefaultAggregationSession(configuration);
     }
 }
