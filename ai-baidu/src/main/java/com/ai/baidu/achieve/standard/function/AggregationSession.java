@@ -1,4 +1,4 @@
-package com.ai.baidu.achieve.standard.interfaceSession;
+package com.ai.baidu.achieve.standard.function;
 
 /**
  * @Description: 聚合各大场景的session
@@ -10,4 +10,8 @@ public interface AggregationSession {
      */
     ChatSession getChatSession();
 
+    /**
+     * 获取嵌入会话窗口
+     */
+    EmbeddingSession getEmbeddingSession();
 }

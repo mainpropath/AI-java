@@ -20,22 +20,22 @@ public class BaseConfiguration {
     /**
      * api 请求客户端
      */
-    public OkHttpClient okHttpClient;
+    private OkHttpClient okHttpClient;
 
     /**
      * 请求地址（很多情况下，这个apiHost都是一个摆设）
      */
     @NotNull
-    public String apiHost;
+    private String apiHost;
 
     /**
      * 代理信息
      */
-    public Proxy proxy;
+    private Proxy proxy;
 
     /**
      * 获取key的策略
      */
-    public KeyStrategy keyStrategy;
+    private KeyStrategy keyStrategy;
 
 }

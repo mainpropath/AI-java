@@ -4,13 +4,15 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import com.ai.spark.achieve.ApiData;
 import com.ai.spark.achieve.Configuration;
-import com.ai.spark.achieve.standard.api.SparkApiServer;
 import com.ai.spark.achieve.standard.interfaceSession.DocumentSession;
 import com.ai.spark.common.SparkApiUrl;
 import com.ai.spark.common.utils.AuthUtils;
 import com.ai.spark.endPoint.document.req.FileUploadRequest;
 import com.ai.spark.endPoint.document.resp.DocumentSummaryResponse;
 import com.ai.spark.endPoint.document.resp.FileUploadResponse;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -20,21 +22,19 @@ import java.util.Map;
 
 import static com.ai.common.utils.ValidationUtils.ensureNotNull;
 
-
-public class DefaultDocumentSession implements DocumentSession {
-
-    private Configuration configuration;
-
-    private SparkApiServer sparkApiServer;
+@Data
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
+public class DefaultDocumentSession extends Session implements DocumentSession {
 
     public DefaultDocumentSession(Configuration configuration) {
-        this.configuration = ensureNotNull(configuration, "configuration");
-        this.sparkApiServer = ensureNotNull(configuration.getSparkApiServer(), "sparkApiServer");
+        this.setConfiguration(ensureNotNull(configuration, "configuration"));
+        this.setSparkApiServer(ensureNotNull(configuration.getSparkApiServer(), "sparkApiServer"));
     }
 
     @Override
     public FileUploadResponse fileUpload(FileUploadRequest fileUploadRequest) {
-        ApiData apiData = configuration.getSystemApiData();
+        ApiData apiData = this.getConfiguration().getSystemApiData();
         return this.fileUpload(apiData.getAppId(), apiData.getApiSecret(), fileUploadRequest);
     }
 
@@ -60,12 +60,12 @@ public class DefaultDocumentSession implements DocumentSession {
             requestBodyMap.put(FileUploadRequest.Fields.callbackUrl, RequestBody.create(MediaType.parse("multipart/form-data"), fileUploadRequest.getCallbackUrl()));
         }
         // 发起请求返回结果
-        return sparkApiServer.fileUpload(appId, String.valueOf(ts), AuthUtils.getSignature(appId, apiSecret, ts), multipartBody, requestBodyMap).blockingGet();
+        return this.getSparkApiServer().fileUpload(appId, String.valueOf(ts), AuthUtils.getSignature(appId, apiSecret, ts), multipartBody, requestBodyMap).blockingGet();
     }
 
     @Override
     public DocumentSummaryResponse documentSummaryStart(String fileId) {
-        ApiData apiData = configuration.getSystemApiData();
+        ApiData apiData = this.getConfiguration().getSystemApiData();
         return this.documentSummaryStart(apiData.getAppId(), apiData.getApiSecret(), fileId);
     }
 
@@ -76,7 +76,7 @@ public class DefaultDocumentSession implements DocumentSession {
 
     @Override
     public DocumentSummaryResponse documentSummaryQuery(String fileId) {
-        ApiData apiData = configuration.getSystemApiData();
+        ApiData apiData = this.getConfiguration().getSystemApiData();
         return this.documentSummaryQuery(apiData.getAppId(), apiData.getApiSecret(), fileId);
     }
 
@@ -96,7 +96,7 @@ public class DefaultDocumentSession implements DocumentSession {
      */
     private DocumentSummaryResponse documentSummary(String url, String appId, String apiSecret, String fileId) {
         long ts = DateUtil.currentSeconds();
-        return sparkApiServer.documentSummary(url, appId, String.valueOf(ts), AuthUtils.getSignature(appId, apiSecret, ts), RequestBody.create(MediaType.parse("multipart/form-data"), fileId)).blockingGet();
+        return this.getSparkApiServer().documentSummary(url, appId, String.valueOf(ts), AuthUtils.getSignature(appId, apiSecret, ts), RequestBody.create(MediaType.parse("multipart/form-data"), fileId)).blockingGet();
     }
 
 }

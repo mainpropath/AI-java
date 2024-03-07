@@ -29,7 +29,7 @@ public class Configuration extends BaseConfiguration {
     private List<ApiData> keyList;
 
     public ApiData getSystemApiData() {
-        return (ApiData) keyStrategy.apply(keyList);
+        return (ApiData) this.getKeyStrategy().apply(keyList);
     }
 
 }

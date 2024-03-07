@@ -1,10 +1,12 @@
 package com.ai.openai.achieve.defaults.session;
 
 import com.ai.openai.achieve.Configuration;
-import com.ai.openai.achieve.standard.api.OpenaiApiServer;
 import com.ai.openai.achieve.standard.interfaceSession.FilesSession;
 import com.ai.openai.endPoint.files.FileObject;
 import com.ai.openai.endPoint.files.resp.DeleteFileResponse;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -18,25 +20,19 @@ import static com.ai.common.utils.ValidationUtils.ensureNotNull;
 /**
  * @Description: OpenAI 文件类会话
  **/
-public class DefaultFilesSession implements FilesSession {
-
-    /**
-     * 配置信息
-     */
-    private Configuration configuration;
-    /**
-     * OpenAI 接口
-     */
-    private OpenaiApiServer openaiApiServer;
+@Data
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
+public class DefaultFilesSession extends Session implements FilesSession {
 
     public DefaultFilesSession(Configuration configuration) {
-        this.configuration = ensureNotNull(configuration, "configuration");
-        this.openaiApiServer = ensureNotNull(configuration.getOpenaiApiServer(), "openaiApiServer");
+        this.setConfiguration(ensureNotNull(configuration, "configuration"));
+        this.setOpenaiApiServer(ensureNotNull(configuration.getOpenaiApiServer(), "openaiApiServer"));
     }
 
     @Override
     public List<FileObject> listFilesCompletions(String apiHostByUser, String apiKeyByUser, String apiUrlByUser) {
-        return this.openaiApiServer.listFilesCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser).blockingGet().getData();
+        return this.getOpenaiApiServer().listFilesCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser).blockingGet().getData();
     }
 
     @Override
@@ -44,22 +40,22 @@ public class DefaultFilesSession implements FilesSession {
         RequestBody fileBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
         MultipartBody.Part multipartBody = MultipartBody.Part.createFormData("file", file.getName(), fileBody);
         RequestBody purposeBody = RequestBody.create(MediaType.parse("multipart/form-data"), purpose);
-        return this.openaiApiServer.uploadFileCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, multipartBody, purposeBody).blockingGet();
+        return this.getOpenaiApiServer().uploadFileCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, multipartBody, purposeBody).blockingGet();
     }
 
     @Override
     public DeleteFileResponse deleteFileCompletions(String apiHostByUser, String apiKeyByUser, String apiUrlByUser, String fileId) {
-        return this.openaiApiServer.deleteFileCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, fileId).blockingGet();
+        return this.getOpenaiApiServer().deleteFileCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, fileId).blockingGet();
     }
 
     @Override
     public FileObject retrieveFileCompletions(String apiHostByUser, String apiKeyByUser, String apiUrlByUser, String fileId) {
-        return this.openaiApiServer.retrieveFileCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, fileId).blockingGet();
+        return this.getOpenaiApiServer().retrieveFileCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, fileId).blockingGet();
     }
 
     @Override
     public ResponseBody retrieveFileContextCompletions(String apiHostByUser, String apiKeyByUser, String apiUrlByUser, String fileId) {
-        return this.openaiApiServer.retrieveFileContentCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, fileId).blockingGet();
+        return this.getOpenaiApiServer().retrieveFileContentCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, fileId).blockingGet();
     }
 
 

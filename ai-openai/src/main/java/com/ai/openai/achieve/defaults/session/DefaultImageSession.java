@@ -1,12 +1,14 @@
 package com.ai.openai.achieve.defaults.session;
 
 import com.ai.openai.achieve.Configuration;
-import com.ai.openai.achieve.standard.api.OpenaiApiServer;
 import com.ai.openai.achieve.standard.interfaceSession.ImageSession;
 import com.ai.openai.endPoint.images.ImageObject;
 import com.ai.openai.endPoint.images.req.CreateImageRequest;
 import com.ai.openai.endPoint.images.req.ImageEditRequest;
 import com.ai.openai.endPoint.images.req.ImageVariationRequest;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -22,25 +24,19 @@ import static com.ai.common.utils.ValidationUtils.ensureNotNull;
 /**
  * @Description: OpenAI 图片类会话
  **/
-public class DefaultImageSession implements ImageSession {
-
-    /**
-     * 配置信息
-     */
-    private Configuration configuration;
-    /**
-     * OpenAI 接口
-     */
-    private OpenaiApiServer openaiApiServer;
+@Data
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
+public class DefaultImageSession extends Session implements ImageSession {
 
     public DefaultImageSession(Configuration configuration) {
-        this.configuration = ensureNotNull(configuration, "configuration");
-        this.openaiApiServer = ensureNotNull(configuration.getOpenaiApiServer(), "openaiApiServer");
+        this.setConfiguration(ensureNotNull(configuration, "configuration"));
+        this.setOpenaiApiServer(ensureNotNull(configuration.getOpenaiApiServer(), "openaiApiServer"));
     }
 
     @Override
     public List<ImageObject> createImageCompletions(String apiHostByUser, String apiKeyByUser, String apiUrlByUser, CreateImageRequest createImageRequest) {
-        return this.openaiApiServer.createImageCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, createImageRequest).blockingGet().getData();
+        return this.getOpenaiApiServer().createImageCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, createImageRequest).blockingGet().getData();
     }
 
     @Override
@@ -61,7 +57,7 @@ public class DefaultImageSession implements ImageSession {
         if (!(Objects.isNull(imageEditRequest.getUser()) || "".equals(imageEditRequest.getUser()))) {
             requestBodyMap.put("user", RequestBody.create(MediaType.parse("multipart/form-data"), imageEditRequest.getUser()));
         }
-        return this.openaiApiServer.editImageCompletion(
+        return this.getOpenaiApiServer().editImageCompletion(
                 apiHostByUser, apiKeyByUser, apiUrlByUser,
                 imageMultipartBody,
                 maskMultipartBody,
@@ -80,7 +76,7 @@ public class DefaultImageSession implements ImageSession {
         if (!(Objects.isNull(imageVariationRequest.getUser()) || "".equals(imageVariationRequest.getUser()))) {
             requestBodyMap.put("user", RequestBody.create(MediaType.parse("multipart/form-data"), imageVariationRequest.getUser()));
         }
-        return this.openaiApiServer.variationImageCompletion(
+        return this.getOpenaiApiServer().variationImageCompletion(
                 apiHostByUser, apiKeyByUser, apiUrlByUser,
                 multipartBody,
                 requestBodyMap

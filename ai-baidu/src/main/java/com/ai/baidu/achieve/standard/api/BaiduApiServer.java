@@ -3,6 +3,8 @@ package com.ai.baidu.achieve.standard.api;
 import com.ai.baidu.endPoint.auth.resp.AuthResponse;
 import com.ai.baidu.endPoint.chat.req.ChatRequest;
 import com.ai.baidu.endPoint.chat.resp.ChatResponse;
+import com.ai.baidu.endPoint.embedding.req.EmbeddingRequest;
+import com.ai.baidu.endPoint.embedding.resp.EmbeddingResponse;
 import io.reactivex.Single;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
@@ -56,5 +58,15 @@ public interface BaiduApiServer {
      */
     @POST("/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/completions_pro")
     Single<ChatResponse> chat(@Query("access_token") String accessToken, @Body ChatRequest chatRequest);
+
+    /**
+     * embedding 接口
+     *
+     * @param accessToken      鉴权的 accessToken
+     * @param embeddingRequest 请求参数
+     * @return 返回数据
+     */
+    @POST("/rpc/2.0/ai_custom/v1/wenxinworkshop/embeddings/embedding-v1")
+    Single<EmbeddingResponse> embedding(@Query("access_token") String accessToken, @Body EmbeddingRequest embeddingRequest);
 
 }

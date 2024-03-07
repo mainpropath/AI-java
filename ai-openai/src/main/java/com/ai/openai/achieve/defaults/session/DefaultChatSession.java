@@ -5,8 +5,8 @@ import cn.hutool.http.ContentType;
 import com.ai.common.exception.Constants;
 import com.ai.common.utils.JsonUtils;
 import com.ai.openai.achieve.Configuration;
-import com.ai.openai.achieve.standard.api.OpenaiApiServer;
 import com.ai.openai.achieve.standard.interfaceSession.ChatSession;
+import com.ai.openai.common.ApiUrl;
 import com.ai.openai.endPoint.chat.ChatChoice;
 import com.ai.openai.endPoint.chat.msg.DefaultMessage;
 import com.ai.openai.endPoint.chat.req.DefaultChatCompletionRequest;
@@ -18,6 +18,9 @@ import com.ai.openai.endPoint.chat.resp.QaCompletionResponse;
 import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -34,39 +37,34 @@ import static com.ai.common.utils.ValidationUtils.ensureNotNull;
 /**
  * @description OpenAI 对话类会话
  */
-public class DefaultChatSession implements ChatSession {
+@Data
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
+public class DefaultChatSession extends Session implements ChatSession {
 
-    /**
-     * 配置信息
-     */
-    private Configuration configuration;
-    /**
-     * OpenAI 接口
-     */
-    private OpenaiApiServer openaiApiServer;
     /**
      * 工厂事件
      */
     private EventSource.Factory factory;
 
     public DefaultChatSession(Configuration configuration) {
-        this.configuration = ensureNotNull(configuration, "configuration");
-        this.openaiApiServer = ensureNotNull(configuration.getOpenaiApiServer(), "openaiApiServer");
-        this.factory = ensureNotNull(configuration.createRequestFactory(), "requestFactory");
+        this.setConfiguration(ensureNotNull(configuration, "configuration"));
+        this.setOpenaiApiServer(ensureNotNull(configuration.getOpenaiApiServer(), "openaiApiServer"));
+        this.setFactory(ensureNotNull(configuration.createRequestFactory(), "requestFactory"));
     }
 
     @Override
     public QaCompletionResponse qaCompletions(String apiHostByUser, String apiKeyByUser, String apiUrlByUser, QaCompletionRequest qaCompletionRequest) {
-        return this.openaiApiServer.createQaCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, qaCompletionRequest).blockingGet();
+        return this.getOpenaiApiServer().createQaCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, qaCompletionRequest).blockingGet();
     }
 
     @Override
-    public EventSource qaCompletions(String apiHostByUser, String apiKeyByUser, String apiUrlByUser, QaCompletionRequest qaCompletionRequest, EventSourceListener eventSourceListener) throws JsonProcessingException {
+    public EventSource qaCompletions(String apiHostByUser, String apiKeyByUser, String apiUrlByUser, QaCompletionRequest qaCompletionRequest, EventSourceListener eventSourceListener) {
         Request request = new Request.Builder()
                 .addHeader(API_HOST, apiHostByUser)
                 .addHeader(API_KEY, apiKeyByUser)
                 .addHeader(URL, apiUrlByUser)
-                .url(configuration.getApiHost().concat(ApiUrl.v1_completions.getCode()))
+                .url(this.getConfiguration().getApiHost().concat(ApiUrl.v1_completions.getUrl()))
                 .post(RequestBody.create(MediaType.parse(ContentType.JSON.getValue()), JsonUtils.toJson(qaCompletionRequest)))
                 .build();
         return factory.newEventSource(request, eventSourceListener);
@@ -74,17 +72,17 @@ public class DefaultChatSession implements ChatSession {
 
     @Override
     public ChatCompletionResponse chatCompletions(String apiHostByUser, String apiKeyByUser, String apiUrlByUser, DefaultChatCompletionRequest defaultChatCompletionRequest) {
-        return this.openaiApiServer.createChatCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, defaultChatCompletionRequest).blockingGet();
+        return this.getOpenaiApiServer().createChatCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, defaultChatCompletionRequest).blockingGet();
     }
 
     @Override
     public ChatCompletionResponse chatCompletions(String apiHostByUser, String apiKeyByUser, String apiUrlByUser, ImgChatCompletionRequest imgChatCompletionRequest) {
-        return this.openaiApiServer.createChatCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, imgChatCompletionRequest).blockingGet();
+        return this.getOpenaiApiServer().createChatCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, imgChatCompletionRequest).blockingGet();
     }
 
     @Override
     public ChatCompletionResponse chatCompletions(String apiHostByUser, String apiKeyByUser, String apiUrlByUser, FuncChatCompletionRequest funcChatCompletionRequest) {
-        return this.openaiApiServer.createChatCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, funcChatCompletionRequest).blockingGet();
+        return this.getOpenaiApiServer().createChatCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, funcChatCompletionRequest).blockingGet();
     }
 
     @Override
@@ -93,7 +91,7 @@ public class DefaultChatSession implements ChatSession {
                 .addHeader(API_HOST, apiHostByUser)
                 .addHeader(API_KEY, apiKeyByUser)
                 .addHeader(URL, apiUrlByUser)
-                .url(configuration.getApiHost().concat(ApiUrl.v1_chat_completions.getCode()))
+                .url(this.getConfiguration().getApiHost().concat(ApiUrl.v1_chat_completions.getUrl()))
                 .post(RequestBody.create(MediaType.parse(ContentType.JSON.getValue()), new ObjectMapper().writeValueAsString(defaultChatCompletionRequest)))
                 .build();
         return factory.newEventSource(request, eventSourceListener);
