@@ -4,7 +4,7 @@ import com.ai.baidu.achieve.Configuration;
 import com.ai.baidu.achieve.defaults.session.DefaultAggregationSession;
 import com.ai.baidu.achieve.standard.BaiduSessionFactory;
 import com.ai.baidu.achieve.standard.api.BaiduApiServer;
-import com.ai.baidu.achieve.standard.interfaceSession.AggregationSession;
+import com.ai.baidu.achieve.standard.function.AggregationSession;
 import com.ai.baidu.interceptor.ResponseInterceptor;
 import lombok.AllArgsConstructor;
 import okhttp3.OkHttpClient;

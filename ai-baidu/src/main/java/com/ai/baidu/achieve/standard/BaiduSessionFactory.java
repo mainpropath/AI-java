@@ -1,7 +1,7 @@
 package com.ai.baidu.achieve.standard;
 
 import com.ai.baidu.achieve.standard.api.BaiduApiServer;
-import com.ai.baidu.achieve.standard.interfaceSession.AggregationSession;
+import com.ai.baidu.achieve.standard.function.AggregationSession;
 import okhttp3.OkHttpClient;
 
 /**

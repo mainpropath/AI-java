@@ -9,29 +9,31 @@ import com.ai.spark.achieve.defaults.listener.DocumentChatListener;
 import com.ai.spark.achieve.standard.interfaceSession.ChatSession;
 import com.ai.spark.common.SparkApiUrl;
 import com.ai.spark.common.utils.AuthUtils;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.SneakyThrows;
+import lombok.ToString;
 import okhttp3.Request;
 import okhttp3.WebSocket;
 
 import static com.ai.common.utils.ValidationUtils.ensureNotNull;
 import static com.ai.spark.common.SparkApiUrl.DOCUMENT_CHAT;
 
-public class DefaultChatSession implements ChatSession {
-
-    /**
-     * 配置信息
-     */
-    private Configuration configuration;
+@Data
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
+public class DefaultChatSession extends Session implements ChatSession {
 
     public DefaultChatSession(Configuration configuration) {
-        this.configuration = ensureNotNull(configuration, "configuration");
+        this.setConfiguration(ensureNotNull(configuration, "configuration"));
+        this.setSparkApiServer(ensureNotNull(configuration.getSparkApiServer(), "sparkApiServer"));
     }
 
     @Override
     @SneakyThrows
     public <T extends ChatListener> WebSocket chat(T chatListener) {
         // 默认情况下根据apiData获取策略得到创建时设置的参数
-        ApiData apiData = configuration.getSystemApiData();
+        ApiData apiData = this.getConfiguration().getSystemApiData();
         return this.chat(apiData.getApiKey(), apiData.getApiSecret(), chatListener);
     }
 
@@ -45,12 +47,12 @@ public class DefaultChatSession implements ChatSession {
                 AuthUtils.getAuthUrl(AuthUtils.RequestMethod.GET.getMethod(), SparkApiUrl.getUrl(domain), apiKey, apiSecret)
         );
         // 发起请求返回结果
-        return this.configuration.getOkHttpClient().newWebSocket(new Request.Builder().url(url).build(), chatListener);
+        return this.getConfiguration().getOkHttpClient().newWebSocket(new Request.Builder().url(url).build(), chatListener);
     }
 
     @Override
     public <T extends DocumentChatListener> WebSocket documentChat(T documentChatListener) {
-        ApiData apiData = configuration.getSystemApiData();
+        ApiData apiData = this.getConfiguration().getSystemApiData();
         return documentChat(apiData.getAppId(), apiData.getApiSecret(), documentChatListener);
     }
 
@@ -64,7 +66,7 @@ public class DefaultChatSession implements ChatSession {
                 + "&timestamp=" + ts
                 + "&signature=" + AuthUtils.getSignature(appId, apiSecret, ts);
         // 发起请求返回结果
-        return this.configuration.getOkHttpClient().newWebSocket(new Request.Builder().url(url).build(), documentChatListener);
+        return this.getConfiguration().getOkHttpClient().newWebSocket(new Request.Builder().url(url).build(), documentChatListener);
     }
 
 }

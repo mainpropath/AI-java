@@ -4,7 +4,7 @@ import com.ai.baidu.achieve.ApiData;
 import com.ai.baidu.achieve.Configuration;
 import com.ai.baidu.achieve.defaults.DefaultBaiduSessionFactory;
 import com.ai.baidu.achieve.standard.BaiduSessionFactory;
-import com.ai.baidu.achieve.standard.interfaceSession.AggregationSession;
+import com.ai.baidu.achieve.standard.function.AggregationSession;
 import com.ai.baidu.endPoint.chat.Message;
 import com.ai.baidu.endPoint.chat.req.ChatRequest;
 import com.ai.baidu.endPoint.chat.resp.ChatResponse;
@@ -75,7 +75,7 @@ public class ChatApiTest {
         // 发起聊天，chat接口如果传入的 accessToken 为空，会自动根据用户设置的信息进行鉴权
         ChatResponse response = aggregationSession
                 .getChatSession()// 获取 chatSession
-                .chat(null, ChatRequest.baseBuild(Message.Role.USER, "你能讲一个笑话吗？"));// 构造一个基础的聊天请求体
+                .chat(null, ChatRequest.baseBuild(Message.Role.USER, "Introduce the city Beijing"));// 构造一个基础的聊天请求体
         System.out.println(response.getResult());
         System.out.println(response.getUsage());
     }

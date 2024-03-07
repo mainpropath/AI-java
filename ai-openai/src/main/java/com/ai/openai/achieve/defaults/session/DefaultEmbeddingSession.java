@@ -1,11 +1,13 @@
 package com.ai.openai.achieve.defaults.session;
 
 import com.ai.openai.achieve.Configuration;
-import com.ai.openai.achieve.standard.api.OpenaiApiServer;
 import com.ai.openai.achieve.standard.interfaceSession.EmbeddingSession;
 import com.ai.openai.endPoint.embeddings.EmbeddingObject;
 import com.ai.openai.endPoint.embeddings.req.EmbeddingCompletionRequest;
 import com.ai.openai.endPoint.embeddings.resp.EmbeddingCompletionResponse;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.util.Arrays;
 import java.util.List;
@@ -16,20 +18,14 @@ import static com.ai.common.utils.ValidationUtils.ensureNotNull;
 /**
  * @Description: OpenAI 嵌入类会话
  **/
-public class DefaultEmbeddingSession implements EmbeddingSession {
-
-    /**
-     * 配置信息
-     */
-    private Configuration configuration;
-    /**
-     * OpenAI 接口
-     */
-    private OpenaiApiServer openaiApiServer;
+@Data
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
+public class DefaultEmbeddingSession extends Session implements EmbeddingSession {
 
     public DefaultEmbeddingSession(Configuration configuration) {
-        this.configuration = ensureNotNull(configuration, "configuration");
-        this.openaiApiServer = ensureNotNull(configuration.getOpenaiApiServer(), "openaiApiServer");
+        this.setConfiguration(ensureNotNull(configuration, "configuration"));
+        this.setOpenaiApiServer(ensureNotNull(configuration.getOpenaiApiServer(), "openaiApiServer"));
     }
 
     @Override
@@ -44,7 +40,7 @@ public class DefaultEmbeddingSession implements EmbeddingSession {
 
     @Override
     public EmbeddingCompletionResponse embeddingCompletions(String apiHostByUser, String apiKeyByUser, String apiUrlByUser, EmbeddingCompletionRequest embeddingCompletionRequest) {
-        EmbeddingCompletionResponse response = this.openaiApiServer.createEmbeddingsCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, embeddingCompletionRequest).blockingGet();
+        EmbeddingCompletionResponse response = this.getOpenaiApiServer().createEmbeddingsCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, embeddingCompletionRequest).blockingGet();
         List<EmbeddingObject> data = response.getData();
         List<String> input = embeddingCompletionRequest.getInput();
         IntStream.range(0, Math.min(data.size(), input.size()))

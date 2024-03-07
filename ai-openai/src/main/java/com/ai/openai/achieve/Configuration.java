@@ -31,11 +31,12 @@ public class Configuration extends BaseConfiguration {
     private List<String> keyList;
 
     public EventSource.Factory createRequestFactory() {
-        return EventSources.createFactory(okHttpClient);
+        return EventSources.createFactory(this.getOkHttpClient());
     }
 
+
     public String getSystemApiData() {
-        return (String) keyStrategy.apply(keyList);
+        return (String) this.getKeyStrategy().apply(keyList);
     }
 
 }

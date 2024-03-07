@@ -2,12 +2,13 @@ package com.ai.openai.achieve.defaults.session;
 
 import cn.hutool.core.util.StrUtil;
 import com.ai.openai.achieve.Configuration;
-import com.ai.openai.achieve.standard.api.OpenaiApiServer;
 import com.ai.openai.achieve.standard.interfaceSession.AudioSession;
 import com.ai.openai.endPoint.audio.req.SttCompletionRequest;
 import com.ai.openai.endPoint.audio.req.TtsCompletionRequest;
 import com.ai.openai.endPoint.audio.resp.SttCompletionResponse;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -23,25 +24,18 @@ import static com.ai.common.utils.ValidationUtils.ensureNotNull;
  * @Description: OpenAI 语音类会话
  **/
 @Data
-public class DefaultAudioSession implements AudioSession {
-
-    /**
-     * 配置信息
-     */
-    private Configuration configuration;
-    /**
-     * OpenAI 接口
-     */
-    private OpenaiApiServer openaiApiServer;
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
+public class DefaultAudioSession extends Session implements AudioSession {
 
     public DefaultAudioSession(Configuration configuration) {
-        this.configuration = ensureNotNull(configuration, "configuration");
-        this.openaiApiServer = ensureNotNull(configuration.getOpenaiApiServer(), "openaiApiServer");
+        this.setConfiguration(ensureNotNull(configuration, "configuration"));
+        this.setOpenaiApiServer(ensureNotNull(configuration.getOpenaiApiServer(), "openaiApiServer"));
     }
 
     @Override
     public void ttsCompletions(String apiHostByUser, String apiKeyByUser, String apiUrlByUser, TtsCompletionRequest ttsCompletionRequest, Callback callback) {
-        this.openaiApiServer.createSpeechCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, ttsCompletionRequest).enqueue(callback);
+        this.getOpenaiApiServer().createSpeechCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, ttsCompletionRequest).enqueue(callback);
     }
 
     private SttCompletionResponse sttBaseCompletions(String apiHostByUser, String apiKeyByUser, String apiUrlByUser, SttCompletionRequest sttCompletionRequest, String type) {
@@ -64,9 +58,9 @@ public class DefaultAudioSession implements AudioSession {
             requestBodyMap.put(SttCompletionRequest.Fields.temperature, RequestBody.create(MediaType.parse("multipart/form-data"), String.valueOf(sttCompletionRequest.getTemperature())));
         }
         if ("translation".equals(type)) {
-            return this.openaiApiServer.createTranslationCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, multipartBody, requestBodyMap).blockingGet();
+            return this.getOpenaiApiServer().createTranslationCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, multipartBody, requestBodyMap).blockingGet();
         }
-        return this.openaiApiServer.createTranscriptionCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, multipartBody, requestBodyMap).blockingGet();
+        return this.getOpenaiApiServer().createTranscriptionCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, multipartBody, requestBodyMap).blockingGet();
     }
 
     @Override
