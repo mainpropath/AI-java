@@ -1,9 +1,10 @@
 package com.ai.baidu.achieve.defaults.session;
 
 import com.ai.baidu.achieve.Configuration;
-import com.ai.baidu.achieve.standard.function.AggregationSession;
-import com.ai.baidu.achieve.standard.function.ChatSession;
-import com.ai.baidu.achieve.standard.function.EmbeddingSession;
+import com.ai.baidu.achieve.standard.session.AggregationSession;
+import com.ai.baidu.achieve.standard.session.ChatSession;
+import com.ai.baidu.achieve.standard.session.EmbeddingSession;
+import com.ai.baidu.achieve.standard.session.ImageSession;
 
 import static com.ai.common.utils.ValidationUtils.ensureNotNull;
 
@@ -17,6 +18,8 @@ public class DefaultAggregationSession implements AggregationSession {
     private volatile ChatSession chatSession;
 
     private volatile EmbeddingSession embeddingSession;
+
+    private volatile ImageSession imageSession;
 
     public DefaultAggregationSession(Configuration configuration) {
         this.configuration = ensureNotNull(configuration, "configuration");
@@ -44,6 +47,18 @@ public class DefaultAggregationSession implements AggregationSession {
             }
         }
         return embeddingSession;
+    }
+
+    @Override
+    public ImageSession getImageSession() {
+        if (imageSession == null) {
+            synchronized (this) {
+                if (imageSession == null) {
+                    imageSession = new DefaultImageSession(configuration);
+                }
+            }
+        }
+        return imageSession;
     }
 
 }

@@ -40,8 +40,8 @@ public class Content {
     /**
      * 构建 image_url 类型的 content
      */
-    public static Content BuildImageUrlContent(String imageUrl) {
-        return Content.builder().type(Type.IMAGE_URL.getName()).text(imageUrl).build();
+    public static Content BuildImageUrlContent(String urlOrB64Json) {
+        return Content.builder().type(Type.IMAGE_URL.getName()).text(urlOrB64Json).build();
     }
 
     /**

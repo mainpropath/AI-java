@@ -31,7 +31,7 @@ import retrofit2.http.*;
 
 import java.util.Map;
 
-import static com.ai.common.exception.Constants.*;
+import static com.ai.core.exception.Constants.*;
 
 /**
  * @Description: OpenAI API接口

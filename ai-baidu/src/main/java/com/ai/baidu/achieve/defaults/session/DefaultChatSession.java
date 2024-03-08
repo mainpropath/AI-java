@@ -2,7 +2,7 @@ package com.ai.baidu.achieve.defaults.session;
 
 import cn.hutool.http.ContentType;
 import com.ai.baidu.achieve.Configuration;
-import com.ai.baidu.achieve.standard.function.ChatSession;
+import com.ai.baidu.achieve.standard.session.ChatSession;
 import com.ai.baidu.common.ApiUrl;
 import com.ai.baidu.endPoint.chat.req.ChatRequest;
 import com.ai.baidu.endPoint.chat.resp.ChatResponse;

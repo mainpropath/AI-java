@@ -2,10 +2,10 @@ package com.ai.openai.achieve.defaults.session;
 
 
 import cn.hutool.http.ContentType;
-import com.ai.common.exception.Constants;
 import com.ai.common.utils.JsonUtils;
+import com.ai.core.exception.Constants;
 import com.ai.openai.achieve.Configuration;
-import com.ai.openai.achieve.standard.interfaceSession.ChatSession;
+import com.ai.openai.achieve.standard.session.ChatSession;
 import com.ai.openai.common.ApiUrl;
 import com.ai.openai.endPoint.chat.ChatChoice;
 import com.ai.openai.endPoint.chat.msg.DefaultMessage;
@@ -31,8 +31,8 @@ import okhttp3.sse.EventSourceListener;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import static com.ai.common.exception.Constants.*;
 import static com.ai.common.utils.ValidationUtils.ensureNotNull;
+import static com.ai.core.exception.Constants.*;
 
 /**
  * @description OpenAI 对话类会话

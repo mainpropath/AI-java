@@ -2,7 +2,7 @@ package com.ai.openai.achieve.defaults.session;
 
 
 import com.ai.openai.achieve.Configuration;
-import com.ai.openai.achieve.standard.interfaceSession.ModelSession;
+import com.ai.openai.achieve.standard.session.ModelSession;
 import com.ai.openai.endPoint.models.ModelObject;
 import com.ai.openai.endPoint.models.resp.DeleteFineTuneModelResponse;
 import lombok.Data;

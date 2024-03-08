@@ -33,7 +33,8 @@ public class CreateImageRequest implements Serializable {
     /**
      * 要生成的图像数。必须介于 1 和 10 之间，dall-e-3只能为1。
      */
-    private Integer n;
+    @Builder.Default
+    private Integer n = 1;
 
     /**
      * 将生成的图像的质量。 创建具有更精细细节和更高一致性的图像。
@@ -114,5 +115,15 @@ public class CreateImageRequest implements Serializable {
         ;
         private final String name;
     }
+
+    @Getter
+    @AllArgsConstructor
+    public enum Format {
+        URL("url"),
+        B64JSON("b64_json"),
+        ;
+        private final String name;
+    }
+
 
 }

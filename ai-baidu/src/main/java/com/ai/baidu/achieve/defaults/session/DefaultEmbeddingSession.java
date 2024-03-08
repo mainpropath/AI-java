@@ -1,7 +1,7 @@
 package com.ai.baidu.achieve.defaults.session;
 
 import com.ai.baidu.achieve.Configuration;
-import com.ai.baidu.achieve.standard.function.EmbeddingSession;
+import com.ai.baidu.achieve.standard.session.EmbeddingSession;
 import com.ai.baidu.endPoint.embedding.req.EmbeddingRequest;
 import com.ai.baidu.endPoint.embedding.resp.EmbeddingResponse;
 import lombok.Data;

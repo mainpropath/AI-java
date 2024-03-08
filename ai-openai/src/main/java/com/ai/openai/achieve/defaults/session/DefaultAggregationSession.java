@@ -1,7 +1,7 @@
 package com.ai.openai.achieve.defaults.session;
 
 import com.ai.openai.achieve.Configuration;
-import com.ai.openai.achieve.standard.interfaceSession.*;
+import com.ai.openai.achieve.standard.session.*;
 
 import static com.ai.common.utils.ValidationUtils.ensureNotNull;
 

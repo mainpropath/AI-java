@@ -4,7 +4,7 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import com.ai.spark.achieve.ApiData;
 import com.ai.spark.achieve.Configuration;
-import com.ai.spark.achieve.standard.interfaceSession.DocumentSession;
+import com.ai.spark.achieve.standard.session.DocumentSession;
 import com.ai.spark.common.SparkApiUrl;
 import com.ai.spark.common.utils.AuthUtils;
 import com.ai.spark.endPoint.document.req.FileUploadRequest;

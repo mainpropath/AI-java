@@ -1,11 +1,11 @@
 package com.ai.openai.achieve.defaults;
 
 
+import com.ai.core.factory.SessionFactory;
 import com.ai.openai.achieve.Configuration;
 import com.ai.openai.achieve.defaults.session.DefaultAggregationSession;
-import com.ai.openai.achieve.standard.OpenAiSessionFactory;
 import com.ai.openai.achieve.standard.api.OpenaiApiServer;
-import com.ai.openai.achieve.standard.interfaceSession.AggregationSession;
+import com.ai.openai.achieve.standard.session.AggregationSession;
 import com.ai.openai.interceptor.HeaderInterceptor;
 import com.ai.openai.interceptor.ResponseInterceptor;
 import lombok.AllArgsConstructor;
@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
  * @description OpenAi API Factory 会话工厂
  */
 @AllArgsConstructor
-public class DefaultOpenAiSessionFactory implements OpenAiSessionFactory {
+public class DefaultOpenAiSessionFactory implements SessionFactory<AggregationSession, OpenaiApiServer> {
 
     private final Configuration configuration;
 
@@ -46,7 +46,7 @@ public class DefaultOpenAiSessionFactory implements OpenAiSessionFactory {
     }
 
     @Override
-    public OpenaiApiServer createOpenAiApiServer(OkHttpClient okHttpClient) {
+    public OpenaiApiServer createApiServer(OkHttpClient okHttpClient) {
         return new Retrofit.Builder()
                 .baseUrl(configuration.getApiHost())
                 .client(okHttpClient)
@@ -59,7 +59,7 @@ public class DefaultOpenAiSessionFactory implements OpenAiSessionFactory {
     public AggregationSession openAggregationSession() {
         OkHttpClient okHttpClient = createHttpClient();
         configuration.setOkHttpClient(okHttpClient);
-        configuration.setOpenaiApiServer(createOpenAiApiServer(okHttpClient));
+        configuration.setOpenaiApiServer(createApiServer(okHttpClient));
         return new DefaultAggregationSession(configuration);
     }
 }

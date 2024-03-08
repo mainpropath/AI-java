@@ -1,12 +1,11 @@
 package com.ai.openai;
 
 import cn.hutool.json.JSONObject;
-import com.ai.common.exception.Constants;
-import com.ai.common.strategy.impl.FirstKeyStrategy;
+import com.ai.core.exception.Constants;
+import com.ai.core.strategy.impl.FirstKeyStrategy;
 import com.ai.openai.achieve.Configuration;
 import com.ai.openai.achieve.defaults.DefaultOpenAiSessionFactory;
-import com.ai.openai.achieve.standard.OpenAiSessionFactory;
-import com.ai.openai.achieve.standard.interfaceSession.AggregationSession;
+import com.ai.openai.achieve.standard.session.AggregationSession;
 import com.ai.openai.endPoint.chat.Parameters;
 import com.ai.openai.endPoint.chat.msg.Content;
 import com.ai.openai.endPoint.chat.msg.DefaultMessage;
@@ -32,7 +31,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 
-import static com.ai.common.exception.Constants.NULL;
+import static com.ai.core.exception.Constants.NULL;
 
 /**
  * @Description: 测试聊天接口相关接口功能
@@ -49,14 +48,14 @@ public class ChatApiTest {
         // 2. 设置请求地址，若有代理商或者代理服务器，可填写为代理服务器的请求路径
         configuration.setApiHost("https://api.openai.com");
         // 3. 设置鉴权所需的API Key,可设置多个。
-        configuration.setKeyList(Arrays.asList("**************************"));
+        configuration.setKeyList(Arrays.asList("填入你的API Key"));
         // 4. 设置请求时 key 的使用策略，默认实现了：随机获取 和 固定第一个Key 两种方式。
         configuration.setKeyStrategy(new FirstKeyStrategy<String>());
 //        configuration.setKeyStrategy(new RandomKeyStrategy<String>());
         // 5. 设置代理，若不需要可不设置
         configuration.setProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("127.0.0.1", 7890)));
         // 6. 创建 session 工厂，制造不同场景的 session
-        OpenAiSessionFactory factory = new DefaultOpenAiSessionFactory(configuration);
+        DefaultOpenAiSessionFactory factory = new DefaultOpenAiSessionFactory(configuration);
         this.aggregationSession = factory.openAggregationSession();
     }
 
@@ -65,7 +64,7 @@ public class ChatApiTest {
      */
     @Test
     public void test_qa_completions() {
-        QaCompletionRequest qaCompletionRequest = QaCompletionRequest.baseBuild("9*7=");
+        QaCompletionRequest qaCompletionRequest = QaCompletionRequest.baseBuild("你是谁？");
         QaCompletionResponse qaCompletionResponse = aggregationSession.getChatSession().qaCompletions(NULL, NULL, NULL, qaCompletionRequest);
         log.info("测试结果：{}", qaCompletionResponse);
     }
@@ -149,13 +148,13 @@ public class ChatApiTest {
     }
 
     /**
-     * 测试图片对话
+     * 测试图片对话，需要GPT4权限
      */
     @Test
     public void test_img_chat_completions() {
         // 构造对话内容
         Content textContent = Content.BuildTextContent("这张图片当中有什么？");
-        Content imgContent = Content.BuildImageUrlContent("https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg");
+        Content imgContent = Content.BuildImageUrlContent("https://oaidalleapiprodscus.blob.core.windows.net/private/org-HL3RbCOW1GSH0YPFWak9m6be/user-AzfIxMQpzvc9raSA0TZ9sHOw/img-oft6JFrL4ilB4mmapSud8Vpy.png?st=2024-03-08T13%3A31%3A32Z&se=2024-03-08T15%3A31%3A32Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2024-03-07T18%3A11%3A55Z&ske=2024-03-08T18%3A11%3A55Z&sks=b&skv=2021-08-06&sig=wLcx9Uo6XiYT10GXIFcJwfd08BKoJ07k7cP7qJvYGx4%3D");
         // 构造 msg 内容
         ImgMessage imgMessage = ImgMessage.builder().role(Constants.Role.USER.getRoleName()).content(Arrays.asList(textContent, imgContent)).build();
         // 构造请求参数，chatGPT 4 支持图片对话

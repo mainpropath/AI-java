@@ -5,7 +5,7 @@ import com.ai.common.utils.JsonUtils;
 import com.ai.spark.achieve.ApiData;
 import com.ai.spark.achieve.Configuration;
 import com.ai.spark.achieve.defaults.listener.ImageUnderstandingListener;
-import com.ai.spark.achieve.standard.interfaceSession.ImageSession;
+import com.ai.spark.achieve.standard.session.ImageSession;
 import com.ai.spark.common.SparkApiUrl;
 import com.ai.spark.common.utils.AuthUtils;
 import com.ai.spark.endPoint.images.req.ImageCreateRequest;

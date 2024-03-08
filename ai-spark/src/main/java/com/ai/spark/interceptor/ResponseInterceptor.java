@@ -1,7 +1,7 @@
 package com.ai.spark.interceptor;
 
-import com.ai.common.exception.BaseException;
-import com.ai.common.exception.Constants;
+import com.ai.core.exception.BaseException;
+import com.ai.core.exception.Constants;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Interceptor;
 import okhttp3.Request;

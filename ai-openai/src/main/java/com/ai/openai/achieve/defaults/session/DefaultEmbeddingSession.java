@@ -1,7 +1,7 @@
 package com.ai.openai.achieve.defaults.session;
 
 import com.ai.openai.achieve.Configuration;
-import com.ai.openai.achieve.standard.interfaceSession.EmbeddingSession;
+import com.ai.openai.achieve.standard.session.EmbeddingSession;
 import com.ai.openai.endPoint.embeddings.EmbeddingObject;
 import com.ai.openai.endPoint.embeddings.req.EmbeddingCompletionRequest;
 import com.ai.openai.endPoint.embeddings.resp.EmbeddingCompletionResponse;

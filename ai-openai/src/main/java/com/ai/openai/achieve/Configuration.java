@@ -1,6 +1,6 @@
 package com.ai.openai.achieve;
 
-import com.ai.common.config.BaseConfiguration;
+import com.ai.core.config.BaseConfiguration;
 import com.ai.openai.achieve.standard.api.OpenaiApiServer;
 import lombok.*;
 import okhttp3.sse.EventSource;

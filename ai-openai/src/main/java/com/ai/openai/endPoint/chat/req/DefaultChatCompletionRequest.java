@@ -1,6 +1,6 @@
 package com.ai.openai.endPoint.chat.req;
 
-import com.ai.common.exception.Constants;
+import com.ai.core.exception.Constants;
 import com.ai.openai.endPoint.chat.msg.DefaultMessage;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;

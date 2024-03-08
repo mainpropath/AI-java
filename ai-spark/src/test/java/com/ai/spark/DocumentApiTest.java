@@ -1,11 +1,10 @@
 package com.ai.spark;
 
-import com.ai.common.strategy.impl.FirstKeyStrategy;
+import com.ai.core.strategy.impl.FirstKeyStrategy;
 import com.ai.spark.achieve.ApiData;
 import com.ai.spark.achieve.Configuration;
 import com.ai.spark.achieve.defaults.DefaultSparkSessionFactory;
-import com.ai.spark.achieve.standard.SparkSessionFactory;
-import com.ai.spark.achieve.standard.interfaceSession.AggregationSession;
+import com.ai.spark.achieve.standard.session.AggregationSession;
 import com.ai.spark.endPoint.document.req.FileUploadRequest;
 import com.ai.spark.endPoint.document.resp.DocumentSummaryResponse;
 import com.ai.spark.endPoint.document.resp.FileUploadResponse;
@@ -37,7 +36,7 @@ public class DocumentApiTest {
         // 5. 设置代理，若不需要可不设置
 //        configuration.setProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("127.0.0.1", 7890)));
         // 6. 创建 session 工厂，制造不同场景的 session
-        SparkSessionFactory factory = new DefaultSparkSessionFactory(configuration);
+        DefaultSparkSessionFactory factory = new DefaultSparkSessionFactory(configuration);
         this.aggregationSession = factory.openAggregationSession();
     }
 

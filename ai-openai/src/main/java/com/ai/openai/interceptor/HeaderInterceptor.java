@@ -2,7 +2,7 @@ package com.ai.openai.interceptor;
 
 import cn.hutool.http.ContentType;
 import cn.hutool.http.Header;
-import com.ai.common.strategy.KeyStrategy;
+import com.ai.core.strategy.KeyStrategy;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 import java.util.List;
 
-import static com.ai.common.exception.Constants.*;
+import static com.ai.core.exception.Constants.*;
 
 /**
  * @Description: OpenAI Key 拦截器

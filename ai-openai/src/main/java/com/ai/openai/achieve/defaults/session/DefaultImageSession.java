@@ -1,7 +1,7 @@
 package com.ai.openai.achieve.defaults.session;
 
 import com.ai.openai.achieve.Configuration;
-import com.ai.openai.achieve.standard.interfaceSession.ImageSession;
+import com.ai.openai.achieve.standard.session.ImageSession;
 import com.ai.openai.endPoint.images.ImageObject;
 import com.ai.openai.endPoint.images.req.CreateImageRequest;
 import com.ai.openai.endPoint.images.req.ImageEditRequest;

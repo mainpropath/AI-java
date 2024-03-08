@@ -1,10 +1,10 @@
 package com.ai.spark.achieve.defaults;
 
+import com.ai.core.factory.SessionFactory;
 import com.ai.spark.achieve.Configuration;
 import com.ai.spark.achieve.defaults.session.DefaultAggregationSession;
-import com.ai.spark.achieve.standard.SparkSessionFactory;
 import com.ai.spark.achieve.standard.api.SparkApiServer;
-import com.ai.spark.achieve.standard.interfaceSession.AggregationSession;
+import com.ai.spark.achieve.standard.session.AggregationSession;
 import com.ai.spark.interceptor.BaseUrlInterceptor;
 import com.ai.spark.interceptor.ResponseInterceptor;
 import okhttp3.OkHttpClient;
@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 
 import static com.ai.common.utils.ValidationUtils.ensureNotNull;
 
-public class DefaultSparkSessionFactory implements SparkSessionFactory {
+public class DefaultSparkSessionFactory implements SessionFactory<AggregationSession, SparkApiServer> {
 
     private final Configuration configuration;
 
@@ -46,7 +46,7 @@ public class DefaultSparkSessionFactory implements SparkSessionFactory {
     }
 
     @Override
-    public SparkApiServer createSparkAiApiServer(OkHttpClient okHttpClient) {
+    public SparkApiServer createApiServer(OkHttpClient okHttpClient) {
         return new Retrofit.Builder()
                 .baseUrl(configuration.getApiHost())
                 .client(okHttpClient)
@@ -59,7 +59,7 @@ public class DefaultSparkSessionFactory implements SparkSessionFactory {
     public AggregationSession openAggregationSession() {
         OkHttpClient okHttpClient = createHttpClient();
         configuration.setOkHttpClient(okHttpClient);
-        configuration.setSparkApiServer(createSparkAiApiServer(okHttpClient));
+        configuration.setSparkApiServer(createApiServer(okHttpClient));
         return new DefaultAggregationSession(configuration);
     }
 }

@@ -2,7 +2,7 @@ package com.ai.openai.achieve.defaults.session;
 
 import cn.hutool.core.util.StrUtil;
 import com.ai.openai.achieve.Configuration;
-import com.ai.openai.achieve.standard.interfaceSession.AudioSession;
+import com.ai.openai.achieve.standard.session.AudioSession;
 import com.ai.openai.endPoint.audio.req.SttCompletionRequest;
 import com.ai.openai.endPoint.audio.req.TtsCompletionRequest;
 import com.ai.openai.endPoint.audio.resp.SttCompletionResponse;

@@ -1,8 +1,8 @@
 package com.ai.openai.interceptor;
 
 import cn.hutool.json.JSONUtil;
-import com.ai.common.exception.BaseException;
-import com.ai.common.exception.Constants;
+import com.ai.core.exception.BaseException;
+import com.ai.core.exception.Constants;
 import com.ai.openai.common.CommonListResponse;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Interceptor;

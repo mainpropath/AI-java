@@ -1,7 +1,7 @@
 package com.ai.baidu.achieve;
 
 import com.ai.baidu.achieve.standard.api.BaiduApiServer;
-import com.ai.common.config.BaseConfiguration;
+import com.ai.core.config.BaseConfiguration;
 import lombok.*;
 import okhttp3.sse.EventSource;
 import okhttp3.sse.EventSources;

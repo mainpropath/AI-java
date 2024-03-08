@@ -1,7 +1,7 @@
 package com.ai.openai.achieve.defaults.session;
 
 import com.ai.openai.achieve.Configuration;
-import com.ai.openai.achieve.standard.interfaceSession.FilesSession;
+import com.ai.openai.achieve.standard.session.FilesSession;
 import com.ai.openai.endPoint.files.FileObject;
 import com.ai.openai.endPoint.files.resp.DeleteFileResponse;
 import lombok.Data;

@@ -3,12 +3,11 @@ package com.ai.baidu;
 import com.ai.baidu.achieve.ApiData;
 import com.ai.baidu.achieve.Configuration;
 import com.ai.baidu.achieve.defaults.DefaultBaiduSessionFactory;
-import com.ai.baidu.achieve.standard.BaiduSessionFactory;
-import com.ai.baidu.achieve.standard.function.AggregationSession;
+import com.ai.baidu.achieve.standard.session.AggregationSession;
 import com.ai.baidu.endPoint.embedding.EmbeddingData;
 import com.ai.baidu.endPoint.embedding.req.EmbeddingRequest;
 import com.ai.baidu.endPoint.embedding.resp.EmbeddingResponse;
-import com.ai.common.strategy.impl.FirstKeyStrategy;
+import com.ai.core.strategy.impl.FirstKeyStrategy;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -44,7 +43,7 @@ public class EmbeddingApiTest {
         // 5. 设置代理，若不需要可不设置
 //        configuration.setProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("127.0.0.1", 7890)));
         // 6. 创建 session 工厂，制造不同场景的 session
-        BaiduSessionFactory factory = new DefaultBaiduSessionFactory(configuration);
+        DefaultBaiduSessionFactory factory = new DefaultBaiduSessionFactory(configuration);
         this.aggregationSession = factory.openAggregationSession();
     }
 

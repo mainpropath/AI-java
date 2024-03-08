@@ -4,7 +4,7 @@ import cn.hutool.http.ContentType;
 import com.ai.common.utils.JsonUtils;
 import com.ai.spark.achieve.ApiData;
 import com.ai.spark.achieve.Configuration;
-import com.ai.spark.achieve.standard.interfaceSession.EmbeddingSession;
+import com.ai.spark.achieve.standard.session.EmbeddingSession;
 import com.ai.spark.common.SparkApiUrl;
 import com.ai.spark.common.utils.AuthUtils;
 import com.ai.spark.endPoint.embedding.req.EmbeddingRequest;

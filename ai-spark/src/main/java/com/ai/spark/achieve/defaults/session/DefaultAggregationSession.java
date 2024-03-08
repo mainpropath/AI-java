@@ -1,7 +1,7 @@
 package com.ai.spark.achieve.defaults.session;
 
 import com.ai.spark.achieve.Configuration;
-import com.ai.spark.achieve.standard.interfaceSession.*;
+import com.ai.spark.achieve.standard.session.*;
 
 import static com.ai.common.utils.ValidationUtils.ensureNotNull;
 

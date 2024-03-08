@@ -2,7 +2,7 @@ package com.ai.openai.achieve.defaults.session;
 
 
 import com.ai.openai.achieve.Configuration;
-import com.ai.openai.achieve.standard.interfaceSession.ModerationSession;
+import com.ai.openai.achieve.standard.session.ModerationSession;
 import com.ai.openai.endPoint.moderations.req.ModerationRequest;
 import com.ai.openai.endPoint.moderations.resp.ModerationResponse;
 import lombok.Data;

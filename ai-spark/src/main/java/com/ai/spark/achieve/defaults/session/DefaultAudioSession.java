@@ -1,7 +1,7 @@
 package com.ai.spark.achieve.defaults.session;
 
 import com.ai.spark.achieve.Configuration;
-import com.ai.spark.achieve.standard.interfaceSession.AudioSession;
+import com.ai.spark.achieve.standard.session.AudioSession;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;

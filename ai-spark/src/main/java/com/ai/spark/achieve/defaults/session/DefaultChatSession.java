@@ -6,7 +6,7 @@ import com.ai.spark.achieve.ApiData;
 import com.ai.spark.achieve.Configuration;
 import com.ai.spark.achieve.defaults.listener.ChatListener;
 import com.ai.spark.achieve.defaults.listener.DocumentChatListener;
-import com.ai.spark.achieve.standard.interfaceSession.ChatSession;
+import com.ai.spark.achieve.standard.session.ChatSession;
 import com.ai.spark.common.SparkApiUrl;
 import com.ai.spark.common.utils.AuthUtils;
 import lombok.Data;

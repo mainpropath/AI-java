@@ -1,6 +1,6 @@
 package com.ai.spark.achieve;
 
-import com.ai.common.config.BaseConfiguration;
+import com.ai.core.config.BaseConfiguration;
 import com.ai.spark.achieve.standard.api.SparkApiServer;
 import lombok.*;
 import org.jetbrains.annotations.NotNull;

@@ -1,7 +1,7 @@
 package com.ai.openai.achieve.defaults.session;
 
 import com.ai.openai.achieve.Configuration;
-import com.ai.openai.achieve.standard.interfaceSession.FineTuningSession;
+import com.ai.openai.achieve.standard.session.FineTuningSession;
 import com.ai.openai.common.CommonListResponse;
 import com.ai.openai.endPoint.fineTuning.FineTuningEvent;
 import com.ai.openai.endPoint.fineTuning.req.FineTuningRequest;

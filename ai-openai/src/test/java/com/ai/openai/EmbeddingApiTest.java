@@ -1,10 +1,9 @@
 package com.ai.openai;
 
-import com.ai.common.strategy.impl.FirstKeyStrategy;
+import com.ai.core.strategy.impl.FirstKeyStrategy;
 import com.ai.openai.achieve.Configuration;
 import com.ai.openai.achieve.defaults.DefaultOpenAiSessionFactory;
-import com.ai.openai.achieve.standard.OpenAiSessionFactory;
-import com.ai.openai.achieve.standard.interfaceSession.AggregationSession;
+import com.ai.openai.achieve.standard.session.AggregationSession;
 import com.ai.openai.endPoint.embeddings.req.EmbeddingCompletionRequest;
 import com.ai.openai.endPoint.embeddings.resp.EmbeddingCompletionResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.ai.common.exception.Constants.NULL;
+import static com.ai.core.exception.Constants.NULL;
 
 /**
  * @Description: 测试嵌入相关接口功能
@@ -41,7 +40,7 @@ public class EmbeddingApiTest {
         // 5. 设置代理，若不需要可不设置
         configuration.setProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("127.0.0.1", 7890)));
         // 6. 创建 session 工厂，制造不同场景的 session
-        OpenAiSessionFactory factory = new DefaultOpenAiSessionFactory(configuration);
+        DefaultOpenAiSessionFactory factory = new DefaultOpenAiSessionFactory(configuration);
         this.aggregationSession = factory.openAggregationSession();
     }
 

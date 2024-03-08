@@ -2,10 +2,10 @@ package com.ai.baidu.achieve.defaults;
 
 import com.ai.baidu.achieve.Configuration;
 import com.ai.baidu.achieve.defaults.session.DefaultAggregationSession;
-import com.ai.baidu.achieve.standard.BaiduSessionFactory;
 import com.ai.baidu.achieve.standard.api.BaiduApiServer;
-import com.ai.baidu.achieve.standard.function.AggregationSession;
+import com.ai.baidu.achieve.standard.session.AggregationSession;
 import com.ai.baidu.interceptor.ResponseInterceptor;
+import com.ai.core.factory.SessionFactory;
 import lombok.AllArgsConstructor;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
  * @Description: baidu API Factory 会话工厂
  **/
 @AllArgsConstructor
-public class DefaultBaiduSessionFactory implements BaiduSessionFactory {
+public class DefaultBaiduSessionFactory implements SessionFactory<AggregationSession, BaiduApiServer> {
 
     private final Configuration configuration;
 
@@ -43,7 +43,7 @@ public class DefaultBaiduSessionFactory implements BaiduSessionFactory {
     }
 
     @Override
-    public BaiduApiServer createBaiduApiServer(OkHttpClient okHttpClient) {
+    public BaiduApiServer createApiServer(OkHttpClient okHttpClient) {
         return new Retrofit.Builder()
                 .baseUrl(configuration.getApiHost())
                 .client(okHttpClient)
@@ -56,7 +56,7 @@ public class DefaultBaiduSessionFactory implements BaiduSessionFactory {
     public AggregationSession openAggregationSession() {
         OkHttpClient okHttpClient = createHttpClient();
         configuration.setOkHttpClient(okHttpClient);
-        configuration.setBaiduApiServer(createBaiduApiServer(okHttpClient));
+        configuration.setBaiduApiServer(createApiServer(okHttpClient));
         return new DefaultAggregationSession(configuration);
     }
 
