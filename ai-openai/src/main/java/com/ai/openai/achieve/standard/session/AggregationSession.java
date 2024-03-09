@@ -1,11 +1,9 @@
 package com.ai.openai.achieve.standard.session;
 
-import java.util.List;
-
 /**
  * @Description: 聚合各大场景的session
  **/
-public interface AggregationSession extends List {
+public interface AggregationSession {
 
     /**
      * 获取音频会话窗口
