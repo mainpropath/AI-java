@@ -2,7 +2,7 @@ package com.ai.common.utils;
 
 import java.util.Collection;
 
-import static com.ai.common.exception.Exceptions.illegalArgument;
+import static com.ai.common.utils.Exceptions.illegalArgument;
 
 
 public class ValidationUtils {

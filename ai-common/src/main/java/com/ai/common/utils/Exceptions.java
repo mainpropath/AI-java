@@ -1,4 +1,4 @@
-package com.ai.core.exception;
+package com.ai.common.utils;
 
 /**
  * 异常工具类
