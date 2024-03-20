@@ -1,5 +1,6 @@
 package com.ai.baidu.endPoint.embedding;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
@@ -27,5 +28,11 @@ public class EmbeddingData {
      * 序号
      */
     private Integer index;
+
+    /**
+     * 原文
+     */
+    @JsonIgnore
+    private String content;
 
 }

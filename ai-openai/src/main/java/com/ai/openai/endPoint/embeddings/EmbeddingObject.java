@@ -6,8 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.List;
 
 
 @Data
@@ -29,7 +27,7 @@ public class EmbeddingObject implements Serializable {
     /**
      * 嵌入向量，它是浮点数的列表
      */
-    private List<BigDecimal> embedding;
+    private double[] embedding;
 
     /**
      * 对象类型，始终为“embedding”。

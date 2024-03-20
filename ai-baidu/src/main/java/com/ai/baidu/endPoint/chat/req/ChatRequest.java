@@ -92,7 +92,7 @@ public class ChatRequest implements Serializable {
      * 指定模型最大输出token数，范围[2, 2048]
      */
     @JsonProperty("max_output_tokens")
-    private Integer max_output_tokens;
+    private Integer maxOutputTokens;
 
     /**
      * 指定响应内容的格式，说明：
@@ -102,7 +102,7 @@ public class ChatRequest implements Serializable {
      * （2）如果不填写参数response_format值，默认为text
      */
     @JsonProperty("response_format")
-    private String response_format;
+    private String responseFormat;
 
     /**
      * 表示最终用户的唯一标识符

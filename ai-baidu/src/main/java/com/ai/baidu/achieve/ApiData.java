@@ -18,5 +18,6 @@ public class ApiData {
     private String appId;
     private String apiKey;
     private String secretKey;
+    private String accessToken;
 
 }

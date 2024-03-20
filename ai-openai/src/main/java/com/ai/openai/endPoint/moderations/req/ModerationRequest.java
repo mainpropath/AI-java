@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -28,7 +28,9 @@ public class ModerationRequest {
      * @return 请求参数
      */
     public static ModerationRequest baseBuild(String input) {
-        return baseBuild(Arrays.asList(input));
+        ArrayList<String> list = new ArrayList<>();
+        list.add(input);
+        return baseBuild(list);
     }
 
     /**

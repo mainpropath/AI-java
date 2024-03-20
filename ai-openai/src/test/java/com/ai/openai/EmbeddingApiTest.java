@@ -4,6 +4,7 @@ import com.ai.core.strategy.impl.FirstKeyStrategy;
 import com.ai.openai.achieve.Configuration;
 import com.ai.openai.achieve.defaults.DefaultOpenAiSessionFactory;
 import com.ai.openai.achieve.standard.session.AggregationSession;
+import com.ai.openai.endPoint.embeddings.EmbeddingObject;
 import com.ai.openai.endPoint.embeddings.req.EmbeddingCompletionRequest;
 import com.ai.openai.endPoint.embeddings.resp.EmbeddingCompletionResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -50,6 +51,9 @@ public class EmbeddingApiTest {
     @Test
     public void test_embedding() {
         EmbeddingCompletionResponse embeddingCompletionResponse = aggregationSession.getEmbeddingSession().embeddingCompletions(NULL, NULL, NULL, "你好");
+        for (EmbeddingObject embeddingObject : embeddingCompletionResponse.getData()) {
+            System.out.println(embeddingObject.getEmbedding().length);
+        }
         log.info("返回结果：{}", embeddingCompletionResponse);
         log.info("返回结果：{}", embeddingCompletionResponse.getData().size());
     }
@@ -70,8 +74,8 @@ public class EmbeddingApiTest {
     @Test
     public void test_embedding_req() {
         List<String> inputList = new ArrayList<>();
-        inputList.add("你asd sad 好");
-        inputList.add("世界123");
+        inputList.add("你好");
+        inputList.add("世界");
         EmbeddingCompletionRequest embeddingCompletionRequest = EmbeddingCompletionRequest.baseBuild(inputList);
         EmbeddingCompletionResponse embeddingCompletionResponse = aggregationSession.getEmbeddingSession().embeddingCompletions(NULL, NULL, NULL, embeddingCompletionRequest);
         log.info("返回结果：{}", embeddingCompletionResponse);
