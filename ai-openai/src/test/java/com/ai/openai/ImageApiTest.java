@@ -52,7 +52,7 @@ public class ImageApiTest {
     @Test
     public void test_create_image_b64json() {
         CreateImageRequest createImageRequest = CreateImageRequest.baseBuild("画一个花园，花园里面有蝴蝶。");
-        createImageRequest.setResponseFormat(CreateImageRequest.Format.B64JSON.getName());
+        createImageRequest.setResponseFormat(CreateImageRequest.Format.B64JSON.getFormat());
         List<ImageObject> imageObjectList = aggregationSession.getImageSession().createImageCompletions(NULL, NULL, NULL, createImageRequest);
         for (int i = 0; i < imageObjectList.size(); i++) {
             ImageUtils.convertBase64StrToImage(imageObjectList.get(i).getB64Json(), "D:\\chatGPT-api\\AI-java\\doc\\test\\test_openai_create_image_" + i + ".png");
@@ -65,7 +65,7 @@ public class ImageApiTest {
     @Test
     public void test_create_image_url() {
         CreateImageRequest createImageRequest = CreateImageRequest.baseBuild("画一个花园，花园里面有蝴蝶。");
-        createImageRequest.setResponseFormat(CreateImageRequest.Format.URL.getName());
+        createImageRequest.setResponseFormat(CreateImageRequest.Format.URL.getFormat());
         List<ImageObject> imageObjectList = aggregationSession.getImageSession().createImageCompletions(NULL, NULL, NULL, createImageRequest);
         for (int i = 0; i < imageObjectList.size(); i++) {
             System.out.println(imageObjectList.get(i).getUrl());

@@ -101,7 +101,7 @@ public class CreateImageRequest implements Serializable {
         STANDARD("standard"),
         HD("hd"),
         ;
-        private final String name;
+        private final String quality;
     }
 
     /**
@@ -113,7 +113,7 @@ public class CreateImageRequest implements Serializable {
         VIVID("vivid"),
         NATURAL("natural"),
         ;
-        private final String name;
+        private final String style;
     }
 
     @Getter
@@ -122,7 +122,7 @@ public class CreateImageRequest implements Serializable {
         URL("url"),
         B64JSON("b64_json"),
         ;
-        private final String name;
+        private final String format;
     }
 
 

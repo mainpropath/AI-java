@@ -1,5 +1,6 @@
 package com.ai.openai.endPoint.moderations;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,4 +29,10 @@ public class Result implements Serializable {
      */
     @JsonProperty("category_scores")
     private CategoryScores categoryScores;
+
+    /**
+     * 原文内容
+     */
+    @JsonIgnore
+    private String content;
 }

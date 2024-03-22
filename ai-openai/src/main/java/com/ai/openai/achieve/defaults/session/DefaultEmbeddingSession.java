@@ -43,6 +43,7 @@ public class DefaultEmbeddingSession extends Session implements EmbeddingSession
         EmbeddingCompletionResponse response = this.getOpenaiApiServer().createEmbeddingsCompletion(apiHostByUser, apiKeyByUser, apiUrlByUser, embeddingCompletionRequest).blockingGet();
         List<EmbeddingObject> data = response.getData();
         List<String> input = embeddingCompletionRequest.getInput();
+        // 将文本和结果进行对应
         IntStream.range(0, Math.min(data.size(), input.size()))
                 .forEach(i -> data.get(i).setContent(input.get(i)));
         return response;

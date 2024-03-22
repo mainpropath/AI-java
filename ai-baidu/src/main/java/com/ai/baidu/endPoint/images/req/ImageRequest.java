@@ -3,10 +3,7 @@ package com.ai.baidu.endPoint.images.req;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serializable;
 
@@ -121,6 +118,44 @@ public class ImageRequest implements Serializable {
 
     public static ImageRequest baseBuild(String prompt) {
         return ImageRequest.builder().prompt(prompt).build();
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public enum ImgSize {
+        SIZE_768_768("768x768"),
+        SIZE_768_1024("768x1024"),
+        SIZE_576_1024("576x1024"),
+        SIZE_1024_768("1024x768"),
+        SIZE_1024_576("1024x576"),
+        SIZE_1024_1024("1024x1024"),
+        ;
+        private String size;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public enum ImgStyle {
+        Base("Base"),
+        model3D("3D Model"),
+        AnalogFilm("Analog Film"),
+        Anime("Anime"),
+        Cinematic("Cinematic"),
+        ComicBook("Comic Book"),
+        CraftClay("Craft Clay"),
+        DigitalArt("Digital Art"),
+        Enhance("Enhance"),
+        FantasyArt("Fantasy Art"),
+        lsometric("lsometric"),
+        LineArt("Line Art"),
+        Lowpoly("Lowpoly"),
+        Neonpunk("Neonpunk"),
+        Origami("Origami"),
+        Photographic("Photographic"),
+        PixelArt("Pixel Art"),
+        Texture("Texture"),
+        ;
+        private String style;
     }
 
 }
